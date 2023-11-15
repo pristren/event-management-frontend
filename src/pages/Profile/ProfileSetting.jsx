@@ -1,3 +1,4 @@
+import Profile from "../../components/Profile";
 import Sidebar from "../../components/Sidebar";
 import VeryCard from "../../components/VeryCard";
 
@@ -145,250 +146,253 @@ const ProfileSetting = () => {
   return (
     <section className="flex">
       <Sidebar />
-      <div className="pt-12">
-        <h1 className="text-[#1BB6ED] font-bold text-[24px] p-4">
-          Profile Setting
-        </h1>
+      <div>
+        <Profile />
+        <div>
+          <h1 className="text-[#1BB6ED] font-bold text-[24px] p-4">
+            Profile Setting
+          </h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          <div className="bg-[#F2F6FF] rounded">
-            <div className="flex flex-col items-center justify-center py-6 px-12">
-              <a
-                href="#"
-                className="flex relative rounded-3xl text-lg min-w-[15rem] bg-white shadow-md text-center py-[0.125rem]"
-              >
-                <span className="bg-[#30BEEC] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center absolute left-1 top-0.5 ">
-                  {notesIcon}
-                </span>
-                <span className="mx-auto text-lg"> Register </span>
-              </a>
-              <a
-                href="#"
-                className="py-2 px-3 flex items-center justify-center relative rounded-3xl text-lg w-full bg-white shadow-md text-center mt-28"
-              >
-                <span className="text-[#30BEEC] text-2xl font-bold mr-6">
-                  {" "}
-                  {squareUserIcon}{" "}
-                </span>
-                <p> Account </p>
-              </a>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="bg-[#F2F6FF] rounded">
+              <div className="flex flex-col items-center justify-center py-6 px-12">
+                <a
+                  href="#"
+                  className="flex relative rounded-3xl text-lg min-w-[15rem] bg-white shadow-md text-center py-[0.125rem]"
+                >
+                  <span className="bg-[#30BEEC] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center absolute left-1 top-0.5 ">
+                    {notesIcon}
+                  </span>
+                  <span className="mx-auto text-lg"> Register </span>
+                </a>
+                <a
+                  href="#"
+                  className="py-2 px-3 flex items-center justify-center relative rounded-3xl text-lg w-full bg-white shadow-md text-center mt-28"
+                >
+                  <span className="text-[#30BEEC] text-2xl font-bold mr-6">
+                    {" "}
+                    {squareUserIcon}{" "}
+                  </span>
+                  <p> Account </p>
+                </a>
 
-              <button className="py-2 min-w-[14rem] bg-[#30BEEC] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mt-32">
-                <span className=" text-2xl font-bold mr-6">
-                  {" "}
-                  {privateUserIcon}{" "}
-                </span>
-                <span>Private</span>
-              </button>
+                <button className="py-2 min-w-[14rem] bg-[#30BEEC] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mt-32">
+                  <span className=" text-2xl font-bold mr-6">
+                    {" "}
+                    {privateUserIcon}{" "}
+                  </span>
+                  <span>Private</span>
+                </button>
 
-              <button className="py-2 min-w-[14rem] bg-gray-300 px-3 flex items-center justify-center relative rounded-3xl text-lg text-slate-950 shadow-md text-center font-semibold mt-16">
-                <span className=" text-2xl font-bold mr-6">
-                  {businessIcon}{" "}
-                </span>
-                <span>Busniess</span>
-              </button>
-            </div>
-          </div>
-
-          <div className="bg-[#F2F6FF] rounded">
-            <div className="flex flex-col items-center justify-center py-6 px-12">
-              <a
-                href="#"
-                className="flex relative rounded-3xl text-lg min-w-[15rem] bg-white shadow-md text-center py-[0.125rem]"
-              >
-                <span className="bg-[#30BEEC] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center absolute left-1 top-0.5 ">
-                  {settingIcon}
-                </span>
-                <span className="mx-auto text-lg"> Profile </span>
-              </a>
-
-              <div className="mt-10">
-                <figure className="bg-[#30BEEC] text-white px-1 py-1 rounded-full w-24 h-24 flex justify-center items-center">
-                  <span className="text-6xl">{profileUserIcon}</span>
-                </figure>
-
-                <div className="text-center">
-                  <h2 className="text-2xl font-semibold"> Username </h2>
-                  <p className="text-gray-500 text-xs">.......@gmail.com</p>
-                </div>
+                <button className="py-2 min-w-[14rem] bg-gray-300 px-3 flex items-center justify-center relative rounded-3xl text-lg text-slate-950 shadow-md text-center font-semibold mt-16">
+                  <span className=" text-2xl font-bold mr-6">
+                    {businessIcon}{" "}
+                  </span>
+                  <span>Busniess</span>
+                </button>
               </div>
-
-              <form className="mt-7">
-                <div className="flex flex-col gap-6">
-                  <div className="flex items-center justify-between gap-10">
-                    <div>
-                      <input
-                        type="text"
-                        placeholder="First Name"
-                        className="py-1 px-4 text-base rounded-[5rem] shadow-md w-full"
-                      />
-                    </div>
-                    <div>
-                      <input
-                        type="text"
-                        placeholder="last name"
-                        className="py-1 px-4 text-base rounded-[5rem] shadow-md w-full"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <input
-                      type="number"
-                      placeholder="Phone Number"
-                      className="py-1 px-4 text-base rounded-[5rem] shadow-md w-full"
-                    />
-                  </div>
-
-                  <div className="relative">
-                    <textarea
-                      type="text"
-                      placeholder="Short Bio"
-                      className="py-3 px-4 text-base rounded-3xl shadow-md w-full resize-none focus:outline-none h-40"
-                    ></textarea>
-                    <p className="absolute right-5 bottom-5 text-gray-400">
-                      150 letters
-                    </p>
-                  </div>
-
-                  <div>
-                    <input
-                      type="text"
-                      placeholder="Connect Account"
-                      className="py-1 px-4 text-base rounded-[5rem] shadow-md w-full"
-                    />
-                  </div>
-
-                  <button className="text-[#30BEEC] py-0.5 px-3 flex items-center justify-left relative rounded-3xl text-lg w-full bg-white shadow-md text-center">
-                    <span> Upload Pictures </span>
-                    <span className="text-[#30BEEC] text-2xl rounded-full w-7 h-7 flex justify-center items-center absolute right-1 top-0.5">
-                      {rightArrow}
-                    </span>
-                  </button>
-                </div>
-              </form>
-
-              <button className="py-2 min-w-[14rem] bg-[#30BEEC] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mt-10">
-                <span>Start</span>
-              </button>
             </div>
-          </div>
 
-          <div className="bg-[#F2F6FF] rounded">
-            <div className="flex flex-col items-center justify-center py-6 px-12">
-              <a
-                href="#"
-                className="flex relative rounded-3xl text-lg min-w-[15rem] bg-white shadow-md text-center py-[0.125rem]"
-              >
-                <span className="bg-[#30BEEC] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center absolute left-1 top-0.5 ">
-                  {uploadIcons}
-                </span>
-                <span className="mx-auto text-lg text-gray-600">
-                  Upload Pictures
-                </span>
-              </a>
+            <div className="bg-[#F2F6FF] rounded">
+              <div className="flex flex-col items-center justify-center py-6 px-12">
+                <a
+                  href="#"
+                  className="flex relative rounded-3xl text-lg min-w-[15rem] bg-white shadow-md text-center py-[0.125rem]"
+                >
+                  <span className="bg-[#30BEEC] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center absolute left-1 top-0.5 ">
+                    {settingIcon}
+                  </span>
+                  <span className="mx-auto text-lg"> Profile </span>
+                </a>
 
-              <form className="mt-7">
-                <div className="flex flex-col gap-6">
-                  <div className="grid grid-cols-3 gap-5">
-                    <VeryCard />
-                    <VeryCard />
-                    <VeryCard />
-                    <VeryCard />
-                    <VeryCard />
-                    <VeryCard />
-                  </div>
+                <div className="mt-10">
+                  <figure className="bg-[#30BEEC] text-white px-1 py-1 rounded-full w-24 h-24 flex justify-center items-center">
+                    <span className="text-6xl">{profileUserIcon}</span>
+                  </figure>
 
-                  <div
-                    href="#"
-                    className="flex relative rounded-3xl text-lg min-w-[15rem] bg-white shadow-md text-center py-[0.125rem] w-60 overflow-hidden pl-7 mx-auto mt-12"
-                  >
-                    <span className="bg-[#30BEEC] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center absolute left-1 top-[0.25rem] ">
-                      {lockIcon}
-                    </span>
-
-                    <input
-                      type="number"
-                      placeholder="Phone Verification"
-                      className="py-1 px-4 text-base w-full"
-                    />
-                  </div>
-
-                  <div>
-                    <div className="flex gap-1 text-center justify-center items-center">
-                      <input
-                        onKeyUp={(e) => {
-                          {
-                            console.log("e.target.value ", e.target.value);
-                            e.target.value = Array(e.target.value.length).fill(
-                              "*"
-                            );
-                          }
-                        }}
-                        maxLength="1"
-                        type="text"
-                        className="text-2xl px-1 w-[2.5rem] h-[3rem] rounded-xl border-[2px] border-gray-400 text-center flex justify-center items-center "
-                      />
-                      <input
-                        onKeyUp={(e) => {
-                          {
-                            console.log("e.target.value ", e.target.value);
-                            e.target.value = Array(e.target.value.length).fill(
-                              "*"
-                            );
-                          }
-                        }}
-                        maxLength="1"
-                        type="text"
-                        className="text-2xl px-1 w-[2.5rem] h-[3rem] rounded-xl border-[2px] border-gray-400 text-center flex justify-center items-center "
-                      />
-                      <input
-                        onKeyUp={(e) => {
-                          {
-                            console.log("e.target.value ", e.target.value);
-                            e.target.value = Array(e.target.value.length).fill(
-                              "*"
-                            );
-                          }
-                        }}
-                        maxLength="1"
-                        type="text"
-                        className="text-2xl px-1 w-[2.5rem] h-[3rem] rounded-xl border-[2px] border-gray-400 text-center flex justify-center items-center"
-                      />
-                      <input
-                        onKeyUp={(e) => {
-                          {
-                            console.log("e.target.value ", e.target.value);
-                            e.target.value = Array(e.target.value.length).fill(
-                              "*"
-                            );
-                          }
-                        }}
-                        maxLength="1"
-                        type="text"
-                        className="text-2xl px-1 w-[2.5rem] h-[3rem] rounded-xl border-[2px] border-gray-400 text-center flex justify-center items-center"
-                      />
-                      <input
-                        onKeyUp={(e) => {
-                          {
-                            console.log("e.target.value ", e.target.value);
-                            e.target.value = Array(e.target.value.length).fill(
-                              "*"
-                            );
-                          }
-                        }}
-                        maxLength="1"
-                        type="text"
-                        className="text-2xl px-1 w-[2.5rem] h-[3rem] rounded-xl border-[2px] border-gray-400 text-center flex justify-center items-center"
-                      />
-                    </div>
+                  <div className="text-center">
+                    <h2 className="text-2xl font-semibold"> Username </h2>
+                    <p className="text-gray-500 text-xs">.......@gmail.com</p>
                   </div>
                 </div>
-              </form>
 
-              <button className="py-2 min-w-[14rem] bg-[#30BEEC] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mt-10">
-                <span> Done </span>
-              </button>
+                <form className="mt-7">
+                  <div className="flex flex-col gap-6">
+                    <div className="flex items-center justify-between gap-10">
+                      <div>
+                        <input
+                          type="text"
+                          placeholder="First Name"
+                          className="py-1 px-4 text-base rounded-[5rem] shadow-md w-full"
+                        />
+                      </div>
+                      <div>
+                        <input
+                          type="text"
+                          placeholder="last name"
+                          className="py-1 px-4 text-base rounded-[5rem] shadow-md w-full"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <input
+                        type="number"
+                        placeholder="Phone Number"
+                        className="py-1 px-4 text-base rounded-[5rem] shadow-md w-full"
+                      />
+                    </div>
+
+                    <div className="relative">
+                      <textarea
+                        type="text"
+                        placeholder="Short Bio"
+                        className="py-3 px-4 text-base rounded-3xl shadow-md w-full resize-none focus:outline-none h-40"
+                      ></textarea>
+                      <p className="absolute right-5 bottom-5 text-gray-400">
+                        150 letters
+                      </p>
+                    </div>
+
+                    <div>
+                      <input
+                        type="text"
+                        placeholder="Connect Account"
+                        className="py-1 px-4 text-base rounded-[5rem] shadow-md w-full"
+                      />
+                    </div>
+
+                    <button className="text-[#30BEEC] py-0.5 px-3 flex items-center justify-left relative rounded-3xl text-lg w-full bg-white shadow-md text-center">
+                      <span> Upload Pictures </span>
+                      <span className="text-[#30BEEC] text-2xl rounded-full w-7 h-7 flex justify-center items-center absolute right-1 top-0.5">
+                        {rightArrow}
+                      </span>
+                    </button>
+                  </div>
+                </form>
+
+                <button className="py-2 min-w-[14rem] bg-[#30BEEC] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mt-10">
+                  <span>Start</span>
+                </button>
+              </div>
+            </div>
+
+            <div className="bg-[#F2F6FF] rounded">
+              <div className="flex flex-col items-center justify-center py-6 px-12">
+                <a
+                  href="#"
+                  className="flex relative rounded-3xl text-lg min-w-[15rem] bg-white shadow-md text-center py-[0.125rem]"
+                >
+                  <span className="bg-[#30BEEC] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center absolute left-1 top-0.5 ">
+                    {uploadIcons}
+                  </span>
+                  <span className="mx-auto text-lg text-gray-600">
+                    Upload Pictures
+                  </span>
+                </a>
+
+                <form className="mt-7">
+                  <div className="flex flex-col gap-6">
+                    <div className="grid grid-cols-3 gap-5">
+                      <VeryCard />
+                      <VeryCard />
+                      <VeryCard />
+                      <VeryCard />
+                      <VeryCard />
+                      <VeryCard />
+                    </div>
+
+                    <div
+                      href="#"
+                      className="flex relative rounded-3xl text-lg min-w-[15rem] bg-white shadow-md text-center py-[0.125rem] w-60 overflow-hidden pl-7 mx-auto mt-12"
+                    >
+                      <span className="bg-[#30BEEC] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center absolute left-1 top-[0.25rem] ">
+                        {lockIcon}
+                      </span>
+
+                      <input
+                        type="number"
+                        placeholder="Phone Verification"
+                        className="py-1 px-4 text-base w-full"
+                      />
+                    </div>
+
+                    <div>
+                      <div className="flex gap-1 text-center justify-center items-center">
+                        <input
+                          onKeyUp={(e) => {
+                            {
+                              console.log("e.target.value ", e.target.value);
+                              e.target.value = Array(
+                                e.target.value.length
+                              ).fill("*");
+                            }
+                          }}
+                          maxLength="1"
+                          type="text"
+                          className="text-2xl px-1 w-[2.5rem] h-[3rem] rounded-xl border-[2px] border-gray-400 text-center flex justify-center items-center "
+                        />
+                        <input
+                          onKeyUp={(e) => {
+                            {
+                              console.log("e.target.value ", e.target.value);
+                              e.target.value = Array(
+                                e.target.value.length
+                              ).fill("*");
+                            }
+                          }}
+                          maxLength="1"
+                          type="text"
+                          className="text-2xl px-1 w-[2.5rem] h-[3rem] rounded-xl border-[2px] border-gray-400 text-center flex justify-center items-center "
+                        />
+                        <input
+                          onKeyUp={(e) => {
+                            {
+                              console.log("e.target.value ", e.target.value);
+                              e.target.value = Array(
+                                e.target.value.length
+                              ).fill("*");
+                            }
+                          }}
+                          maxLength="1"
+                          type="text"
+                          className="text-2xl px-1 w-[2.5rem] h-[3rem] rounded-xl border-[2px] border-gray-400 text-center flex justify-center items-center"
+                        />
+                        <input
+                          onKeyUp={(e) => {
+                            {
+                              console.log("e.target.value ", e.target.value);
+                              e.target.value = Array(
+                                e.target.value.length
+                              ).fill("*");
+                            }
+                          }}
+                          maxLength="1"
+                          type="text"
+                          className="text-2xl px-1 w-[2.5rem] h-[3rem] rounded-xl border-[2px] border-gray-400 text-center flex justify-center items-center"
+                        />
+                        <input
+                          onKeyUp={(e) => {
+                            {
+                              console.log("e.target.value ", e.target.value);
+                              e.target.value = Array(
+                                e.target.value.length
+                              ).fill("*");
+                            }
+                          }}
+                          maxLength="1"
+                          type="text"
+                          className="text-2xl px-1 w-[2.5rem] h-[3rem] rounded-xl border-[2px] border-gray-400 text-center flex justify-center items-center"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </form>
+
+                <button className="py-2 min-w-[14rem] bg-[#30BEEC] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mt-10">
+                  <span> Done </span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
