@@ -1,3 +1,4 @@
+import Sidebar from "../../components/Sidebar";
 import VeryCard from "../../components/VeryCard";
 
 const squareUserIcon = (
@@ -142,7 +143,8 @@ const lockIcon = (
 
 const ProfileSetting = () => {
   return (
-    <section>
+    <section className="flex">
+      <Sidebar />
       <div className="container mx-auto px-3">
         <h1 className="text-[#1BB6ED] font-bold text-[24px] p-4">
           Profile Setting
