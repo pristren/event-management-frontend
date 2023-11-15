@@ -1,4 +1,3 @@
-import { useState } from "react";
 import VeryCard from "../../components/VeryCard";
 
 const squareUserIcon = (
@@ -142,14 +141,11 @@ const lockIcon = (
 );
 
 const ProfileSetting = () => {
-  const [verifyPw, setVerifyPw] = useState("");
-
   return (
     <section>
       <div className="container mx-auto px-3">
-        <h1 className="text-[#30BEEC] text-2xl md:text-4xl lg:text-5xl py-3 mb-1 md:mb-2 lg:mb-4">
-          {" "}
-          Profile Setting{" "}
+        <h1 className="text-[#1BB6ED] font-bold text-[24px] p-4">
+          Profile Setting
         </h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
