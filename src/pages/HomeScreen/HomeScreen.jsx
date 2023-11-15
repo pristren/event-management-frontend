@@ -251,6 +251,15 @@ const HomeScreen = () => {
                         />
                       </div>
 
+                      <div className="">
+                        <input
+                          type="checkbox"
+                          id="rememberMe"
+                          className="cursor-pointer"
+                        />
+                        <label htmlFor="rememberMe"> Remember Me </label>
+                      </div>
+
                       <button className="flex relative rounded-3xl text-lg min-w-[15rem] w-full bg-[#30BEEC] hover:bg-white text-white hover:text-black shadow-primary text-center py-[0.125rem] transition duration-300 uppercase">
                         <span className="mx-auto text-lg"> Register now </span>
                       </button>

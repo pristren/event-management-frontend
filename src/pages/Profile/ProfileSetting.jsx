@@ -153,7 +153,7 @@ const ProfileSetting = () => {
             <div className="flex flex-col items-center justify-center py-6 px-12">
               <a
                 href="#"
-                className="flex relative rounded-3xl text-lg min-w-[15rem] bg-white shadow-primary text-center py-[0.125rem]"
+                className="flex relative rounded-3xl text-lg min-w-[15rem] bg-white shadow-md text-center py-[0.125rem]"
               >
                 <span className="bg-[#30BEEC] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center absolute left-1 top-0.5 ">
                   {notesIcon}
@@ -162,15 +162,16 @@ const ProfileSetting = () => {
               </a>
               <a
                 href="#"
-                className="py-2 px-3 flex items-center justify-center relative rounded-3xl text-lg w-full bg-white shadow-primary text-center mt-28"
+                className="py-2 px-3 flex items-center justify-center relative rounded-3xl text-lg w-full bg-white shadow-md text-center mt-28"
               >
                 <span className="text-[#30BEEC] text-2xl font-bold mr-6">
+                  {" "}
                   {squareUserIcon}{" "}
                 </span>
                 <p> Account </p>
               </a>
 
-              <button className="py-2 min-w-[14rem] bg-[#30BEEC] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-primary text-center mt-32">
+              <button className="py-2 min-w-[14rem] bg-[#30BEEC] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mt-32">
                 <span className=" text-2xl font-bold mr-6">
                   {" "}
                   {privateUserIcon}{" "}
@@ -178,7 +179,7 @@ const ProfileSetting = () => {
                 <span>Private</span>
               </button>
 
-              <button className="py-2 min-w-[14rem] bg-gray-300 px-3 flex items-center justify-center relative rounded-3xl text-lg text-slate-950 shadow-primary text-center font-semibold mt-16">
+              <button className="py-2 min-w-[14rem] bg-gray-300 px-3 flex items-center justify-center relative rounded-3xl text-lg text-slate-950 shadow-md text-center font-semibold mt-16">
                 <span className=" text-2xl font-bold mr-6">
                   {businessIcon}{" "}
                 </span>
@@ -191,7 +192,7 @@ const ProfileSetting = () => {
             <div className="flex flex-col items-center justify-center py-6 px-12">
               <a
                 href="#"
-                className="flex relative rounded-3xl text-lg min-w-[15rem] bg-white shadow-primary text-center py-[0.125rem]"
+                className="flex relative rounded-3xl text-lg min-w-[15rem] bg-white shadow-md text-center py-[0.125rem]"
               >
                 <span className="bg-[#30BEEC] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center absolute left-1 top-0.5 ">
                   {settingIcon}
@@ -217,14 +218,14 @@ const ProfileSetting = () => {
                       <input
                         type="text"
                         placeholder="First Name"
-                        className="py-1 px-4 text-base rounded-[5rem] shadow-primary w-full"
+                        className="py-1 px-4 text-base rounded-[5rem] shadow-md w-full"
                       />
                     </div>
                     <div>
                       <input
                         type="text"
                         placeholder="last name"
-                        className="py-1 px-4 text-base rounded-[5rem] shadow-primary w-full"
+                        className="py-1 px-4 text-base rounded-[5rem] shadow-md w-full"
                       />
                     </div>
                   </div>
@@ -233,7 +234,7 @@ const ProfileSetting = () => {
                     <input
                       type="number"
                       placeholder="Phone Number"
-                      className="py-1 px-4 text-base rounded-[5rem] shadow-primary w-full"
+                      className="py-1 px-4 text-base rounded-[5rem] shadow-md w-full"
                     />
                   </div>
 
@@ -241,7 +242,7 @@ const ProfileSetting = () => {
                     <textarea
                       type="text"
                       placeholder="Short Bio"
-                      className="py-3 px-4 text-base rounded-3xl shadow-primary w-full resize-none focus:outline-none h-40"
+                      className="py-3 px-4 text-base rounded-3xl shadow-md w-full resize-none focus:outline-none h-40"
                     ></textarea>
                     <p className="absolute right-5 bottom-5 text-gray-400">
                       150 letters
@@ -252,11 +253,11 @@ const ProfileSetting = () => {
                     <input
                       type="text"
                       placeholder="Connect Account"
-                      className="py-1 px-4 text-base rounded-[5rem] shadow-primary w-full"
+                      className="py-1 px-4 text-base rounded-[5rem] shadow-md w-full"
                     />
                   </div>
 
-                  <button className="text-[#30BEEC] py-0.5 px-3 flex items-center justify-left relative rounded-3xl text-lg w-full bg-white shadow-primary text-center">
+                  <button className="text-[#30BEEC] py-0.5 px-3 flex items-center justify-left relative rounded-3xl text-lg w-full bg-white shadow-md text-center">
                     <span> Upload Pictures </span>
                     <span className="text-[#30BEEC] text-2xl rounded-full w-7 h-7 flex justify-center items-center absolute right-1 top-0.5">
                       {rightArrow}
@@ -265,7 +266,7 @@ const ProfileSetting = () => {
                 </div>
               </form>
 
-              <button className="py-2 min-w-[14rem] bg-[#30BEEC] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-primary text-center mt-10">
+              <button className="py-2 min-w-[14rem] bg-[#30BEEC] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mt-10">
                 <span>Start</span>
               </button>
             </div>
@@ -275,7 +276,7 @@ const ProfileSetting = () => {
             <div className="flex flex-col items-center justify-center py-6 px-12">
               <a
                 href="#"
-                className="flex relative rounded-3xl text-lg min-w-[15rem] bg-white shadow-primary text-center py-[0.125rem]"
+                className="flex relative rounded-3xl text-lg min-w-[15rem] bg-white shadow-md text-center py-[0.125rem]"
               >
                 <span className="bg-[#30BEEC] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center absolute left-1 top-0.5 ">
                   {uploadIcons}
@@ -298,7 +299,7 @@ const ProfileSetting = () => {
 
                   <div
                     href="#"
-                    className="flex relative rounded-3xl text-lg min-w-[15rem] bg-white shadow-primary text-center py-[0.125rem] w-60 overflow-hidden pl-7 mx-auto mt-12"
+                    className="flex relative rounded-3xl text-lg min-w-[15rem] bg-white shadow-md text-center py-[0.125rem] w-60 overflow-hidden pl-7 mx-auto mt-12"
                   >
                     <span className="bg-[#30BEEC] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center absolute left-1 top-[0.25rem] ">
                       {lockIcon}
@@ -383,7 +384,7 @@ const ProfileSetting = () => {
                 </div>
               </form>
 
-              <button className="py-2 min-w-[14rem] bg-[#30BEEC] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-primary text-center mt-10">
+              <button className="py-2 min-w-[14rem] bg-[#30BEEC] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mt-10">
                 <span> Done </span>
               </button>
             </div>
