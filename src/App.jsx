@@ -1,11 +1,7 @@
-import { useState } from "react";
-import "./App.css";
-import Home from "./pages/Home/Home";
+import ProfileSetting from "./pages/Profile/ProfileSetting";
 
 function App() {
-  const [count, setCount] = useState(0);
-
-  return <Home />;
+  return <ProfileSetting />;
 }
 
 export default App;
