@@ -62,7 +62,7 @@ const Sidebar = () => {
         <ul className="flex flex-col gap-5">
           <li>
             <Link
-              to={"/profile-settings"}
+              to={"/"}
               className="flex items-center gap-3 cursor-pointer font-semibold"
             >
               <span>
