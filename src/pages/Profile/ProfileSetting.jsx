@@ -1,3 +1,4 @@
+import { useState } from "react";
 import VeryCard from "../../components/VeryCard";
 
 const squareUserIcon = (
@@ -121,8 +122,28 @@ const rightArrow = (
     <path d="m9 18 6-6-6-6"></path>
   </svg>
 );
+const lockIcon = (
+  <svg
+    stroke="currentColor"
+    fill="none"
+    stroke-width="2"
+    viewBox="0 0 24 24"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    height="1em"
+    width="1em"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <path d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6z"></path>
+    <path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0"></path>
+    <path d="M8 11v-4a4 4 0 1 1 8 0v4"></path>
+  </svg>
+);
 
 const ProfileSetting = () => {
+  const [verifyPw, setVerifyPw] = useState("");
+
   return (
     <section>
       <div className="container mx-auto px-3">
@@ -285,12 +306,12 @@ const ProfileSetting = () => {
                     className="flex relative rounded-3xl text-lg min-w-[15rem] bg-white shadow-md text-center py-[0.125rem] w-60 overflow-hidden pl-7 mx-auto mt-12"
                   >
                     <span className="bg-[#30BEEC] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center absolute left-1 top-[0.25rem] ">
-                      {uploadIcons}
+                      {lockIcon}
                     </span>
 
                     <input
                       type="number"
-                      placeholder="Phone Number"
+                      placeholder="Phone Verification"
                       className="py-1 px-4 text-base w-full"
                     />
                   </div>
@@ -298,34 +319,69 @@ const ProfileSetting = () => {
                   <div>
                     <div className="flex gap-1 text-center justify-center items-center">
                       <input
+                        onKeyUp={(e) => {
+                          {
+                            console.log("e.target.value ", e.target.value);
+                            e.target.value = Array(e.target.value.length).fill(
+                              "*"
+                            );
+                          }
+                        }}
                         maxLength="1"
-                        type="password"
-                        itemType="*"
-                        className="py-2 px-1 max-w-[2rem] rounded-xl border-[2px] border-gray-400 text-center"
+                        type="text"
+                        className="text-2xl px-1 w-[2.5rem] h-[3rem] rounded-xl border-[2px] border-gray-400 text-center flex justify-center items-center "
                       />
                       <input
+                        onKeyUp={(e) => {
+                          {
+                            console.log("e.target.value ", e.target.value);
+                            e.target.value = Array(e.target.value.length).fill(
+                              "*"
+                            );
+                          }
+                        }}
                         maxLength="1"
-                        type="password"
-                        itemType="*"
-                        className="py-2 px-1 max-w-[2rem] rounded-xl border-[2px] border-gray-400 text-center"
+                        type="text"
+                        className="text-2xl px-1 w-[2.5rem] h-[3rem] rounded-xl border-[2px] border-gray-400 text-center flex justify-center items-center "
                       />
                       <input
+                        onKeyUp={(e) => {
+                          {
+                            console.log("e.target.value ", e.target.value);
+                            e.target.value = Array(e.target.value.length).fill(
+                              "*"
+                            );
+                          }
+                        }}
                         maxLength="1"
-                        type="password"
-                        itemType="*"
-                        className="py-2 px-1 max-w-[2rem] rounded-xl border-[2px] border-gray-400 text-center"
+                        type="text"
+                        className="text-2xl px-1 w-[2.5rem] h-[3rem] rounded-xl border-[2px] border-gray-400 text-center flex justify-center items-center"
                       />
                       <input
+                        onKeyUp={(e) => {
+                          {
+                            console.log("e.target.value ", e.target.value);
+                            e.target.value = Array(e.target.value.length).fill(
+                              "*"
+                            );
+                          }
+                        }}
                         maxLength="1"
-                        type="password"
-                        itemType="*"
-                        className="py-2 px-1 max-w-[2rem] rounded-xl border-[2px] border-gray-400 text-center"
+                        type="text"
+                        className="text-2xl px-1 w-[2.5rem] h-[3rem] rounded-xl border-[2px] border-gray-400 text-center flex justify-center items-center"
                       />
                       <input
+                        onKeyUp={(e) => {
+                          {
+                            console.log("e.target.value ", e.target.value);
+                            e.target.value = Array(e.target.value.length).fill(
+                              "*"
+                            );
+                          }
+                        }}
                         maxLength="1"
-                        type="password"
-                        itemType="*"
-                        className="py-2 px-1 max-w-[2rem] rounded-xl border-[2px] border-gray-400 text-center"
+                        type="text"
+                        className="text-2xl px-1 w-[2.5rem] h-[3rem] rounded-xl border-[2px] border-gray-400 text-center flex justify-center items-center"
                       />
                     </div>
                   </div>
