@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Sidebar from "../../components/Sidebar";
 import VeryCard from "../../components/VeryCard";
 
@@ -142,6 +143,21 @@ const lockIcon = (
 );
 
 const ProfileSetting = () => {
+  const [number, setNumber] = useState();
+  const [verifyPin, setVerifyPin] = useState({
+    one: "",
+    two: "",
+    three: "",
+    four: "",
+    five: "",
+  });
+
+  const handleSubmit = () => {
+    console.log("number ", number);
+    console.log("verifyPin ", verifyPin);
+    // function here.....
+  };
+
   return (
     <section className="flex max-w-7xl mx-auto">
       <Sidebar />
@@ -308,6 +324,7 @@ const ProfileSetting = () => {
                     </span>
 
                     <input
+                      onKeyUp={(e) => setNumber(e.target.value)}
                       type="number"
                       placeholder="Phone Verification"
                       className="py-1 px-4 text-base w-full"
@@ -317,67 +334,88 @@ const ProfileSetting = () => {
                   <div>
                     <div className="flex gap-1 text-center justify-center items-center">
                       <input
+                        onKeyDown={(e) => (e.target.value = "")}
                         onKeyUp={(e) => {
                           {
-                            console.log("e.target.value ", e.target.value);
+                            setVerifyPin({ ...verifyPin, one: e.target.value });
                             e.target.value = Array(e.target.value.length).fill(
                               "*"
                             );
                           }
                         }}
                         maxLength="1"
+                        require="true"
                         type="text"
                         className="text-2xl px-1 w-[2.5rem] h-[3rem] rounded-xl border-[2px] border-gray-400 text-center flex justify-center items-center "
                       />
                       <input
+                        onKeyDown={(e) => (e.target.value = "")}
                         onKeyUp={(e) => {
                           {
-                            console.log("e.target.value ", e.target.value);
+                            setVerifyPin({ ...verifyPin, two: e.target.value });
                             e.target.value = Array(e.target.value.length).fill(
                               "*"
                             );
                           }
                         }}
                         maxLength="1"
+                        require="true"
                         type="text"
                         className="text-2xl px-1 w-[2.5rem] h-[3rem] rounded-xl border-[2px] border-gray-400 text-center flex justify-center items-center "
                       />
                       <input
+                        onKeyDown={(e) => {
+                          e.target.value = "";
+                        }}
                         onKeyUp={(e) => {
                           {
-                            console.log("e.target.value ", e.target.value);
+                            setVerifyPin({
+                              ...verifyPin,
+                              three: e.target.value,
+                            });
                             e.target.value = Array(e.target.value.length).fill(
                               "*"
                             );
                           }
                         }}
                         maxLength="1"
+                        require="true"
                         type="text"
                         className="text-2xl px-1 w-[2.5rem] h-[3rem] rounded-xl border-[2px] border-gray-400 text-center flex justify-center items-center"
                       />
                       <input
+                        onKeyDown={(e) => (e.target.value = "")}
                         onKeyUp={(e) => {
                           {
-                            console.log("e.target.value ", e.target.value);
+                            setVerifyPin({
+                              ...verifyPin,
+                              four: e.target.value,
+                            });
                             e.target.value = Array(e.target.value.length).fill(
                               "*"
                             );
                           }
                         }}
                         maxLength="1"
+                        require="true"
                         type="text"
                         className="text-2xl px-1 w-[2.5rem] h-[3rem] rounded-xl border-[2px] border-gray-400 text-center flex justify-center items-center"
                       />
                       <input
+                        onKeyDown={(e) => (e.target.value = "")}
                         onKeyUp={(e) => {
                           {
-                            console.log("e.target.value ", e.target.value);
+                            setVerifyPin({
+                              ...verifyPin,
+                              five: e.target.value,
+                            });
                             e.target.value = Array(e.target.value.length).fill(
                               "*"
                             );
                           }
                         }}
                         maxLength="1"
+                        require="true"
                         type="text"
                         className="text-2xl px-1 w-[2.5rem] h-[3rem] rounded-xl border-[2px] border-gray-400 text-center flex justify-center items-center"
                       />
@@ -386,7 +424,10 @@ const ProfileSetting = () => {
                 </div>
               </form>
 
-              <button className="py-2 min-w-[14rem] bg-[#30BEEC] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mt-10">
+              <button
+                onClick={handleSubmit}
+                className="py-2 min-w-[14rem] bg-[#30BEEC] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mt-10"
+              >
                 <span> Done </span>
               </button>
             </div>
