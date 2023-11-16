@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const Sidebar = () => {
+  const [isExpand, setIsExpand] = useState(false);
+
   return (
-    <div className="max-w-[200px] w-full h-screen bg-white p-6 border">
-      {/*  absolute left-0 top-0 */}
-      <div className="flex gap-2 items-center">
+    <div className="w-full sm:max-w-[200px] sm:w-full sm:h-full bg-white p-5 sm:border sm:static absolute top-2 left-0 z-40">
+      <div
+        className="flex gap-2 items-center sm:hidden"
+        onClick={(e) => setIsExpand(!isExpand)}
+      >
         <span className="p-2 rounded cursor-pointer shadow-primary hover:shadow-hover transition duration-150 ease-out hover:ease-in">
           <svg
             stroke="currentColor"
@@ -19,46 +23,12 @@ const Sidebar = () => {
             <path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"></path>
           </svg>
         </span>
-        <span className="p-2 rounded cursor-pointer shadow-primary hover:shadow-hover transition duration-150 ease-out hover:ease-in">
-          <svg
-            stroke="currentColor"
-            fill="#9B9B9B"
-            strokeWidth="0"
-            viewBox="0 0 512 512"
-            height="15px"
-            width="15px"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="48"
-              d="M244 400L100 256l144-144M120 256h292"
-            ></path>
-          </svg>
-        </span>
-        <span className="p-2 rounded cursor-pointer shadow-primary hover:shadow-hover transition duration-150 ease-out hover:ease-in">
-          <svg
-            stroke="currentColor"
-            fill="#9B9B9B"
-            stroke-width="0"
-            viewBox="0 0 512 512"
-            height="15px"
-            width="15px"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="48"
-              d="M268 112l144 144-144 144m124-144H100"
-            ></path>
-          </svg>
-        </span>
       </div>
-      <div className="mt-28">
+      <div
+        className={`w-full sm:max-w-[200px] sm:w-full sm:h-screen p-5 mt-16 absolute top-0 right-0 sm:left-0 bg-white tra ${
+          isExpand ? "left-0" : "-left-[11111px]"
+        }`}
+      >
         <ul className="flex flex-col gap-5">
           <li>
             <Link
