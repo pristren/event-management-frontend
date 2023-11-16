@@ -2,7 +2,7 @@ import React from "react";
 
 const Profile = () => {
   return (
-    <div className="flex justify-end px-5 pt-5">
+    <div className="flex justify-end px-5 pt-5 absolute top-0 right-0 z-50">
       <span className="bg-[#1BB6ED] p-3 rounded-2xl flex justify-center items-center">
         <svg
           stroke="currentColor"
