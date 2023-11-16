@@ -143,10 +143,10 @@ const lockIcon = (
 
 const ProfileSetting = () => {
   return (
-    <section className="flex">
+    <section className="flex max-w-7xl mx-auto">
       <Sidebar />
       <div className="container mx-auto px-3">
-        <h1 className="text-[#1BB6ED] font-bold text-[24px] p-4">
+        <h1 className="text-[#1BB6ED] font-bold text-2xl p-4">
           Profile Setting
         </h1>
 

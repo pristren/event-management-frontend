@@ -4,7 +4,7 @@ import HomeNavbar from "./HomeNavbar";
 
 const Home = () => {
   return (
-    <div className="text-white bg-slate-500 font-semibold">
+    <div className="text-white bg-slate-500 font-semibold max-w-7xl mx-auto">
       <HomeNavbar />
 
       <div className="flex">

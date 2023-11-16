@@ -50,7 +50,7 @@ export default function Calender({ setNewDate }) {
   //   setNewDate(dayName);
 
   return (
-    <div className="max-w-[1140px] w-full mx-auto">
+    <div className="w-full max-w-7xl mx-auto">
       <Calendar
         onChange={onChange}
         value={value}

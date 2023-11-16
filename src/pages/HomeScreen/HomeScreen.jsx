@@ -80,12 +80,10 @@ const lockIcon = (
 
 const HomeScreen = () => {
   return (
-    <div className="flex">
+    <div className="flex max-w-7xl mx-auto">
       <Sidebar />
       <div>
-        <h1 className="text-[#1BB6ED] font-bold text-[24px] p-4">
-          Home Screen
-        </h1>
+        <h1 className="text-[#1BB6ED] font-bold text-2xl p-4">Home Screen</h1>
         <div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
             <div className="bg-[#F2F6FF] rounded w-full">

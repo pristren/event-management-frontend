@@ -4,12 +4,12 @@ import Sidebar from "../../components/Sidebar";
 
 const EventDetails = () => {
   return (
-    <section className="flex">
+    <section className="flex max-w-7xl mx-auto">
       <Sidebar />
       <div className="w-full">
         <Profile />
         <div>
-          <h1 className="text-[#1BB6ED] font-bold text-[24px] p-4">
+          <h1 className="text-[#1BB6ED] font-bold text-2xl p-4">
             Event details
           </h1>
           <div>
