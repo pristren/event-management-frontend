@@ -135,7 +135,7 @@ const Sidebar = () => {
             </Link>
           </li>
 
-          <li>
+          {/* <li>
             <Link
               to={"/chat-and-calls"}
               className="flex items-center gap-3 cursor-pointer font-semibold"
@@ -158,11 +158,11 @@ const Sidebar = () => {
                 Chat and calls
               </span>
             </Link>
-          </li>
+          </li> */}
 
           <li>
             <Link
-              to={"/chat-and-calls"}
+              to={"/my-events"}
               className="flex items-center gap-3 cursor-pointer font-semibold"
             >
               <span>
@@ -179,13 +179,16 @@ const Sidebar = () => {
                 </svg>
               </span>
               <span className="text-[#9E9E9E] hover:text-[#1BB6ED]">
-                Calender
+                My events
               </span>
             </Link>
           </li>
 
           <li>
-            <Link className="flex items-center gap-3 cursor-pointer font-semibold">
+            <Link
+              to={"/invited-events"}
+              className="flex items-center gap-3 cursor-pointer font-semibold"
+            >
               <span>
                 <svg
                   stroke="currentColor"
@@ -200,7 +203,30 @@ const Sidebar = () => {
                 </svg>
               </span>
               <span className="text-[#9E9E9E] hover:text-[#1BB6ED]">
-                Contacts
+                Invited events
+              </span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to={"/event-details"}
+              className="flex items-center gap-3 cursor-pointer font-semibold"
+            >
+              <span>
+                <svg
+                  stroke="currentColor"
+                  fill="#9E9E9E"
+                  stroke-width="0"
+                  viewBox="0 0 24 24"
+                  height="23px"
+                  width="23px"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M3 2H19.0049C20.1068 2 21 2.89821 21 3.9908V20.0092C21 21.1087 20.1074 22 19.0049 22H3V2ZM7 4H5V20H7V4ZM9 20H19V4H9V20ZM11 16C11 14.3431 12.3431 13 14 13C15.6569 13 17 14.3431 17 16H11ZM14 12C12.8954 12 12 11.1046 12 10C12 8.89543 12.8954 8 14 8C15.1046 8 16 8.89543 16 10C16 11.1046 15.1046 12 14 12ZM22 6H24V10H22V6ZM22 12H24V16H22V12Z"></path>
+                </svg>
+              </span>
+              <span className="text-[#9E9E9E] hover:text-[#1BB6ED]">
+                Event details
               </span>
             </Link>
           </li>
