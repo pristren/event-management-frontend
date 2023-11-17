@@ -5,7 +5,7 @@ const Sidebar = () => {
   const [isExpand, setIsExpand] = useState(false);
 
   return (
-    <div className="w-full sm:max-w-[200px] sm:w-full sm:h-full bg-white p-5 sm:border sm:static absolute top-2 left-0 z-40">
+    <div className="w-full sm:max-w-[200px] sm:w-full sm:h-full bg-white p-5 sm:border sm:static absolute top-2 left-0 z-[9999999999]">
       <div
         className="flex gap-2 items-center sm:hidden"
         onClick={(e) => setIsExpand(!isExpand)}
