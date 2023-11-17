@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Sidebar from "../../components/Sidebar";
 import VeryCard from "../../components/VeryCard";
+import Profile from "../../components/Profile";
+import MyProvider from "../../Provider/Provider";
 
 const squareUserIcon = (
   <svg
@@ -151,6 +153,7 @@ const ProfileSetting = () => {
     four: "",
     five: "",
   });
+  const { isExpand, setIsExpand } = useContext(MyProvider);
 
   const handleSubmit = () => {
     console.log("number ", number);
@@ -159,53 +162,30 @@ const ProfileSetting = () => {
   };
 
   return (
-    <section className="flex max-w-7xl mx-auto">
-      <Sidebar />
-      <div className="container mx-auto px-3">
-        <h1 className="text-[#1BB6ED] font-bold text-2xl p-4">
-          Profile Setting
-        </h1>
+    <section className="flex">
+      <div>
+        <div className="flex items-center justify-between pt-4 pb-5 sm:pb-10 px-4">
+          <span
+            className="cursor-pointer sm:hidden"
+            onClick={() => setIsExpand(!isExpand)}
+          >
+            <svg
+              stroke="currentColor"
+              fill="#1BB6ED"
+              stroke-width="0"
+              viewBox="0 0 448 512"
+              height="23px"
+              width="23px"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"></path>
+            </svg>
+          </span>
+          <h1 className="text-[#1BB6ED] font-bold text-2xl">Profile Setting</h1>
+          <Profile />
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          <div className="bg-[#F2F6FF] rounded">
-            <div className="flex flex-col items-center justify-center py-6 px-12">
-              <a
-                href="#"
-                className="flex relative rounded-3xl text-lg min-w-[15rem] bg-white shadow-md text-center py-[0.125rem]"
-              >
-                <span className="bg-[#30BEEC] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center absolute left-1 top-0.5 ">
-                  {notesIcon}
-                </span>
-                <span className="mx-auto text-lg"> Register </span>
-              </a>
-              <a
-                href="#"
-                className="py-2 px-3 flex items-center justify-center relative rounded-3xl text-lg w-full bg-white shadow-md text-center mt-28"
-              >
-                <span className="text-[#30BEEC] text-2xl font-bold mr-6">
-                  {" "}
-                  {squareUserIcon}{" "}
-                </span>
-                <p> Account </p>
-              </a>
-
-              <button className="py-2 min-w-[14rem] bg-[#30BEEC] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mt-32">
-                <span className=" text-2xl font-bold mr-6">
-                  {" "}
-                  {privateUserIcon}{" "}
-                </span>
-                <span>Private</span>
-              </button>
-
-              <button className="py-2 min-w-[14rem] bg-gray-300 px-3 flex items-center justify-center relative rounded-3xl text-lg text-slate-950 shadow-md text-center font-semibold mt-16">
-                <span className=" text-2xl font-bold mr-6">
-                  {businessIcon}{" "}
-                </span>
-                <span>Busniess</span>
-              </button>
-            </div>
-          </div>
-
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div className="bg-[#F2F6FF] rounded">
             <div className="flex flex-col items-center justify-center py-6 px-12">
               <a
@@ -284,6 +264,18 @@ const ProfileSetting = () => {
                 </div>
               </form>
 
+              <div className="flex flex-col gap-5 items-center justify-center my-8">
+                <button className="flex gap-3 py-2 min-w-[14rem] bg-[#30BEEC] px-3 items-center justify-center rounded-3xl text-lg text-white shadow-md text-center">
+                  <span>{privateUserIcon}</span>
+                  <span>Private</span>
+                </button>
+
+                <button className="flex gap-3 py-2 min-w-[14rem] bg-gray-300 px-3 items-center justify-center rounded-3xl text-lg text-slate-950 shadow-md text-center font-semibold">
+                  <span>{businessIcon}</span>
+                  <span>Busniess</span>
+                </button>
+              </div>
+
               <button className="py-2 min-w-[14rem] bg-[#30BEEC] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mt-10">
                 <span>Start</span>
               </button>
@@ -314,12 +306,11 @@ const ProfileSetting = () => {
                     <VeryCard />
                     <VeryCard />
                   </div>
+                  {/* <div className="flex jus">
 
-                  <div
-                    href="#"
-                    className="flex relative rounded-3xl text-lg min-w-[15rem] bg-white shadow-md text-center py-[0.125rem] w-60 overflow-hidden pl-7 mx-auto mt-12"
-                  >
-                    <span className="bg-[#30BEEC] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center absolute left-1 top-[0.25rem] ">
+</div> */}
+                  <div className="w-[80%] mx-auto flex justify-between items-center gap-2 rounded-3xl text-lg min-w-[15rem] bg-white shadow-md px-1 overflow-hidden mt-8 mb-2">
+                    <span className="bg-[#30BEEC] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center">
                       {lockIcon}
                     </span>
 
@@ -327,7 +318,7 @@ const ProfileSetting = () => {
                       onKeyUp={(e) => setNumber(e.target.value)}
                       type="number"
                       placeholder="Phone Verification"
-                      className="py-1 px-4 text-base w-full"
+                      className="py-1 px-4 text-base w-full outline-none border-none"
                     />
                   </div>
 

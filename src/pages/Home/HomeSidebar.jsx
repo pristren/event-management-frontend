@@ -1,12 +1,8 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import MyProvider from "../Provider/Provider";
 
-const Sidebar = () => {
-  // const [isExpand, setIsExpand] = useState(false);
+const HomeSidebar = ({ isExpand, setIsExpand }) => {
   const expandUserMenuRef = useRef(null);
-
-  const { isExpand, setIsExpand } = useContext(MyProvider);
 
   // checking if the user click outside of the
   useEffect(() => {
@@ -86,22 +82,20 @@ const Sidebar = () => {
             >
               <span>
                 <svg
-                  stroke="#9E9E9E"
+                  stroke="currentColor"
                   fill="#9E9E9E"
                   stroke-width="0"
-                  viewBox="0 0 512 512"
+                  viewBox="0 0 24 24"
                   height="20px"
                   width="20px"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  <path
-                    fill="none"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="32"
-                    d="M112.91 128A191.85 191.85 0 0064 254c-1.18 106.35 85.65 193.8 192 194 106.2.2 192-85.83 192-192 0-104.54-83.55-189.61-187.5-192a4.36 4.36 0 00-4.5 4.37V152"
-                  ></path>
-                  <path d="M233.38 278.63l-79-113a8.13 8.13 0 0111.32-11.32l113 79a32.5 32.5 0 01-37.25 53.26 33.21 33.21 0 01-8.07-7.94z"></path>
+                  <g id="Timer">
+                    <g>
+                      <path d="M2.336,9.685A9.934,9.934,0,0,0,13.592,21.808,9.931,9.931,0,0,0,20.708,7.23,10.046,10.046,0,0,0,12,2.072a.507.507,0,0,0-.5.5v4.2a.5.5,0,0,0,1,0v-4.2l-.5.5a8.935,8.935,0,0,1,8.433,11.892A8.938,8.938,0,0,1,6.468,19.027,9.041,9.041,0,0,1,3.3,9.951c.142-.627-.822-.9-.964-.266Z"></path>
+                      <path d="M7.4,8.117a.5.5,0,0,1,.707-.707l4.243,4.242h0a.5.5,0,0,1-.707.707Z"></path>
+                    </g>
+                  </g>
                 </svg>
               </span>
               <span className="text-[#9E9E9E] hover:text-[#1BB6ED]">
@@ -109,6 +103,31 @@ const Sidebar = () => {
               </span>
             </Link>
           </li>
+
+          {/* <li>
+            <Link
+              to={"/chat-and-calls"}
+              className="flex items-center gap-3 cursor-pointer font-semibold"
+            >
+              <span>
+                <svg
+                  stroke="currentColor"
+                  fill="#9E9E9E"
+                  stroke-width="0"
+                  viewBox="0 0 16 16"
+                  height="20px"
+                  width="20px"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M2.678 11.894a1 1 0 0 1 .287.801 10.97 10.97 0 0 1-.398 2c1.395-.323 2.247-.697 2.634-.893a1 1 0 0 1 .71-.074A8.06 8.06 0 0 0 8 14c3.996 0 7-2.807 7-6 0-3.192-3.004-6-7-6S1 4.808 1 8c0 1.468.617 2.83 1.678 3.894zm-.493 3.905a21.682 21.682 0 0 1-.713.129c-.2.032-.352-.176-.273-.362a9.68 9.68 0 0 0 .244-.637l.003-.01c.248-.72.45-1.548.524-2.319C.743 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.52.263-1.639.742-3.468 1.105z"></path>
+                  <path d="M4 5.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8zm0 2.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5z"></path>
+                </svg>
+              </span>
+              <span className="text-[#9E9E9E] hover:text-[#1BB6ED]">
+                Chat and calls
+              </span>
+            </Link>
+          </li> */}
 
           <li>
             <Link
@@ -186,4 +205,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default HomeSidebar;
