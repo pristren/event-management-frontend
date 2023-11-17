@@ -1,24 +1,18 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation, useParams } from "react-router-dom";
 import Sidebar from "../../components/Sidebar";
+import { useState } from "react";
 
 const Layout = () => {
-  const handleNavClose = () => {
-    if (!isSidebarOpen) return;
-    dispatch(toggleSidebar());
-  };
+  const [isUser, setIsUser] = useState(true);
+  const location = useLocation();
+  const pathname = location.pathname;
+
   return (
-    <div className="none lg:block font-poppins ">
-      <Sidebar />
-      <div className="lg:ml-[250px] ml-0 grow ">
-        <div
-          onClick={handleNavClose}
-          className={`px-3 lg:px-4 xl:px-5 pt-20 pb-12 lg:py-8 min-h-screen bg-white text-black overflow-y-scroll ${
-            isSidebarOpen ? "fixed inset-0 bg-white opacity-95  z-50" : ""
-          }`}
-        >
-          <Outlet />
-        </div>
-      </div>
+    <div className="flex">
+      {pathname === "/" ? null : isUser && <Sidebar />}
+      <main className="w-full">
+        <Outlet />
+      </main>
     </div>
   );
 };

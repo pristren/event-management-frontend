@@ -81,7 +81,6 @@ const lockIcon = (
 const HomeScreen = () => {
   return (
     <div className="flex max-w-7xl mx-auto">
-      <Sidebar />
       <div>
         <h1 className="text-[#1BB6ED] font-bold text-2xl p-4">Home Screen</h1>
         <div>
