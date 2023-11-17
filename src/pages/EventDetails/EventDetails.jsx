@@ -10,13 +10,13 @@ import { Button } from "flowbite-react";
 const EventDetails = () => {
   const [openModal, setOpenModal] = useState(false);
   return (
-    <section className="flex">
+    <section className="flex max-w-7xl mx-auto">
       <Sidebar />
       <Modals openModal={openModal} setOpenModal={setOpenModal} />
       <div className="w-full">
         <Profile />
-        <div className="max-w-[1000px] w-full">
-          <h1 className="text-[#1BB6ED] font-bold text-[24px] p-4">
+        <div>
+          <h1 className="text-[#1BB6ED] font-bold text-2xl p-4">
             Event details
           </h1>
           <div className="p-6">

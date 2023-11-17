@@ -13,12 +13,12 @@ const CreateEvent = () => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex max-w-7xl mx-auto">
       <Sidebar />
       <div>
         <Profile />
         <div>
-          <h1 className="text-[#1BB6ED] font-bold text-[24px] p-4">
+          <h1 className="text-[#1BB6ED] font-bold text-2xl p-4">
             Event creation
           </h1>
           <div className="bg-[#F2F6FF] p-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
