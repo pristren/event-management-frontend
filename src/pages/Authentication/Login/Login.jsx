@@ -5,7 +5,7 @@ const loginIcons = (
   <svg
     stroke="currentColor"
     fill="none"
-    stroke-width="2"
+    strokeWidth="2"
     viewBox="0 0 24 24"
     stroke-linecap="round"
     stroke-linejoin="round"
@@ -23,7 +23,7 @@ const userIcon = (
   <svg
     stroke="currentColor"
     fill="currentColor"
-    stroke-width="0"
+    strokeWidth="0"
     viewBox="0 0 448 512"
     height="1em"
     width="1em"
@@ -36,7 +36,7 @@ const lockIcon = (
   <svg
     stroke="currentColor"
     fill="currentColor"
-    stroke-width="0"
+    strokeWidth="0"
     viewBox="0 0 24 24"
     height="1em"
     width="1em"

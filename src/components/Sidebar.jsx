@@ -42,7 +42,7 @@ const Sidebar = () => {
                 <svg
                   stroke="currentColor"
                   fill="#9E9E9E"
-                  stroke-width="0"
+                  strokeWidth="0"
                   viewBox="0 0 1024 1024"
                   height="23px"
                   width="23px"
@@ -64,7 +64,7 @@ const Sidebar = () => {
                 <svg
                   stroke="currentColor"
                   fill="#9E9E9E"
-                  stroke-width="0"
+                  strokeWidth="0"
                   viewBox="0 0 448 512"
                   height="20px"
                   width="20px"
@@ -88,7 +88,7 @@ const Sidebar = () => {
                 <svg
                   stroke="#9E9E9E"
                   fill="#9E9E9E"
-                  stroke-width="0"
+                  strokeWidth="0"
                   viewBox="0 0 512 512"
                   height="20px"
                   width="20px"
@@ -119,7 +119,7 @@ const Sidebar = () => {
                 <svg
                   stroke="currentColor"
                   fill="#9E9E9E"
-                  stroke-width="0"
+                  strokeWidth="0"
                   viewBox="0 0 1024 1024"
                   height="20px"
                   width="20px"
@@ -143,7 +143,7 @@ const Sidebar = () => {
                 <svg
                   stroke="currentColor"
                   fill="#9E9E9E"
-                  stroke-width="0"
+                  strokeWidth="0"
                   viewBox="0 0 24 24"
                   height="23px"
                   width="23px"
@@ -166,7 +166,7 @@ const Sidebar = () => {
                 <svg
                   stroke="currentColor"
                   fill="#9E9E9E"
-                  stroke-width="0"
+                  strokeWidth="0"
                   viewBox="0 0 24 24"
                   height="23px"
                   width="23px"

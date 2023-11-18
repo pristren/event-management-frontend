@@ -1,19 +1,29 @@
 import React, { useContext, useState } from "react";
 import Profile from "../../components/Profile";
-import Sidebar from "../../components/Sidebar";
 import Image from "../../assets/members/1.png";
 import eventDetails from "../../assets/event.png";
-import Modal from "./Modal";
-import Modals from "./Modal";
-import { Button } from "flowbite-react";
 import MyProvider from "../../Provider/Provider";
+import MembersModal from "./MembersModal";
 
 const EventDetails = () => {
   const [openModal, setOpenModal] = useState(false);
   const { isExpand, setIsExpand } = useContext(MyProvider);
+
+  function handleCloseModal() {
+    setOpenModal(false);
+  }
+
+  function handleOpenModal() {
+    setOpenModal(true);
+  }
+
   return (
     <section className="flex">
-      <Modals openModal={openModal} setOpenModal={setOpenModal} />
+      <MembersModal
+        openModal={openModal}
+        handleCloseModal={handleCloseModal}
+        handleOpenModal={handleOpenModal}
+      />
       <div className="w-full">
         <div className="flex items-center justify-between pt-4 pb-5 sm:pb-10 px-4">
           <span
@@ -23,7 +33,7 @@ const EventDetails = () => {
             <svg
               stroke="currentColor"
               fill="#1BB6ED"
-              stroke-width="0"
+              strokeWidth="0"
               viewBox="0 0 448 512"
               height="23px"
               width="23px"
@@ -53,7 +63,7 @@ const EventDetails = () => {
                   <svg
                     stroke="currentColor"
                     fill="currentColor"
-                    stroke-width="0"
+                    strokeWidth="0"
                     viewBox="0 0 512 512"
                     height="25px"
                     width="25px"
@@ -101,7 +111,7 @@ const EventDetails = () => {
 
               <span
                 className="text-[15px] text-[#1BB6ED] cursor-pointer"
-                onClick={() => setOpenModal(true)}
+                onClick={handleOpenModal}
               >
                 See all
               </span>
@@ -127,7 +137,7 @@ const EventDetails = () => {
                 <svg
                   stroke="currentColor"
                   fill="#828282"
-                  stroke-width="0"
+                  strokeWidth="0"
                   viewBox="0 0 1024 1024"
                   height="1em"
                   width="1em"
@@ -148,9 +158,9 @@ const EventDetails = () => {
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3652.330962747641!2d90.38113137630452!3d23.735574478680547!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755b8c8e1ea9fd1%3A0xa6e274882fdbce53!2sDhaka%20College!5e0!3m2!1sen!2sbd!4v1700029911453!5m2!1sen!2sbd"
                 width={"100%"}
                 style={{ border: "0", height: "300px", borderRadius: "16px" }}
-                allowfullscreen=""
+                allowFullScreen=""
                 loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"
+                referrerPolicy="no-referrer-when-downgrade"
               ></iframe>
             </div>
           </div>

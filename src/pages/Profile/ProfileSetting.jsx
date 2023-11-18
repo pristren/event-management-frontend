@@ -8,7 +8,7 @@ const squareUserIcon = (
   <svg
     stroke="currentColor"
     fill="currentColor"
-    stroke-width="0"
+    strokeWidth="0"
     viewBox="0 0 256 256"
     height="1em"
     width="1em"
@@ -21,7 +21,7 @@ const privateUserIcon = (
   <svg
     stroke="currentColor"
     fill="currentColor"
-    stroke-width="0"
+    strokeWidth="0"
     viewBox="0 0 32 32"
     height="1em"
     width="1em"
@@ -34,7 +34,7 @@ const profileUserIcon = (
   <svg
     stroke="currentColor"
     fill="none"
-    stroke-width="2"
+    strokeWidth="2"
     viewBox="0 0 24 24"
     aria-hidden="true"
     height="1em"
@@ -52,7 +52,7 @@ const notesIcon = (
   <svg
     stroke="currentColor"
     fill="none"
-    stroke-width="2"
+    strokeWidth="2"
     viewBox="0 0 24 24"
     stroke-linecap="round"
     stroke-linejoin="round"
@@ -71,7 +71,7 @@ const businessIcon = (
   <svg
     stroke="currentColor"
     fill="currentColor"
-    stroke-width="0"
+    strokeWidth="0"
     viewBox="0 0 256 256"
     height="1em"
     width="1em"
@@ -84,7 +84,7 @@ const settingIcon = (
   <svg
     stroke="currentColor"
     fill="none"
-    stroke-width="2"
+    strokeWidth="2"
     viewBox="0 0 24 24"
     stroke-linecap="round"
     stroke-linejoin="round"
@@ -100,7 +100,7 @@ const uploadIcons = (
   <svg
     stroke="currentColor"
     fill="currentColor"
-    stroke-width="0"
+    strokeWidth="0"
     viewBox="0 0 24 24"
     height="1em"
     width="1em"
@@ -114,7 +114,7 @@ const rightArrow = (
   <svg
     stroke="currentColor"
     fill="none"
-    stroke-width="2"
+    strokeWidth="2"
     viewBox="0 0 24 24"
     stroke-linecap="round"
     stroke-linejoin="round"
@@ -129,7 +129,7 @@ const lockIcon = (
   <svg
     stroke="currentColor"
     fill="none"
-    stroke-width="2"
+    strokeWidth="2"
     viewBox="0 0 24 24"
     stroke-linecap="round"
     stroke-linejoin="round"
@@ -146,6 +146,7 @@ const lockIcon = (
 
 const ProfileSetting = () => {
   const [number, setNumber] = useState();
+  const [selectedBtn, setSelectedBtn] = useState("Private");
   const [verifyPin, setVerifyPin] = useState({
     one: "",
     two: "",
@@ -172,7 +173,7 @@ const ProfileSetting = () => {
             <svg
               stroke="currentColor"
               fill="#1BB6ED"
-              stroke-width="0"
+              strokeWidth="0"
               viewBox="0 0 448 512"
               height="23px"
               width="23px"
@@ -195,17 +196,17 @@ const ProfileSetting = () => {
                 <span className="bg-[#30BEEC] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center absolute left-1 top-0.5 ">
                   {settingIcon}
                 </span>
-                <span className="mx-auto text-lg"> Profile </span>
+                <span className="mx-auto text-lg">Profile</span>
               </a>
 
-              <div className="mt-10">
+              <div className="mt-10 flex flex-col items-center mb-3">
                 <figure className="bg-[#30BEEC] text-white px-1 py-1 rounded-full w-24 h-24 flex justify-center items-center">
                   <span className="text-6xl">{profileUserIcon}</span>
                 </figure>
 
                 <div className="text-center">
-                  <h2 className="text-2xl font-semibold"> Username </h2>
-                  <p className="text-gray-500 text-xs">.......@gmail.com</p>
+                  <h2 className="text-2xl font-semibold">Jhon doe</h2>
+                  <p className="text-gray-500 text-base">jhondoe@gmail.com</p>
                 </div>
               </div>
 
@@ -265,19 +266,33 @@ const ProfileSetting = () => {
               </form>
 
               <div className="flex flex-col gap-5 items-center justify-center my-8">
-                <button className="flex gap-3 py-2 min-w-[14rem] bg-[#30BEEC] px-3 items-center justify-center rounded-3xl text-lg text-white shadow-md text-center">
+                <button
+                  onClick={(e) => setSelectedBtn("Private")}
+                  className={`flex gap-3 py-2 min-w-[14rem] px-3 items-center justify-center rounded-3xl text-lg shadow-md text-center ${
+                    selectedBtn === "Private"
+                      ? "bg-[#1BB6ED] text-white"
+                      : "bg-gray-300 text-black"
+                  }`}
+                >
                   <span>{privateUserIcon}</span>
                   <span>Private</span>
                 </button>
 
-                <button className="flex gap-3 py-2 min-w-[14rem] bg-gray-300 px-3 items-center justify-center rounded-3xl text-lg text-slate-950 shadow-md text-center font-semibold">
+                <button
+                  onClick={(e) => setSelectedBtn("Business")}
+                  className={`flex gap-3 py-2 min-w-[14rem] px-3 items-center justify-center rounded-3xl text-lg text-slate-950 shadow-md text-center font-semibold ${
+                    selectedBtn === "Business"
+                      ? "bg-[#1BB6ED] text-white"
+                      : "bg-gray-300 text-black"
+                  }`}
+                >
                   <span>{businessIcon}</span>
-                  <span>Busniess</span>
+                  <span>Business</span>
                 </button>
               </div>
 
               <button className="py-2 min-w-[14rem] bg-[#30BEEC] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mt-10">
-                <span>Start</span>
+                <span>Save</span>
               </button>
             </div>
           </div>
@@ -306,9 +321,6 @@ const ProfileSetting = () => {
                     <VeryCard />
                     <VeryCard />
                   </div>
-                  {/* <div className="flex jus">
-
-</div> */}
                   <div className="w-[80%] mx-auto flex justify-between items-center gap-2 rounded-3xl text-lg min-w-[15rem] bg-white shadow-md px-1 overflow-hidden mt-8 mb-2">
                     <span className="bg-[#30BEEC] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center">
                       {lockIcon}
@@ -318,7 +330,7 @@ const ProfileSetting = () => {
                       onKeyUp={(e) => setNumber(e.target.value)}
                       type="number"
                       placeholder="Phone Verification"
-                      className="py-1 px-4 text-base w-full outline-none border-none"
+                      className="py-2 px-4 text-base w-full outline-none border-none"
                     />
                   </div>
 
@@ -419,7 +431,7 @@ const ProfileSetting = () => {
                 onClick={handleSubmit}
                 className="py-2 min-w-[14rem] bg-[#30BEEC] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mt-10"
               >
-                <span> Done </span>
+                <span>Done</span>
               </button>
             </div>
           </div>
