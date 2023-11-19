@@ -16,7 +16,7 @@ const HomeNavbar = ({ isExpand, setIsExpand }) => {
             <svg
               stroke="currentColor"
               fill="#fff"
-              stroke-width="0"
+              strokeWidth="0"
               viewBox="0 0 448 512"
               height="25px"
               width="25px"
@@ -60,7 +60,7 @@ const HomeNavbar = ({ isExpand, setIsExpand }) => {
             <svg
               stroke="currentColor"
               fill="#fff"
-              stroke-width="0"
+              strokeWidth="0"
               viewBox="0 0 640 512"
               height="23px"
               width="23px"

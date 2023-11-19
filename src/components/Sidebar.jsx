@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import MyProvider from "../Provider/Provider";
+import Logo from "../assets/logo.png";
 
 const Sidebar = () => {
   // const [isExpand, setIsExpand] = useState(false);
@@ -27,11 +28,14 @@ const Sidebar = () => {
   return (
     <React.Fragment>
       <div
-        className={`max-w-[250px] w-full h-auto p-5 pt-9 bg-white border-r fixed top-0 sm:static transition-all ${
+        className={`max-w-[250px] w-full min-h-[100vh] p-5 pt-9 bg-white border-r fixed top-0 bottom-0 sm:static transition-all ${
           isExpand ? "left-0" : "-left-[1000px]"
         } z-[9] transition-all`}
         ref={expandUserMenuRef}
       >
+        <div className="flex justify-center mb-12">
+          <img src={Logo} alt="" className="w-[150px] h-auto" />
+        </div>
         <ul className="flex flex-col gap-5">
           <li>
             <Link
@@ -42,7 +46,7 @@ const Sidebar = () => {
                 <svg
                   stroke="currentColor"
                   fill="#9E9E9E"
-                  stroke-width="0"
+                  strokeWidth="0"
                   viewBox="0 0 1024 1024"
                   height="23px"
                   width="23px"
@@ -64,7 +68,7 @@ const Sidebar = () => {
                 <svg
                   stroke="currentColor"
                   fill="#9E9E9E"
-                  stroke-width="0"
+                  strokeWidth="0"
                   viewBox="0 0 448 512"
                   height="20px"
                   width="20px"
@@ -88,7 +92,7 @@ const Sidebar = () => {
                 <svg
                   stroke="#9E9E9E"
                   fill="#9E9E9E"
-                  stroke-width="0"
+                  strokeWidth="0"
                   viewBox="0 0 512 512"
                   height="20px"
                   width="20px"
@@ -119,7 +123,7 @@ const Sidebar = () => {
                 <svg
                   stroke="currentColor"
                   fill="#9E9E9E"
-                  stroke-width="0"
+                  strokeWidth="0"
                   viewBox="0 0 1024 1024"
                   height="20px"
                   width="20px"
@@ -143,7 +147,7 @@ const Sidebar = () => {
                 <svg
                   stroke="currentColor"
                   fill="#9E9E9E"
-                  stroke-width="0"
+                  strokeWidth="0"
                   viewBox="0 0 24 24"
                   height="23px"
                   width="23px"
@@ -166,7 +170,7 @@ const Sidebar = () => {
                 <svg
                   stroke="currentColor"
                   fill="#9E9E9E"
-                  stroke-width="0"
+                  strokeWidth="0"
                   viewBox="0 0 24 24"
                   height="23px"
                   width="23px"

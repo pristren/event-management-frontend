@@ -17,7 +17,7 @@ const InvitedEvents = () => {
             <svg
               stroke="currentColor"
               fill="#1BB6ED"
-              stroke-width="0"
+              strokeWidth="0"
               viewBox="0 0 448 512"
               height="23px"
               width="23px"

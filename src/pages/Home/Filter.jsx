@@ -152,7 +152,7 @@ const Filter = () => {
   const filterBtn = (
     <div className="block truncate text-gray-400">
       <button className="bg-[#1BB6ED] text-white p-4 rounded-l-2xl flex items-center gap-2">
-        <span> {funnelIcons} </span>
+        <span>{funnelIcons}</span>
         <span>Filter</span>
       </button>
     </div>
