@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import MyProvider from "../Provider/Provider";
+import Logo from "../assets/logo.png";
 
 const Sidebar = () => {
   // const [isExpand, setIsExpand] = useState(false);
@@ -27,11 +28,14 @@ const Sidebar = () => {
   return (
     <React.Fragment>
       <div
-        className={`max-w-[250px] w-full h-auto p-5 pt-9 bg-white border-r fixed top-0 sm:static transition-all ${
+        className={`max-w-[250px] w-full min-h-[100vh] p-5 pt-9 bg-white border-r fixed top-0 bottom-0 sm:static transition-all ${
           isExpand ? "left-0" : "-left-[1000px]"
         } z-[9] transition-all`}
         ref={expandUserMenuRef}
       >
+        <div className="flex justify-center mb-12">
+          <img src={Logo} alt="" className="w-[150px] h-auto" />
+        </div>
         <ul className="flex flex-col gap-5">
           <li>
             <Link

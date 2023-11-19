@@ -60,7 +60,7 @@ const CreateEvent = () => {
               <input
                 type="text"
                 placeholder={"Name of event"}
-                className="w-full py-2 outline-none border-none text-[15px] focus:outline-none font-normal placeholder:text-[#6c757d] placeholder:font-medium"
+                className="w-full px-2 py-2 outline-none border-none text-[15px] focus:outline-none font-normal placeholder:text-[#6c757d] placeholder:font-medium"
               />
             </div>
 
@@ -130,7 +130,7 @@ const CreateEvent = () => {
               <input
                 type="text"
                 placeholder="Place"
-                className="w-full py-2 outline-none border-none text-[15px] font-normal focus:outline-none placeholder:text-[#6c757d] placeholder:font-medium"
+                className="w-full px-2 py-2 outline-none border-none text-[15px] font-normal focus:outline-none placeholder:text-[#6c757d] placeholder:font-medium"
               />
             </div>
           </div>
@@ -143,7 +143,7 @@ const CreateEvent = () => {
                 name=""
                 id=""
                 placeholder="Placeholder"
-                className="w-full h-[200px] py-2 px-4 font-normal outline-none border-none text-[15px] placeholder:text-[#6c757d] placeholder:font-medium"
+                className="w-full h-[200px] p-4 font-normal outline-none border-none text-[15px] placeholder:text-[#6c757d] placeholder:font-medium"
               ></textarea>
             </div>
 
