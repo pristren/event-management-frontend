@@ -82,7 +82,7 @@ const CreateEvent = () => {
                 </svg>
               </span>
               <div
-                className="bg-white p-9 px-4 md:px-3 xl:px-14 rounded-3xl"
+                className="bg-white py-12 px-20 sm:px-8 md:px-3 md:py-12 lg:px-3 xl:px-4 rounded-3xl"
                 style={{ boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px" }}
               >
                 <Calender />
