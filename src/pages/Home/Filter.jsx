@@ -158,7 +158,7 @@ const Filter = () => {
     </div>
   );
   return (
-    <div className="absolute top-[200px] right-5 max-w-[600px] w-full bg-white rounded-2xl flex border-[2px] border-white shadow-xl">
+    <div className="absolute top-[200px] right-5 max-w-[450px] lg:max-w-[650px] w-full bg-white rounded-2xl flex border-[2px] border-white shadow-xl">
       <div className="w-full flex items-center justify-between">
         <div className="w-full">
           <Listbox value={selected2} onChange={setSelected2} multiple>
@@ -195,7 +195,7 @@ const Filter = () => {
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
               >
-                <Listbox.Options className="z-50 absolute mt-1 w-1/2 rounded-md bg-white py-1 text-base ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm shadow-xl">
+                <Listbox.Options className="!z-[9999] absolute mt-1 w-1/2 rounded-md bg-white py-1 text-base ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm shadow-xl">
                   <span className="block truncate py-3 px-4 font-semibold text-[#1BB6ED] text-base border-b-2 border-[#1BB6ED] relative">
                     <span>Select Filter Option</span>
                     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">

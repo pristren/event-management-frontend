@@ -10,7 +10,7 @@ const HomeNavbar = ({ isExpand, setIsExpand }) => {
       <div className="flex items-center justify-between">
         <div>
           <span
-            className="cursor-pointer sm:hidden"
+            className="cursor-pointer md:hidden"
             onClick={() => setIsExpand(!isExpand)}
           >
             <svg
@@ -27,7 +27,7 @@ const HomeNavbar = ({ isExpand, setIsExpand }) => {
           </span>
           <img
             src={Logo}
-            className="w-[120px] hidden sm:block"
+            className="w-[120px] hidden md:block"
             alt="Daily frame logo"
           />
         </div>

@@ -23,7 +23,7 @@ const HomeSidebar = ({ isExpand, setIsExpand }) => {
   return (
     <React.Fragment>
       <div
-        className={`max-w-[250px] w-full h-auto p-5 pt-9 bg-white border-r fixed top-0 sm:static transition-all ${
+        className={`max-w-[250px] w-full h-screen p-5 pt-9 bg-white border-r fixed top-0 sm:static transition-all ${
           isExpand ? "left-0" : "-left-[1000px]"
         } z-[9999] transition-all`}
         ref={expandUserMenuRef}
