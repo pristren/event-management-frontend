@@ -3,6 +3,9 @@ import Profile from "../../components/Profile";
 import Sidebar from "../../components/Sidebar";
 import Calender from "./Calender";
 import MyProvider from "../../Provider/Provider";
+import MapMarker from "../Home/MapMarker";
+import GoogleMapReact from "google-map-react";
+import { usePlacesWidget } from "react-google-autocomplete";
 
 const CreateEvent = () => {
   const [selectedBtn, setSelectedBtn] = useState("Private");
@@ -13,7 +16,22 @@ const CreateEvent = () => {
     const file = e.target.files[0];
     setSelectedFile(file);
   };
-
+  const defaultProps = {
+    center: {
+      lat: 23.7330218,
+      lng: 90.3983829,
+    },
+    zoom: 11,
+  };
+  const { ref } = usePlacesWidget({
+    // apiKey: import.meta.env.VITE_GOOGLE_API_KEY,
+    onPlaceSelected: (place) => {
+      console.log(place);
+    },
+    options: {
+      types: ["geocode"],
+    },
+  });
   return (
     <div className="flex">
       <div>
@@ -128,6 +146,7 @@ const CreateEvent = () => {
                 {/* <span className="text-[#1D1D1D] font-medium whitespace-nowrap"></span> */}
               </span>
               <input
+                ref={ref}
                 type="text"
                 placeholder="Place"
                 className="w-full px-2 py-2 outline-none border-none text-[15px] font-normal focus:outline-none placeholder:text-[#6c757d] placeholder:font-medium"
@@ -252,7 +271,7 @@ const CreateEvent = () => {
                       cy="256"
                       r="48"
                       fill="#fff"
-                      stroke-linecap="round"
+                      strokeLinecap="round"
                       stroke-linejoin="round"
                       strokeWidth="32"
                     ></circle>
@@ -261,7 +280,7 @@ const CreateEvent = () => {
                       cy="112"
                       r="48"
                       fill="#fff"
-                      stroke-linecap="round"
+                      strokeLinecap="round"
                       stroke-linejoin="round"
                       strokeWidth="32"
                     ></circle>
@@ -270,13 +289,13 @@ const CreateEvent = () => {
                       cy="400"
                       r="48"
                       fill="#fff"
-                      stroke-linecap="round"
+                      strokeLinecap="round"
                       stroke-linejoin="round"
                       strokeWidth="32"
                     ></circle>
                     <path
                       fill="#fff"
-                      stroke-linecap="round"
+                      strokeLinecap="round"
                       stroke-linejoin="round"
                       strokeWidth="32"
                       d="M169.83 279.53l172.34 96.94m0-240.94l-172.34 96.94"
@@ -290,14 +309,15 @@ const CreateEvent = () => {
 
           {/* Righ Content  */}
           <div className="shadow-primary rounded-2xl overflow-hidden md:w-full">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3652.330962747641!2d90.38113137630452!3d23.735574478680547!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755b8c8e1ea9fd1%3A0xa6e274882fdbce53!2sDhaka%20College!5e0!3m2!1sen!2sbd!4v1700029911453!5m2!1sen!2sbd"
-              width={"100%"}
-              style={{ border: "0", height: "100%" }}
-              allowFullScreen=""
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            ></iframe>
+            <div style={{ height: "100vh", width: "100%" }}>
+              <GoogleMapReact
+                // bootstrapURLKeys={{ key: import.meta.env.VITE_GOOGLE_API_KEY }}
+                defaultCenter={defaultProps.center}
+                defaultZoom={defaultProps.zoom}
+              >
+                <MapMarker lat={23.7330218} lng={90.3983829} text="My Marker" />
+              </GoogleMapReact>
+            </div>
           </div>
         </div>
       </div>
