@@ -1,5 +1,7 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
+import useAxios from "../../../Hooks/useAxios";
 
 const loginIcons = (
   <svg
@@ -48,6 +50,8 @@ const lockIcon = (
 );
 
 const SignUp = () => {
+  const { Axios } = useAxios();
+  const navigate = useNavigate();
   const [signUpData, setSignUpData] = useState({
     firstName: "",
     lastName: "",
@@ -56,7 +60,47 @@ const SignUp = () => {
     confirmPW: "",
     rememberMe: "",
   });
-  console.log("signUpData ", signUpData);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const { firstName, lastName, email, password, confirmPW, rememberMe } =
+      signUpData;
+
+    if (password === confirmPW && rememberMe) {
+      if (firstName || lastName || email || password) {
+        const newData = { firstName, lastName, email, password };
+        Axios.post("/user/register", newData)
+          .then((res) => {
+            if (res.status == 201) {
+              const response = res?.data?.data;
+              const user = {
+                token: response?.accessToken,
+                data: {
+                  email: response?.user?.email,
+                  _id: response?.user?._id,
+                  name: `${response?.user?.firstName} ${response?.user?.lastName}`,
+                },
+              };
+              localStorage.setItem("user", JSON.stringify(user));
+              toast.success("Registration Success");
+              navigate("/");
+            }
+          })
+          .catch((err) => {
+            console.log("err ", err);
+
+            toast.error(err?.message);
+          });
+      }
+    }
+  };
+
+  useEffect(() => {
+    const localUser = JSON.parse(localStorage.getItem("user"));
+    if (localUser?.token) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <>
@@ -71,7 +115,7 @@ const SignUp = () => {
                   </span>
                   <span className="mx-auto text-lg"> Registration </span>
                 </p>
-                <form className="mt-7">
+                <form className="mt-7" onSubmit={(e) => handleSubmit(e)}>
                   <div className="flex flex-col gap-6">
                     <div className="flex items-center justify-between gap-10">
                       <div>
@@ -98,6 +142,7 @@ const SignUp = () => {
                           type="text"
                           placeholder="last name"
                           className="py-1 px-4 text-base rounded-[5rem] shadow-primary w-full"
+                          required
                         />
                       </div>
                     </div>
@@ -113,6 +158,7 @@ const SignUp = () => {
                         type="email"
                         placeholder="Email"
                         className="py-1 px-4 text-base rounded-[5rem] shadow-primary w-full"
+                        required
                       />
                     </div>
 
@@ -127,6 +173,7 @@ const SignUp = () => {
                         type="password"
                         placeholder="Password"
                         className="py-1 px-4 text-base rounded-[5rem] shadow-primary w-full"
+                        required
                       />
                     </div>
 
@@ -141,6 +188,7 @@ const SignUp = () => {
                         type="password"
                         placeholder="Confirm Password"
                         className="py-1 px-4 text-base rounded-[5rem] shadow-primary w-full"
+                        required
                       />
                     </div>
 
@@ -161,14 +209,24 @@ const SignUp = () => {
                       </label>
                     </div>
 
-                    <button className="flex relative rounded-3xl text-lg min-w-[15rem] w-full bg-[#30BEEC] hover:bg-white text-white hover:text-black shadow-primary text-center py-[0.125rem] transition duration-300 uppercase">
+                    <button
+                      type="submit"
+                      className={`flex relative rounded-3xl text-lg min-w-[15rem] w-full shadow-primary text-center py-[0.125rem] transition duration-300 uppercase ${
+                        signUpData.rememberMe
+                          ? "bg-[#30BEEC] hover:bg-white text-white hover:text-black"
+                          : "text-[#3337]"
+                      }`}
+                      disabled={
+                        !signUpData.rememberMe || signUpData.rememberMe == ""
+                      }
+                    >
                       <span className="mx-auto text-lg"> Register now </span>
                     </button>
                   </div>
                 </form>
 
                 <p className="text-base mt-8 text-center">
-                  I already have account.
+                  already have account.
                   <Link
                     className="text-[#30BEEC] hover:underline select-none"
                     to="/login"

@@ -1,5 +1,7 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
+import useAxios from "../../../Hooks/useAxios";
 
 const loginIcons = (
   <svg
@@ -48,12 +50,53 @@ const lockIcon = (
 );
 
 const Login = () => {
+  const { Axios } = useAxios();
+  const navigate = useNavigate();
   const [loginData, setLoginData] = useState({
     userName: "",
     password: "",
     rememberMe: "",
   });
   console.log("loginData ", loginData);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const { userName, password, rememberMe } = loginData;
+
+    if (password && rememberMe) {
+      if ((userName || email) && password) {
+        const newData = { email: userName, password };
+        Axios.post("/user/login", newData)
+          .then((res) => {
+            if (res.status == 201) {
+              const response = res?.data?.data;
+              const user = {
+                token: response?.accessToken,
+                data: {
+                  email: response?.user?.email,
+                  _id: response?.user?._id,
+                  name: `${response?.user?.firstName} ${response?.user?.lastName}`,
+                },
+              };
+              localStorage.setItem("user", JSON.stringify(user));
+              toast.success("Registration Success");
+              navigate("/");
+            }
+          })
+          .catch((err) => {
+            console.log("err ", err);
+            toast.error(err?.message);
+          });
+      }
+    }
+  };
+
+  useEffect(() => {
+    const localUser = JSON.parse(localStorage.getItem("user"));
+    if (localUser?.token) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <div className="max-w-7xl mx-auto">
@@ -71,7 +114,7 @@ const Login = () => {
                 <span className="mx-auto text-lg"> Login </span>
               </div>
 
-              <form>
+              <form onSubmit={(e) => handleSubmit(e)}>
                 <div className=" mb-4">
                   <div className="my-3 relative">
                     <span className="text-[#30BEEC] absolute left-3 top-4 text-lg">
@@ -83,7 +126,7 @@ const Login = () => {
                       onKeyUp={(e) =>
                         setLoginData({ ...loginData, userName: e.target.value })
                       }
-                      placeholder="Username"
+                      placeholder="Email / Username"
                     />
                   </div>
 
