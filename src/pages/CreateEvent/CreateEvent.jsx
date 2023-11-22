@@ -54,7 +54,7 @@ const CreateEvent = () => {
   };
 
   const { ref } = usePlacesWidget({
-    // apiKey: import.meta.env.VITE_GOOGLE_API_KEY,
+    apiKey: import.meta.env.VITE_GOOGLE_API_KEY,
     onPlaceSelected: (place) => {
       setSelectedPlace((inputs) => ({
         ...inputs,
