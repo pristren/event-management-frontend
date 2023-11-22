@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import useAxios from "./useAxios";
+import { useNavigate } from "react-router-dom";
 
 const useMyEvent = () => {
   const { Axios } = useAxios();
@@ -10,7 +11,7 @@ const useMyEvent = () => {
   const [ownEvent, setOwnEvent] = useState({});
   const [invitedEvent, setInvitedEvent] = useState({});
   const [jointedEvent, setJointedEvent] = useState({});
-
+  const navigate = useNavigate();
   // get user
   useEffect(() => {
     const localUser = JSON.parse(localStorage.getItem("user"));
