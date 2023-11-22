@@ -1,50 +1,81 @@
+import * as Bytescale from "@bytescale/sdk";
 import GoogleMapReact from "google-map-react";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { usePlacesWidget } from "react-google-autocomplete";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import useAxios from "../../Hooks/useAxios";
 import MyProvider from "../../Provider/Provider";
 import Profile from "../../components/Profile";
 import MapMarker from "../Home/MapMarker";
 import Calender from "./Calender";
 
+const clubIcons = (
+  <svg
+    stroke="currentColor"
+    fill="currentColor"
+    stroke-width="0"
+    viewBox="0 0 512 512"
+    height="1em"
+    width="1em"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M483.424 24.638L449.83 39.98c.944.974 1.864 1.99 2.754 3.068 3.544 4.29 6.546 8.89 9.07 13.745l21.77-32.155zm-221.18 14.426l4.217 42.527c7.223-6.983 14.875-13.594 22.97-19.575l-27.186-22.95zm143.17 2.358c-2 .03-4.06.133-6.18.298-11.58.906-24.367 3.983-37.02 7.41l23.55 36.178.404.62.297.68c3.1 7.08 2.3 14.488-.006 21.41-2.308 6.924-6.405 13.565-12.487 18.53-6.082 4.962-14.756 8.037-23.813 6.118-9.056-1.92-17.6-8.213-25.506-18.803l-1.718-2.305-1.104-48.535c-25.135 12.94-47.54 34.326-66.178 57.047l17.14 9.428 2.892 1.59 1.177 3.08c4.892 12.782 5.147 26.122-1.43 37.13-6.575 11.01-18.66 18.744-35.435 24.293l-6.9 2.285-11.653-19.82c-1.71 3.762-3.41 7.56-5.093 11.43l-17.225 108.624-2.75-61.597c-10.444 24.205-21.82 48.42-36.09 70.063C119.643 368.216 28.322 462.01 28.322 462.01l-.07.072-.07.07c-3.905 3.85-3.91 5.573-3.475 7.693.29 1.418 1.348 3.368 3.168 5.43l97.166-78.713-84.007 87.3c5.778 2.305 11.906 3.587 15.895 3.495 6.885-6.482 66.713-62.5 107.11-88.644 38.117-24.67 69.79-54.084 106.32-82.045l12.213-70.723.37-2.147 1.312-1.74c6.783-8.997 15.585-14.236 24.506-15.33a31.905 31.905 0 0 1 6.588-.113c6.464.56 12.5 3.047 17.584 6.59 11.895 8.287 20.172 22.808 18.008 37.68 6.76-3 13.436-6.003 19.883-9.153 20.67-10.1 38.705-21.33 51.063-37.56-7.023-.544-13.58-3.672-19.03-7.846-7.455-5.707-13.412-13.558-17.25-22.2-3.84-8.64-5.723-18.287-2.974-27.615 2.75-9.326 11.142-17.274 22.833-20.01l.645-.153 45.662-3.797c.92-5.208 1.667-10.42 2.19-15.58 1.022-10.1 1.175-19.927.35-29.187l-28.927 31.25 19.88-64.613c-1.88-3.562-4.056-6.88-6.556-9.907-7.064-8.55-16.195-12.217-27.474-12.957a72.25 72.25 0 0 0-5.82-.134zm-65.937 5.773l1.316 57.93c5.447 6.628 10.038 9.285 13.098 9.933 3.385.717 5.85-.13 8.702-2.457 2.852-2.327 5.483-6.348 6.79-10.272 1.253-3.757 1.01-7.105.624-8.23l-30.53-46.903zm-136.057 64.69l37.62 63.984c10.068-4.252 16.137-9.108 18.94-13.802 3.017-5.05 3.41-10.74.962-18.547l-57.522-31.636zm284.063 45.76l-78.336 6.513c-6.528 1.622-8.23 3.973-9.252 7.443-1.05 3.558-.457 9.338 2.156 15.218 2.614 5.88 7.085 11.648 11.745 15.217 4.102 3.14 7.867 4.322 10.924 4.105.6-.433 1.22-.876 2.16-1.576a960.486 960.486 0 0 0 10.226-7.758c8.388-6.43 19.428-14.995 30.408-23.547 10.038-7.82 12.08-9.442 19.97-15.616zM312.38 244.497c-.48.007-.957.04-1.43.097-3.424.42-7.092 2.18-11.067 6.868l-16.496 95.523 49.18-76.508c2.014-7.113-2.495-17.326-9.926-22.504-2.873-2.002-5.883-3.162-8.806-3.422a14.095 14.095 0 0 0-1.453-.054zm74.02 29.52a328.805 328.805 0 0 1-7.677 3.886c-5.127 2.505-10.308 4.887-15.488 7.232l27.76 17.047-4.594-28.166z"></path>
+  </svg>
+);
+
 const CreateEvent = () => {
-  const [selectedBtn, setSelectedBtn] = useState("Private");
-  const [selectedFile, setSelectedFile] = useState(null);
+  const navigate = useNavigate();
+  const { Axios } = useAxios();
+  const { isExpand, setIsExpand } = useContext(MyProvider);
+  const [user, setUser] = useState(null);
+  const [selectedBtn, setSelectedBtn] = useState("private");
+  const [multipleImages, setMultipleImages] = useState(null);
+  const [fileUploadLoading, setFileUploadLoading] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState({
     address: "",
     latitude: "",
     longitude: "",
   });
-  const { isExpand, setIsExpand } = useContext(MyProvider);
+  const [eventDate, setEventDate] = useState(false);
+  const [error, setError] = useState(false);
+  const [createSuccess, setCreateSuccess] = useState(false);
   const [inputData, setInputData] = useState({
-    userId: "",
     invitedUserId: "",
-    event_thermel: "",
     event_title: "",
     event_Details: "",
     event_clubName: "",
-    location: "",
-    lat: "",
-    lng: "",
-    event_date: "",
     time_start: "",
     time_end: "",
     joinedPeople: "",
+    anOtherParticipants: false,
   });
+
+  // check user
+  useEffect(() => {
+    const localUser = JSON.parse(localStorage.getItem("user"));
+    console.log(localUser);
+    if (!localUser?.token) {
+      return navigate("/login");
+    }
+    setUser(localUser?.data);
+  }, []);
 
   // input handle change set object value dynamical
   const handleInputChange = (event) => {
-    setInputData((inputs) => ({
-      ...inputs,
-      [event.target.name]: event.target.value,
-    }));
+    if (event.target.name == "anOtherParticipants") {
+      return setInputData((inputs) => ({
+        ...inputs,
+        [event.target.name]: event.target.checked,
+      }));
+    } else {
+      setInputData((inputs) => ({
+        ...inputs,
+        [event.target.name]: event.target.value,
+      }));
+    }
   };
 
-  console.log("selectedPlace ", selectedPlace);
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setSelectedFile(file);
-  };
   const defaultProps = {
     center: {
       lat: 23.7330218,
@@ -67,6 +98,79 @@ const CreateEvent = () => {
       types: ["geocode"],
     },
   });
+
+  // multiple image upload
+  const images = [];
+  const uploadManager = new Bytescale.UploadManager({
+    apiKey: "public_12a1ygXCesjuuNXCWLUK6bcYcbsY",
+  });
+  const imageUpload = async (file) => {
+    try {
+      const { fileUrl, filePath } = await uploadManager.upload({ data: file });
+      images.push({ image: fileUrl });
+    } catch (e) {
+      console.log("catch e ", e);
+      alert(`Error:\n${e.message}`);
+    }
+  };
+  const handleFileChange = async (e) => {
+    setFileUploadLoading(true);
+    const files = e.target.files;
+    console.log(fileUploadLoading, files);
+    await Promise.all(
+      Array.from(files).map(async (file) => {
+        if (file.size) {
+          await imageUpload(file);
+        }
+      })
+    );
+
+    setFileUploadLoading(false);
+    console.log("images -> ", images);
+    setMultipleImages(images);
+  };
+
+  const createEvent = () => {
+    if (
+      user?._id !== "" ||
+      inputData?.event_title !== "" ||
+      inputData?.event_Details !== "" ||
+      inputData?.time_start !== "" ||
+      inputData?.time_end !== "" ||
+      inputData?.event_clubName !== ""
+    ) {
+      const newData = {
+        userId: user?._id,
+        event_images: multipleImages,
+        event_title: inputData?.event_title,
+        event_Details: inputData?.event_Details,
+        event_clubName: inputData?.event_clubName,
+        location: selectedPlace?.address,
+        mapLocation: {
+          lat: selectedPlace?.latitude,
+          lng: selectedPlace?.longitude,
+        },
+        event_date: eventDate,
+        event_time: {
+          time_start: inputData?.time_start,
+          time_end: inputData?.time_end,
+        },
+        sharable: selectedBtn,
+        anOtherParticipants: inputData?.anOtherParticipants,
+      };
+      console.log("empty ", newData);
+      Axios.post("/create-event", newData)
+        .then((res) => {
+          console.log("response ", res);
+          toast.success("Registration Success");
+          setCreateSuccess(res?.data?.event);
+        })
+        .catch((err) => {
+          toast.error("creating error");
+          console.error("creating error ", err);
+        });
+    }
+  };
 
   return (
     <div className="flex">
@@ -117,6 +221,7 @@ const CreateEvent = () => {
                 name="event_title"
                 onChange={handleInputChange}
                 className="w-full px-2 py-2 outline-none border-none text-[15px] focus:outline-none font-normal placeholder:text-[#6c757d] placeholder:font-medium"
+                required
               />
             </div>
 
@@ -141,7 +246,7 @@ const CreateEvent = () => {
                 className="bg-white py-12 px-20 sm:px-8 md:px-3 md:py-12 lg:px-3 xl:px-4 rounded-3xl"
                 style={{ boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px" }}
               >
-                <Calender />
+                <Calender setEventDate={setEventDate} />
               </div>
             </div>
 
@@ -150,9 +255,11 @@ const CreateEvent = () => {
                 <input
                   type="time"
                   placeholder="Time start"
+                  title="Time start"
                   name="time_start"
                   onChange={handleInputChange}
                   className="w-full py-2 px-4 outline-none border-none text-[15px] text-[#1BB6ED] bg-white font-medium rounded-full placeholder:text-[#6c757d] placeholder:font-medium"
+                  required
                 />
               </div>
 
@@ -160,6 +267,7 @@ const CreateEvent = () => {
                 <input
                   type="time"
                   placeholder="Time end"
+                  title="Time end"
                   name="time_end"
                   onChange={handleInputChange}
                   className="w-full py-2 px-4 outline-none border-none text-[15px] text-[#1BB6ED] bg-white font-medium rounded-full placeholder:text-[#6c757d] placeholder:font-medium"
@@ -205,6 +313,22 @@ const CreateEvent = () => {
 
           {/* Middle Content  */}
           <div>
+            <div className="flex items-center bg-white rounded-full overflow-hidden px-4 shadow-primary mb-5">
+              <span className="flex items-center text-[#1BB6ED]">
+                {clubIcons}
+              </span>
+              {/* <span className="text-[#1D1D1D] font-medium whitespace-nowrap"></span> */}
+
+              <input
+                type="text"
+                placeholder={"Club Name"}
+                name="event_clubName"
+                onChange={handleInputChange}
+                className="w-full px-2 py-2 outline-none border-none text-[15px] focus:outline-none font-normal placeholder:text-[#6c757d] placeholder:font-medium"
+                required
+              />
+            </div>
+
             {/* Placeholder  */}
             <div className="flex gap-3 items-center bg-white rounded-2xl overflow-hidden shadow-primary">
               <textarea
@@ -212,12 +336,19 @@ const CreateEvent = () => {
                 onChange={handleInputChange}
                 placeholder="Placeholder"
                 className="w-full h-[200px] p-4 font-normal outline-none border-none text-[15px] placeholder:text-[#6c757d] placeholder:font-medium"
+                required
               ></textarea>
             </div>
 
             {/* Checkbox  */}
             <div className="flex items-center mt-6">
-              <input type="checkbox" id="enable" className="checkbox" />
+              <input
+                type="checkbox"
+                id="enable"
+                name="anOtherParticipants"
+                onChange={handleInputChange}
+                className="checkbox"
+              />
               <label htmlFor="enable">
                 Enable picture uploads from another participants
               </label>
@@ -229,18 +360,18 @@ const CreateEvent = () => {
 
               <div className="w-full flex gap-6 items-center overflow-hidden">
                 <button
-                  onClick={(e) => setSelectedBtn("Public")}
+                  onClick={(e) => setSelectedBtn("public")}
                   className={`w-full py-2 px-6 rounded-full  ${
-                    selectedBtn === "Public" ? "bg-[#1BB6ED]" : "bg-[#C3C3C5]"
+                    selectedBtn === "public" ? "bg-[#1BB6ED]" : "bg-[#C3C3C5]"
                   } text-white`}
                 >
                   Public
                 </button>
 
                 <button
-                  onClick={(e) => setSelectedBtn("Contract")}
+                  onClick={(e) => setSelectedBtn("contract")}
                   className={`w-full py-2 px-6 rounded-full ${
-                    selectedBtn === "Contract" ? "bg-[#1BB6ED]" : "bg-[#C3C3C5]"
+                    selectedBtn === "contract" ? "bg-[#1BB6ED]" : "bg-[#C3C3C5]"
                   } text-white`}
                 >
                   Contract
@@ -259,6 +390,8 @@ const CreateEvent = () => {
                     style={{
                       boxShadow: "-1px 4px 110px 9px rgba(43, 37, 37, 0.06)",
                     }}
+                    multiple
+                    accept="image/*"
                     onChange={handleFileChange}
                     className="absolute top-0 right-0 w-full h-full opacity-0 font-Jost text-[#000000] font-semibold leading-[22px] uppercase border-[1px] border-[#0070D2] rounded-[10px] py-4 px-8 bg-white placeholder:text-[16px] placeholder:font-normal placeholder:capitalize cursor-pointer"
                   />
@@ -268,9 +401,12 @@ const CreateEvent = () => {
                       document.getElementById("fileInput").click();
                     }}
                   >
-                    {selectedFile ? (
+                    {multipleImages ? (
                       <p className="text-[#1BB6ED] text-[15px]">
-                        Uploded file: {selectedFile.name}
+                        {fileUploadLoading
+                          ? "Uploading..."
+                          : `Uploaded files:
+                        ${multipleImages?.length}`}
                       </p>
                     ) : (
                       <>
@@ -288,7 +424,10 @@ const CreateEvent = () => {
                           </svg>
                         </span>
                         <span className="text-[#1BB6ED] text-[15px]">
-                          Upload pictures
+                          {fileUploadLoading
+                            ? "Uploading..."
+                            : `Uploaded files:
+                        ${multipleImages?.length}`}
                         </span>
                       </>
                     )}
@@ -304,59 +443,70 @@ const CreateEvent = () => {
                 boxShadow: "24px 83px 106px -52px rgba(79,70,70,0.75)",
               }}
             >
-              <button className="flex items-center gap-4 bg-[#1BB6ED] py-2 px-7 rounded-full">
-                <span className="flex items-center">
-                  <svg
-                    stroke="#fff"
-                    fill="#fff"
-                    strokeWidth="0"
-                    viewBox="0 0 512 512"
-                    height="1em"
-                    width="1em"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <circle
-                      cx="128"
-                      cy="256"
-                      r="48"
+              {createSuccess ? (
+                <button className="flex items-center gap-4 bg-[#1BB6ED] py-2 px-7 rounded-full">
+                  <span className="flex items-center">
+                    <svg
+                      stroke="#fff"
                       fill="#fff"
-                      strokeLinecap="round"
-                      stroke-linejoin="round"
-                      strokeWidth="32"
-                    ></circle>
-                    <circle
-                      cx="384"
-                      cy="112"
-                      r="48"
-                      fill="#fff"
-                      strokeLinecap="round"
-                      stroke-linejoin="round"
-                      strokeWidth="32"
-                    ></circle>
-                    <circle
-                      cx="384"
-                      cy="400"
-                      r="48"
-                      fill="#fff"
-                      strokeLinecap="round"
-                      stroke-linejoin="round"
-                      strokeWidth="32"
-                    ></circle>
-                    <path
-                      fill="#fff"
-                      strokeLinecap="round"
-                      stroke-linejoin="round"
-                      strokeWidth="32"
-                      d="M169.83 279.53l172.34 96.94m0-240.94l-172.34 96.94"
-                    ></path>
-                  </svg>
-                </span>
-                <span className="text-white">Share</span>
-              </button>
+                      strokeWidth="0"
+                      viewBox="0 0 512 512"
+                      height="1em"
+                      width="1em"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <circle
+                        cx="128"
+                        cy="256"
+                        r="48"
+                        fill="#fff"
+                        strokeLinecap="round"
+                        stroke-linejoin="round"
+                        strokeWidth="32"
+                      ></circle>
+                      <circle
+                        cx="384"
+                        cy="112"
+                        r="48"
+                        fill="#fff"
+                        strokeLinecap="round"
+                        stroke-linejoin="round"
+                        strokeWidth="32"
+                      ></circle>
+                      <circle
+                        cx="384"
+                        cy="400"
+                        r="48"
+                        fill="#fff"
+                        strokeLinecap="round"
+                        stroke-linejoin="round"
+                        strokeWidth="32"
+                      ></circle>
+                      <path
+                        fill="#fff"
+                        strokeLinecap="round"
+                        stroke-linejoin="round"
+                        strokeWidth="32"
+                        d="M169.83 279.53l172.34 96.94m0-240.94l-172.34 96.94"
+                      ></path>
+                    </svg>
+                  </span>
+                  <span className="text-white">Share</span>
+                </button>
+              ) : (
+                <button
+                  onClick={createEvent}
+                  className="flex items-center gap-4 bg-[#1BB6ED] py-2 px-7 rounded-full"
+                  disabled={fileUploadLoading}
+                >
+                  {/* <span className="flex items-center"></span> */}
+                  <span className="text-white">create Event</span>
+                </button>
+              )}
             </div>
           </div>
 
-          {/* Righ Content  */}
+          {/* Right Content  */}
           <div className="shadow-primary rounded-2xl overflow-hidden md:w-full">
             <div style={{ height: "100vh", width: "100%" }}>
               <GoogleMapReact

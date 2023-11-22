@@ -79,7 +79,7 @@ const Login = () => {
                 },
               };
               localStorage.setItem("user", JSON.stringify(user));
-              toast.success("Registration Success");
+              toast.success("Login Successful");
               navigate("/");
             }
           })

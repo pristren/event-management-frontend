@@ -1,11 +1,14 @@
 import { useContext } from "react";
+import useMyEvent from "../../Hooks/useMyEvent";
 import MyProvider from "../../Provider/Provider";
 import Profile from "../../components/Profile";
-import Sidebar from "../../components/Sidebar";
 import MyEventsCart from "./MyEventsCart";
 
 const MyEvents = () => {
+  const { ownEvent, isLoading, isError } = useMyEvent();
   const { isExpand, setIsExpand } = useContext(MyProvider);
+
+  console.log("ownEvent ", ownEvent);
 
   return (
     <section className="flex">
@@ -32,9 +35,10 @@ const MyEvents = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-5">
-          <MyEventsCart />
-          <MyEventsCart />
-          <MyEventsCart />
+          {ownEvent?.ownEvents &&
+            ownEvent?.ownEvents.map((event, idx) => (
+              <MyEventsCart key={idx} event={event} />
+            ))}
         </div>
       </div>
     </section>
