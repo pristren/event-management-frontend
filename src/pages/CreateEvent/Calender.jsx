@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
@@ -34,7 +34,7 @@ const PrevIcon = () => {
   );
 };
 
-export default function Calender({ setNewDate }) {
+export default function Calender({ setEventDate }) {
   const [value, onChange] = useState(new Date());
   //   var daysOfWeek = [
   //     "Sunday",
@@ -48,6 +48,9 @@ export default function Calender({ setNewDate }) {
 
   //   var dayName = daysOfWeek[value.getDay()];
   //   setNewDate(dayName);
+  useEffect(() => {
+    setEventDate(value);
+  }, [value]);
 
   return (
     <div className="w-full">
