@@ -1,16 +1,45 @@
-import React, { useContext, useState } from "react";
-import Profile from "../../components/Profile";
-import Sidebar from "../../components/Sidebar";
-import Calender from "./Calender";
-import MyProvider from "../../Provider/Provider";
-import MapMarker from "../Home/MapMarker";
 import GoogleMapReact from "google-map-react";
+import React, { useContext, useState } from "react";
 import { usePlacesWidget } from "react-google-autocomplete";
+import MyProvider from "../../Provider/Provider";
+import Profile from "../../components/Profile";
+import MapMarker from "../Home/MapMarker";
+import Calender from "./Calender";
 
 const CreateEvent = () => {
   const [selectedBtn, setSelectedBtn] = useState("Private");
   const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedPlace, setSelectedPlace] = useState({
+    address: "",
+    latitude: "",
+    longitude: "",
+  });
   const { isExpand, setIsExpand } = useContext(MyProvider);
+  const [inputData, setInputData] = useState({
+    userId: "",
+    invitedUserId: "",
+    event_thermel: "",
+    event_title: "",
+    event_Details: "",
+    event_clubName: "",
+    location: "",
+    lat: "",
+    lng: "",
+    event_date: "",
+    time_start: "",
+    time_end: "",
+    joinedPeople: "",
+  });
+
+  // input handle change set object value dynamical
+  const handleInputChange = (event) => {
+    setInputData((inputs) => ({
+      ...inputs,
+      [event.target.name]: event.target.value,
+    }));
+  };
+
+  console.log("selectedPlace ", selectedPlace);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -23,15 +52,22 @@ const CreateEvent = () => {
     },
     zoom: 11,
   };
+
   const { ref } = usePlacesWidget({
     // apiKey: import.meta.env.VITE_GOOGLE_API_KEY,
     onPlaceSelected: (place) => {
-      console.log(place);
+      setSelectedPlace((inputs) => ({
+        ...inputs,
+        address: place?.formatted_address,
+        latitude: place?.geometry?.location?.lat(),
+        longitude: place?.geometry?.location?.lng(),
+      }));
     },
     options: {
       types: ["geocode"],
     },
   });
+
   return (
     <div className="flex">
       <div>
@@ -78,6 +114,8 @@ const CreateEvent = () => {
               <input
                 type="text"
                 placeholder={"Name of event"}
+                name="event_title"
+                onChange={handleInputChange}
                 className="w-full px-2 py-2 outline-none border-none text-[15px] focus:outline-none font-normal placeholder:text-[#6c757d] placeholder:font-medium"
               />
             </div>
@@ -110,16 +148,20 @@ const CreateEvent = () => {
             <div className="flex gap-5 mt-5">
               <div className="w-full flex gap-3 items-center justify-between bg-white rounded-full shadow-primary">
                 <input
-                  type="number"
+                  type="time"
                   placeholder="Time start"
+                  name="time_start"
+                  onChange={handleInputChange}
                   className="w-full py-2 px-4 outline-none border-none text-[15px] text-[#1BB6ED] bg-white font-medium rounded-full placeholder:text-[#6c757d] placeholder:font-medium"
                 />
               </div>
 
               <div className="w-full flex gap-3 items-center justify-between bg-white rounded-full shadow-primary">
                 <input
-                  type="number"
+                  type="time"
                   placeholder="Time end"
+                  name="time_end"
+                  onChange={handleInputChange}
                   className="w-full py-2 px-4 outline-none border-none text-[15px] text-[#1BB6ED] bg-white font-medium rounded-full placeholder:text-[#6c757d] placeholder:font-medium"
                 />
               </div>
@@ -149,6 +191,13 @@ const CreateEvent = () => {
                 ref={ref}
                 type="text"
                 placeholder="Place"
+                value={selectedPlace?.address}
+                onChange={(e) =>
+                  setSelectedPlace({
+                    ...selectedPlace,
+                    address: e.target.value,
+                  })
+                }
                 className="w-full px-2 py-2 outline-none border-none text-[15px] font-normal focus:outline-none placeholder:text-[#6c757d] placeholder:font-medium"
               />
             </div>
@@ -159,8 +208,8 @@ const CreateEvent = () => {
             {/* Placeholder  */}
             <div className="flex gap-3 items-center bg-white rounded-2xl overflow-hidden shadow-primary">
               <textarea
-                name=""
-                id=""
+                name="event_Details"
+                onChange={handleInputChange}
                 placeholder="Placeholder"
                 className="w-full h-[200px] p-4 font-normal outline-none border-none text-[15px] placeholder:text-[#6c757d] placeholder:font-medium"
               ></textarea>
