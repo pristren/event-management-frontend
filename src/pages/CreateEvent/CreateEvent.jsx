@@ -9,6 +9,7 @@ import MyProvider from "../../Provider/Provider";
 import Profile from "../../components/Profile";
 import MapMarker from "../Home/MapMarker";
 import Calender from "./Calender";
+import DatePicker from "react-datepicker";
 
 const clubIcons = (
   <svg
@@ -50,6 +51,8 @@ const CreateEvent = () => {
     joinedPeople: "",
     anOtherParticipants: false,
   });
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
 
   // check user
   const localUser = JSON.parse(localStorage.getItem("user"));
@@ -131,8 +134,6 @@ const CreateEvent = () => {
       user?._id !== "" ||
       inputData?.event_title !== "" ||
       inputData?.event_Details !== "" ||
-      inputData?.time_start !== "" ||
-      inputData?.time_end !== "" ||
       inputData?.event_clubName !== ""
     ) {
       const newData = {
@@ -148,8 +149,8 @@ const CreateEvent = () => {
         },
         event_date: eventDate,
         event_time: {
-          time_start: inputData?.time_start,
-          time_end: inputData?.time_end,
+          time_start: startDate,
+          time_end: endDate,
         },
         sharable: selectedBtn,
         anOtherParticipants: inputData?.anOtherParticipants,
@@ -167,7 +168,35 @@ const CreateEvent = () => {
         });
     }
   };
+  useEffect(() => {
+    const initAutocomplete = () => {
+      const input = document.getElementById("autocomplete");
+      const autocomplete = new window.google.maps.places.Autocomplete(input);
+      autocomplete.addListener("place_changed", () => {
+        const selectedPlace = autocomplete.getPlace();
+        setSelectedPlace((inputs) => ({
+          ...inputs,
+          address: selectedPlace?.formatted_address,
+          latitude: selectedPlace?.geometry?.location?.lat(),
+          longitude: selectedPlace?.geometry?.location?.lng(),
+        }));
+      });
+    };
 
+    // Load the Google Maps API script
+    const script = document.createElement("script");
+    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyAFJnzdCNNnWNCOFH9O79ASmHG3OndfNK4&libraries=places`;
+    script.async = true;
+    script.defer = true;
+    script.onload = initAutocomplete;
+
+    document.head.appendChild(script);
+
+    // Cleanup function to remove the script when the component unmounts
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, []);
   return (
     <div className="flex">
       <div>
@@ -248,25 +277,46 @@ const CreateEvent = () => {
 
             <div className="flex gap-5 mt-5">
               <div className="w-full flex gap-3 items-center justify-between bg-white rounded-full shadow-primary">
-                <input
+                <DatePicker
+                  selected={startDate}
+                  onChange={(date) => setStartDate(date)}
+                  showTimeSelect
+                  showTimeSelectOnly
+                  timeIntervals={15}
+                  timeCaption="Time"
+                  dateFormat="h:mm aa"
+                  className="w-full py-2 px-4 outline-none border-none text-[15px] text-[#1BB6ED] bg-white font-medium rounded-full placeholder:text-[#6c757d] placeholder:font-medium"
+                  placeholderText="Time start"
+                />
+                {/* <input
                   type="time"
                   placeholder="Time start"
                   title="Time start"
                   name="time_start"
                   onChange={handleInputChange}
-                  className="w-full py-2 px-4 outline-none border-none text-[15px] text-[#1BB6ED] bg-white font-medium rounded-full placeholder:text-[#6c757d] placeholder:font-medium"
                   required
-                />
+                /> */}
               </div>
 
               <div className="w-full flex gap-3 items-center justify-between bg-white rounded-full shadow-primary">
-                <input
+                {/* <input
                   type="time"
                   placeholder="Time end"
                   title="Time end"
                   name="time_end"
                   onChange={handleInputChange}
                   className="w-full py-2 px-4 outline-none border-none text-[15px] text-[#1BB6ED] bg-white font-medium rounded-full placeholder:text-[#6c757d] placeholder:font-medium"
+                /> */}
+                <DatePicker
+                  selected={endDate}
+                  onChange={(date) => setEndDate(date)}
+                  showTimeSelect
+                  showTimeSelectOnly
+                  timeIntervals={15}
+                  timeCaption="Time"
+                  dateFormat="h:mm aa"
+                  className="w-full py-2 px-4 outline-none border-none text-[15px] text-[#1BB6ED] bg-white font-medium rounded-full placeholder:text-[#6c757d] placeholder:font-medium"
+                  placeholderText="Time start"
                 />
               </div>
             </div>
@@ -292,16 +342,16 @@ const CreateEvent = () => {
                 {/* <span className="text-[#1D1D1D] font-medium whitespace-nowrap"></span> */}
               </span>
               <input
-                ref={ref}
+                id="autocomplete"
                 type="text"
                 placeholder="Place"
-                value={selectedPlace?.address}
-                onChange={(e) =>
-                  setSelectedPlace({
-                    ...selectedPlace,
-                    address: e.target.value,
-                  })
-                }
+                // value={selectedPlace?.address}
+                // onChange={(e) =>
+                //   setSelectedPlace({
+                //     ...selectedPlace,
+                //     address: e.target.value,
+                //   })
+                // }
                 className="w-full px-2 py-2 outline-none border-none text-[15px] font-normal focus:outline-none placeholder:text-[#6c757d] placeholder:font-medium"
               />
             </div>

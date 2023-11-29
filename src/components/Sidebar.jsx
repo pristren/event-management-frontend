@@ -161,7 +161,7 @@ const Sidebar = () => {
               </span>
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link
               to={"/event-details"}
               className="flex items-center gap-3 cursor-pointer font-semibold"
@@ -183,7 +183,7 @@ const Sidebar = () => {
                 Event details
               </span>
             </Link>
-          </li>
+          </li> */}
         </ul>
       </div>
     </React.Fragment>
