@@ -1,7 +1,8 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import VeryCard from "../../components/VeryCard";
 import Profile from "../../components/Profile";
 import MyProvider from "../../Provider/Provider";
+import { useSelector } from "react-redux";
 
 const squareUserIcon = (
   <svg
@@ -146,6 +147,9 @@ const lockIcon = (
 const ProfileSetting = () => {
   const [number, setNumber] = useState();
   const [selectedBtn, setSelectedBtn] = useState("Private");
+  const [upload, setUpload] = useState(false);
+  const state = useSelector((state) => state.auth);
+  const [inputData, setInputData] = useState({});
   const [verifyPin, setVerifyPin] = useState({
     one: "",
     two: "",
@@ -154,6 +158,10 @@ const ProfileSetting = () => {
     five: "",
   });
   const { isExpand, setIsExpand } = useContext(MyProvider);
+
+  useEffect(() => {
+    setInputData(state.user);
+  }, []);
 
   const handleSubmit = () => {
     console.log("number ", number);
@@ -204,8 +212,13 @@ const ProfileSetting = () => {
                 </figure>
 
                 <div className="text-center">
-                  <h2 className="text-2xl font-semibold">Jhon doe</h2>
-                  <p className="text-gray-500 text-base">jhondoe@gmail.com</p>
+                  <h2 className="text-2xl font-semibold">
+                    {state?.user?.firstName}
+                    {state?.user?.lastName}
+                  </h2>
+                  <p className="text-gray-500 text-base">
+                    {state?.user?.email}
+                  </p>
                 </div>
               </div>
 
@@ -215,6 +228,8 @@ const ProfileSetting = () => {
                     <div>
                       <input
                         type="text"
+                        name="firstName"
+                        value={inputData?.firstName}
                         placeholder="First Name"
                         className="py-1 px-4 text-base rounded-[5rem] shadow-md w-full"
                       />
@@ -222,6 +237,8 @@ const ProfileSetting = () => {
                     <div>
                       <input
                         type="text"
+                        name="lastName"
+                        value={inputData?.lastName}
                         placeholder="last name"
                         className="py-1 px-4 text-base rounded-[5rem] shadow-md w-full"
                       />
@@ -255,7 +272,11 @@ const ProfileSetting = () => {
                     />
                   </div>
 
-                  <button className="text-[#30BEEC] py-0.5 px-3 flex items-center justify-left relative rounded-3xl text-lg w-full bg-white shadow-md text-center">
+                  <button
+                    onClick={() => setUpload(!upload)}
+                    type="button"
+                    className="text-[#30BEEC] py-0.5 px-3 flex items-center justify-left relative rounded-3xl text-lg w-full bg-white shadow-md text-center"
+                  >
                     <span> Upload Pictures </span>
                     <span className="text-[#30BEEC] text-2xl rounded-full w-7 h-7 flex justify-center items-center absolute right-1 top-0.5">
                       {rightArrow}
@@ -296,7 +317,11 @@ const ProfileSetting = () => {
             </div>
           </div>
 
-          <div className="bg-[#F2F6FF] rounded">
+          <div
+            className={`bg-[#F2F6FF] rounded transition-opacity delay-300 ${
+              upload ? "visible opacity-100" : "invisible opacity-0"
+            }`}
+          >
             <div className="flex flex-col items-center justify-center py-6 px-12">
               <a
                 href="#"

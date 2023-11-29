@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import useAxios from "../../../Hooks/useAxios";
+import { useLoginMutation } from "../../../features/auth/authApi";
 
 const loginIcons = (
   <svg
@@ -50,6 +51,7 @@ const lockIcon = (
 );
 
 const Login = () => {
+  const [login, { data: LoginInData, isError, isLoading }] = useLoginMutation();
   const { Axios } = useAxios();
   const navigate = useNavigate();
   const [loginData, setLoginData] = useState({
@@ -65,27 +67,35 @@ const Login = () => {
     if (userName && password) {
       if ((userName || email) && password) {
         const newData = { email: userName, password };
-        Axios.post("/user/login", newData)
-          .then((res) => {
-            if (res.status == 201) {
-              const response = res?.data?.data;
-              const user = {
-                token: response?.accessToken,
-                data: {
-                  email: response?.user?.email,
-                  _id: response?.user?._id,
-                  name: `${response?.user?.firstName} ${response?.user?.lastName}`,
-                },
-              };
-              localStorage.setItem("user", JSON.stringify(user));
-              toast.success("Login Successful");
-              navigate("/");
-            }
-          })
-          .catch((err) => {
-            console.log("err ", err);
-            toast.error(err?.message);
-          });
+        login(newData).then((res) => {
+          if (res?.data) {
+            toast.success("Login Successful");
+            navigate("/");
+          } else {
+            toast.error(`${res?.error?.data?.message}`);
+          }
+        });
+        // Axios.post("/user/login", newData)
+        //   .then((res) => {
+        //     if (res.status == 201) {
+        //       const response = res?.data?.data;
+        //       const user = {
+        //         token: response?.accessToken,
+        //         data: {
+        //           email: response?.user?.email,
+        //           _id: response?.user?._id,
+        //           name: `${response?.user?.firstName} ${response?.user?.lastName}`,
+        //         },
+        //       };
+        //       localStorage.setItem("user", JSON.stringify(user));
+        //       toast.success("Login Successful");
+        //       navigate("/");
+        //     }
+        //   })
+        //   .catch((err) => {
+        //     console.log("err ", err);
+        //     toast.error(err?.message);
+        //   });
       }
     }
   };
@@ -95,7 +105,7 @@ const Login = () => {
     if (localUser?.token) {
       navigate("/");
     }
-  }, [localUser]);
+  }, []);
 
   return (
     <div className="max-w-7xl mx-auto">

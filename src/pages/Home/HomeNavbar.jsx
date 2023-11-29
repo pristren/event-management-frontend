@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../assets/DailyFrame.png";
+import { useDispatch } from "react-redux";
+import toast from "react-hot-toast";
+import { userLoggedOut } from "../../features/auth/authSlice";
 
 const loginIcon = (
   <svg
@@ -47,22 +50,17 @@ const logOutIcon = (
   </svg>
 );
 
-const HomeNavbar = ({ isExpand, setIsExpand }) => {
-  const [selectedBtn, setSelectedBtn] = useState("Contract");
-  const [user, setUser] = useState(false);
+const HomeNavbar = ({ user, isExpand, setIsExpand }) => {
+  const [selectedBtn, setSelectedBtn] = useState("Public");
   const navigate = useNavigate();
-  const logoutHandle = () => {
-    localStorage.removeItem("user");
-    setUser(false);
-  };
+  const dispatch = useDispatch();
 
-  const localUser = JSON.parse(localStorage.getItem("user"));
-  useEffect(() => {
-    if (!localUser?.token) {
-      return navigate("/login");
-    }
-    setUser(localUser?.data);
-  }, []);
+  const logoutHandle = () => {
+    localStorage.clear();
+    toast.success("Logged out!");
+    dispatch(userLoggedOut());
+    navigate("/");
+  };
 
   return (
     <div className="bg-[#1BB6ED] py-8 px-4">
@@ -98,7 +96,9 @@ const HomeNavbar = ({ isExpand, setIsExpand }) => {
           }}
         >
           <button
-            onClick={(e) => setSelectedBtn("Contract")}
+            onClick={(e) => {
+              user ? setSelectedBtn("Contract") : navigate("/login");
+            }}
             className={`w-full h-[99%] py-3 px-8 rounded ${
               selectedBtn === "Contract" && "bg-[#1BB6ED] text-white"
             } text-[#1BB6ED]`}

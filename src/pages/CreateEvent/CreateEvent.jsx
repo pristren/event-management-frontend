@@ -54,11 +54,8 @@ const CreateEvent = () => {
   // check user
   const localUser = JSON.parse(localStorage.getItem("user"));
   useEffect(() => {
-    if (!localUser?.token) {
-      return navigate("/login");
-    }
     setUser(localUser?.data);
-  }, [localUser]);
+  }, []);
 
   // input handle change set object value dynamical
   const handleInputChange = (event) => {

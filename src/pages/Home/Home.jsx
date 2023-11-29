@@ -5,6 +5,7 @@ import HomeSidebar from "./HomeSidebar";
 import GoogleMapReact from "google-map-react";
 import MapMarker from "./MapMarker";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -16,20 +17,18 @@ const Home = () => {
     },
     zoom: 11,
   };
-  const [user, setUser] = useState(null);
-  // check user
-  const localUser = JSON.parse(localStorage.getItem("user"));
-  useEffect(() => {
-    if (!localUser?.token) {
-      return navigate("/login");
-    }
-    setUser(localUser?.data);
-  }, []);
+  const state = useSelector((state) => state.auth);
   return (
     <div className="text-whitefont-semibold">
-      <HomeNavbar setIsExpand={setIsExpand} isExpand={isExpand} />
+      <HomeNavbar
+        user={state.user}
+        setIsExpand={setIsExpand}
+        isExpand={isExpand}
+      />
       <div className="flex">
-        {user && <HomeSidebar setIsExpand={setIsExpand} isExpand={isExpand} />}
+        {state.user && (
+          <HomeSidebar setIsExpand={setIsExpand} isExpand={isExpand} />
+        )}
         <div style={{ height: "100vh", width: "100%" }}>
           <GoogleMapReact
             bootstrapURLKeys={{ key: import.meta.env.VITE_GOOGLE_API_KEY }}

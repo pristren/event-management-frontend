@@ -12,6 +12,7 @@ import SignUp from "./pages/Authentication/SignUp/SignUp";
 import Layout from "./pages/Layouts/Layout";
 import MyProvider from "./Provider/Provider";
 import { useState } from "react";
+import AuthProtected from "./routes/AuthProtected";
 
 function App() {
   const [isExpand, setIsExpand] = useState(false);
@@ -25,7 +26,14 @@ function App() {
           <Route path="sign-up" element={<SignUp />} />
           <Route path="home-screen" element={<HomeScreen />} />
           <Route path="create-event" element={<CreateEvent />} />
-          <Route path="profile-settings" element={<ProfileSetting />} />
+          <Route
+            path="profile-settings"
+            element={
+              <AuthProtected>
+                <ProfileSetting />
+              </AuthProtected>
+            }
+          />
           <Route path="my-events" element={<MyEvents />} />
           <Route path="invited-events" element={<InvitedEvents />} />
           <Route path="event-details" element={<EventDetails />} />

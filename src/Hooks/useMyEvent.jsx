@@ -19,7 +19,7 @@ const useMyEvent = () => {
       return navigate("/login");
     }
     setUser(localUser?.data);
-  }, [localUser]);
+  }, []);
 
   useEffect(() => {
     if (user?._id) {
@@ -27,7 +27,7 @@ const useMyEvent = () => {
         .then((res) => setMyEvent(res.data))
         .catch((err) => setIsError(err));
     }
-  }, [user]);
+  }, []);
 
   useEffect(() => {
     setOwnEvent(myEvent?.data?.ownEvents);

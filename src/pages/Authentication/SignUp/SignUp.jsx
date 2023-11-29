@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import useAxios from "../../../Hooks/useAxios";
+import { useRegisterMutation } from "../../../features/auth/authApi";
 
 const loginIcons = (
   <svg
@@ -52,6 +53,8 @@ const lockIcon = (
 const SignUp = () => {
   const { Axios } = useAxios();
   const navigate = useNavigate();
+  const [register, { data: UserLoggedInData, isLoading, isError }] =
+    useRegisterMutation();
   const [signUpData, setSignUpData] = useState({
     firstName: "",
     lastName: "",
@@ -69,28 +72,37 @@ const SignUp = () => {
     if (password === confirmPW && rememberMe) {
       if (firstName || lastName || email || password) {
         const newData = { firstName, lastName, email, password };
-        Axios.post("/user/register", newData)
-          .then((res) => {
-            if (res.status == 201) {
-              const response = res?.data?.data;
-              const user = {
-                token: response?.accessToken,
-                data: {
-                  email: response?.user?.email,
-                  _id: response?.user?._id,
-                  name: `${response?.user?.firstName} ${response?.user?.lastName}`,
-                },
-              };
-              localStorage.setItem("user", JSON.stringify(user));
-              toast.success("Registration Success");
-              navigate("/");
-            }
-          })
-          .catch((err) => {
-            console.log("err ", err);
+        register(newData).then((res) => {
+          if (res?.data) {
+            toast.success("Regester Successful");
+            navigate("/");
+          } else {
+            toast.error(`${res?.error?.data?.message}`);
+          }
+        });
 
-            toast.error(err?.message);
-          });
+        // Axios.post("/user/register", newData)
+        //   .then((res) => {
+        //     if (res.status == 201) {
+        //       const response = res?.data?.data;
+        //       const user = {
+        //         token: response?.accessToken,
+        //         data: {
+        //           email: response?.user?.email,
+        //           _id: response?.user?._id,
+        //           name: `${response?.user?.firstName} ${response?.user?.lastName}`,
+        //         },
+        //       };
+        //       localStorage.setItem("user", JSON.stringify(user));
+        //       toast.success("Registration Success");
+        //       navigate("/");
+        //     }
+        //   })
+        //   .catch((err) => {
+        //     console.log("err ", err);
+
+        //     toast.error(err?.message);
+        //   });
       }
     }
   };
@@ -100,7 +112,7 @@ const SignUp = () => {
     if (localUser?.token) {
       navigate("/");
     }
-  }, [localUser]);
+  }, []);
 
   return (
     <>
