@@ -8,8 +8,6 @@ const MyEvents = () => {
   const { ownEvent, isLoading, isError } = useMyEvent();
   const { isExpand, setIsExpand } = useContext(MyProvider);
 
-  console.log("ownEvent ", ownEvent);
-
   return (
     <section className="flex">
       <div className="w-full">

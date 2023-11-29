@@ -57,13 +57,12 @@ const Login = () => {
     password: "",
     rememberMe: "",
   });
-  console.log("loginData ", loginData);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const { userName, password, rememberMe } = loginData;
 
-    if (password && rememberMe) {
+    if (userName && password) {
       if ((userName || email) && password) {
         const newData = { email: userName, password };
         Axios.post("/user/login", newData)
@@ -114,7 +113,7 @@ const Login = () => {
                 <span className="mx-auto text-lg"> Login </span>
               </div>
 
-              <form onSubmit={(e) => handleSubmit(e)}>
+              <form onSubmit={handleSubmit}>
                 <div className=" mb-4">
                   <div className="my-3 relative">
                     <span className="text-[#30BEEC] absolute left-3 top-4 text-lg">
@@ -172,7 +171,10 @@ const Login = () => {
                     </div>
                   </div>
 
-                  <button className="flex relative rounded-xl text-lg max-w-[10rem] w-full bg-[#30BEEC] hover:bg-white text-white hover:text-black shadow-primary text-center py-[0.3rem] transition duration-300 uppercase mt-10 mx-auto">
+                  <button
+                    type="submit"
+                    className="flex relative rounded-xl text-lg max-w-[10rem] w-full bg-[#30BEEC] hover:bg-white text-white hover:text-black shadow-primary text-center py-[0.3rem] transition duration-300 uppercase mt-10 mx-auto"
+                  >
                     <span className="mx-auto text-lg"> Login </span>
                   </button>
                 </div>
