@@ -9,7 +9,9 @@ const Layout = () => {
 
   return (
     <div className="flex">
-      {pathname === "/" ? null : isUser && <Sidebar />}
+      {pathname === "/" || pathname === "/login" || pathname === "/sign-up"
+        ? null
+        : isUser && <Sidebar />}
       <main className="w-full">
         <Outlet />
       </main>

@@ -91,12 +91,12 @@ const Login = () => {
     }
   };
 
+  const localUser = JSON.parse(localStorage.getItem("user"));
   useEffect(() => {
-    const localUser = JSON.parse(localStorage.getItem("user"));
     if (localUser?.token) {
       navigate("/");
     }
-  }, []);
+  }, [localUser]);
 
   return (
     <div className="max-w-7xl mx-auto">
@@ -136,7 +136,7 @@ const Login = () => {
                     </span>
                     <input
                       className="pl-10 pr-4 py-3 bg-white rounded-md border-gray-400 w-full shadow-primary"
-                      type="text"
+                      type="password"
                       onKeyUp={(e) =>
                         setLoginData({ ...loginData, password: e.target.value })
                       }

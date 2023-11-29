@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import appImage from "../../assets/app-download-screen.png";
-import Sidebar from "../../components/Sidebar";
 import MapMarker from "../Home/MapMarker";
 import GoogleMapReact from "google-map-react";
 

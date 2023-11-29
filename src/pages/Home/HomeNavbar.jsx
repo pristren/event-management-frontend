@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../assets/DailyFrame.png";
 
 const loginIcon = (
@@ -50,15 +50,18 @@ const logOutIcon = (
 const HomeNavbar = ({ isExpand, setIsExpand }) => {
   const [selectedBtn, setSelectedBtn] = useState("Contract");
   const [user, setUser] = useState(false);
-
+  const navigate = useNavigate();
   const logoutHandle = () => {
     localStorage.removeItem("user");
     setUser(false);
   };
 
+  const localUser = JSON.parse(localStorage.getItem("user"));
   useEffect(() => {
-    const localUser = JSON.parse(localStorage.getItem("user"));
-    setUser(localUser);
+    if (!localUser?.token) {
+      return navigate("/login");
+    }
+    setUser(localUser?.data);
   }, []);
 
   return (

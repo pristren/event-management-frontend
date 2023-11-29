@@ -1,5 +1,4 @@
 import { useContext, useState } from "react";
-import Sidebar from "../../components/Sidebar";
 import VeryCard from "../../components/VeryCard";
 import Profile from "../../components/Profile";
 import MyProvider from "../../Provider/Provider";

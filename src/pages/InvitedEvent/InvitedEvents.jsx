@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import Profile from "../../components/Profile";
-import Sidebar from "../../components/Sidebar";
 import InvitedEventCart from "./InvitedEventCart";
 import MyProvider from "../../Provider/Provider";
 

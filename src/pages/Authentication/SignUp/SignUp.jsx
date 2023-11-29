@@ -95,12 +95,12 @@ const SignUp = () => {
     }
   };
 
+  const localUser = JSON.parse(localStorage.getItem("user"));
   useEffect(() => {
-    const localUser = JSON.parse(localStorage.getItem("user"));
     if (localUser?.token) {
       navigate("/");
     }
-  }, []);
+  }, [localUser]);
 
   return (
     <>

@@ -13,13 +13,13 @@ const useMyEvent = () => {
   const [jointedEvent, setJointedEvent] = useState({});
   const navigate = useNavigate();
   // get user
+  const localUser = JSON.parse(localStorage.getItem("user"));
   useEffect(() => {
-    const localUser = JSON.parse(localStorage.getItem("user"));
     if (!localUser?.token) {
       return navigate("/login");
     }
     setUser(localUser?.data);
-  }, []);
+  }, [localUser]);
 
   useEffect(() => {
     if (user?._id) {
