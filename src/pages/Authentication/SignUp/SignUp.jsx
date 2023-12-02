@@ -216,21 +216,14 @@ const SignUp = () => {
                           })
                         }
                       />
-                      <label className="select-none" htmlFor="rememberMe">
+                      {/* <label className="select-none" htmlFor="rememberMe">
                         Enable picture uploads from another participants
-                      </label>
+                      </label> */}
                     </div>
 
                     <button
                       type="submit"
-                      className={`flex relative rounded-3xl text-lg min-w-[15rem] w-full shadow-primary text-center py-[0.125rem] transition duration-300 uppercase ${
-                        signUpData.rememberMe
-                          ? "bg-[#30BEEC] hover:bg-white text-white hover:text-black"
-                          : "text-[#3337]"
-                      }`}
-                      disabled={
-                        !signUpData.rememberMe || signUpData.rememberMe == ""
-                      }
+                      className={`flex relative rounded-3xl text-lg min-w-[15rem] w-full shadow-primary text-center py-[0.125rem] transition duration-300 uppercase bg-[#30BEEC] hover:bg-white text-white hover:text-black `}
                     >
                       <span className="mx-auto text-lg"> Register now </span>
                     </button>

@@ -83,20 +83,20 @@ const CreateEvent = () => {
     zoom: 11,
   };
 
-  const { ref } = usePlacesWidget({
-    apiKey: import.meta.env.VITE_GOOGLE_API_KEY,
-    onPlaceSelected: (place) => {
-      setSelectedPlace((inputs) => ({
-        ...inputs,
-        address: place?.formatted_address,
-        latitude: place?.geometry?.location?.lat(),
-        longitude: place?.geometry?.location?.lng(),
-      }));
-    },
-    options: {
-      types: ["geocode"],
-    },
-  });
+  // const { ref } = usePlacesWidget({
+  //   apiKey: import.meta.env.VITE_GOOGLE_API_KEY,
+  //   onPlaceSelected: (place) => {
+  //     setSelectedPlace((inputs) => ({
+  //       ...inputs,
+  //       address: place?.formatted_address,
+  //       latitude: place?.geometry?.location?.lat(),
+  //       longitude: place?.geometry?.location?.lng(),
+  //     }));
+  //   },
+  //   options: {
+  //     types: ["geocode"],
+  //   },
+  // });
 
   // multiple image upload
   const images = [];
@@ -182,21 +182,23 @@ const CreateEvent = () => {
         }));
       });
     };
+    initAutocomplete();
 
-    // Load the Google Maps API script
-    const script = document.createElement("script");
-    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyAFJnzdCNNnWNCOFH9O79ASmHG3OndfNK4&libraries=places`;
-    script.async = true;
-    script.defer = true;
-    script.onload = initAutocomplete;
+    // // Load the Google Maps API script
+    // const script = document.createElement("script");
+    // script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyAFJnzdCNNnWNCOFH9O79ASmHG3OndfNK4&libraries=places`;
+    // script.async = true;
+    // script.defer = true;
+    // script.onload = initAutocomplete;
 
-    document.head.appendChild(script);
+    // document.head.appendChild(script);
 
-    // Cleanup function to remove the script when the component unmounts
-    return () => {
-      document.head.removeChild(script);
-    };
+    // // Cleanup function to remove the script when the component unmounts
+    // return () => {
+    //   document.head.removeChild(script);
+    // };
   }, []);
+
   return (
     <div className="flex">
       <div>
