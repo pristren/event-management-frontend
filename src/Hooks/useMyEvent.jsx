@@ -1,25 +1,17 @@
 import { useEffect, useState } from "react";
 import useAxios from "./useAxios";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const useMyEvent = () => {
   const { Axios } = useAxios();
   const [isLoading, setLoading] = useState(true);
   const [isError, setIsError] = useState(true);
-  const [user, setUser] = useState(null);
+  const { user } = useSelector((state) => state.auth);
   const [myEvent, setMyEvent] = useState([]);
   const [ownEvent, setOwnEvent] = useState({});
   const [invitedEvent, setInvitedEvent] = useState({});
   const [jointedEvent, setJointedEvent] = useState({});
-  const navigate = useNavigate();
-  // get user
-  const localUser = JSON.parse(localStorage.getItem("user"));
-  useEffect(() => {
-    if (!localUser?.token) {
-      return navigate("/login");
-    }
-    setUser(localUser?.data);
-  }, []);
 
   useEffect(() => {
     if (user?._id) {

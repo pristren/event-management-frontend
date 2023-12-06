@@ -1,6 +1,18 @@
+import { store } from "../../app/store";
 import { apiSlice } from "../api/apiSlice";
-import { userLoggedIn } from "./authSlice";
+import { userLoggedIn, userLoggedOut } from "./authSlice";
+// Check local storage for user data on app init
 
+const storedUserData = localStorage.getItem("authUser");
+
+if (storedUserData) {
+  const parsedUserData = JSON.parse(storedUserData);
+  // Dispatch an action to update the user state with data from local storage
+  store.dispatch(userLoggedIn(parsedUserData));
+} else {
+  // If no user data is found in local storage, dispatch an action to log the user out
+  store.dispatch(userLoggedOut());
+}
 export const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     register: builder.mutation({

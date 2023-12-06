@@ -281,3 +281,21 @@ abbr[title] {
   left: 100%;
   transform: translate(-50%, -50%) rotate(45deg) scaleX(0.5);
 }
+
+.wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  background-color: #000;
+  border: 2px solid #fff;
+  border-radius: 100%;
+  user-select: none;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+
+.wrapper:hover {
+  z-index: 1;
+}

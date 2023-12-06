@@ -36,7 +36,7 @@ function App() {
           />
           <Route path="my-events" element={<MyEvents />} />
           <Route path="invited-events" element={<InvitedEvents />} />
-          <Route path="event-details" element={<EventDetails />} />
+          <Route path="event-details/:id" element={<EventDetails />} />
         </Route>
       </Routes>
     </MyProvider.Provider>

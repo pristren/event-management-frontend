@@ -10,6 +10,7 @@ import Profile from "../../components/Profile";
 import MapMarker from "../Home/MapMarker";
 import Calender from "./Calender";
 import DatePicker from "react-datepicker";
+import { useSelector } from "react-redux";
 
 const clubIcons = (
   <svg
@@ -29,9 +30,9 @@ const CreateEvent = () => {
   const navigate = useNavigate();
   const { Axios } = useAxios();
   const { isExpand, setIsExpand } = useContext(MyProvider);
-  const [user, setUser] = useState(null);
+  const { user } = useSelector((state) => state.auth);
   const [selectedBtn, setSelectedBtn] = useState("private");
-  const [multipleImages, setMultipleImages] = useState(null);
+  const [multipleImages, setMultipleImages] = useState([]);
   const [fileUploadLoading, setFileUploadLoading] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState({
     address: "",
@@ -53,12 +54,6 @@ const CreateEvent = () => {
   });
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-
-  // check user
-  const localUser = JSON.parse(localStorage.getItem("user"));
-  useEffect(() => {
-    setUser(localUser?.data);
-  }, []);
 
   // input handle change set object value dynamical
   const handleInputChange = (event) => {
@@ -83,25 +78,9 @@ const CreateEvent = () => {
     zoom: 11,
   };
 
-  // const { ref } = usePlacesWidget({
-  //   apiKey: import.meta.env.VITE_GOOGLE_API_KEY,
-  //   onPlaceSelected: (place) => {
-  //     setSelectedPlace((inputs) => ({
-  //       ...inputs,
-  //       address: place?.formatted_address,
-  //       latitude: place?.geometry?.location?.lat(),
-  //       longitude: place?.geometry?.location?.lng(),
-  //     }));
-  //   },
-  //   options: {
-  //     types: ["geocode"],
-  //   },
-  // });
-
-  // multiple image upload
   const images = [];
   const uploadManager = new Bytescale.UploadManager({
-    apiKey: "public_12a1ygXCesjuuNXCWLUK6bcYcbsY",
+    apiKey: "public_W142iMq3aDCn9NTRMSpXjPdpgg5W",
   });
   const imageUpload = async (file) => {
     try {
@@ -115,7 +94,6 @@ const CreateEvent = () => {
   const handleFileChange = async (e) => {
     setFileUploadLoading(true);
     const files = e.target.files;
-    console.log(fileUploadLoading, files);
     await Promise.all(
       Array.from(files).map(async (file) => {
         if (file.size) {
@@ -125,15 +103,14 @@ const CreateEvent = () => {
     );
 
     setFileUploadLoading(false);
-    console.log("images -> ", images);
     setMultipleImages(images);
   };
 
   const createEvent = () => {
     if (
-      user?._id !== "" ||
-      inputData?.event_title !== "" ||
-      inputData?.event_Details !== "" ||
+      user?._id !== "" &&
+      inputData?.event_title !== "" &&
+      inputData?.event_Details !== "" &&
       inputData?.event_clubName !== ""
     ) {
       const newData = {
@@ -155,17 +132,17 @@ const CreateEvent = () => {
         sharable: selectedBtn,
         anOtherParticipants: inputData?.anOtherParticipants,
       };
-      console.log("empty ", newData);
       Axios.post("/create-event", newData)
         .then((res) => {
-          console.log("response ", res);
-          toast.success("Registration Success");
+          toast.success("Event Created Successfully!");
           setCreateSuccess(res?.data?.event);
+          navigate("/my-events");
         })
         .catch((err) => {
           toast.error("creating error");
-          console.error("creating error ", err);
         });
+    } else {
+      toast.error("Plase input all the feild!");
     }
   };
   useEffect(() => {
@@ -556,13 +533,18 @@ const CreateEvent = () => {
 
           {/* Right Content  */}
           <div className="shadow-primary rounded-2xl overflow-hidden md:w-full">
-            <div style={{ height: "100vh", width: "100%" }}>
+            <div style={{ height: "100%", width: "100%" }}>
               <GoogleMapReact
                 // bootstrapURLKeys={{ key: import.meta.env.VITE_GOOGLE_API_KEY }}
                 defaultCenter={defaultProps.center}
                 defaultZoom={defaultProps.zoom}
               >
-                <MapMarker lat={23.7330218} lng={90.3983829} text="My Marker" />
+                {[
+                  { lat: 23.7330218, lng: 90.3983829 },
+                  { lat: 23.7330215, lng: 90.3983829 },
+                ]?.map((res) => {
+                  <MapMarker text="My Marker" />;
+                })}
               </GoogleMapReact>
             </div>
           </div>

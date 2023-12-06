@@ -1,16 +1,22 @@
 import React, { useContext, useState } from "react";
 import Profile from "../../components/Profile";
 import Image from "../../assets/members/1.png";
-import eventDetails from "../../assets/event.png";
 import MyProvider from "../../Provider/Provider";
 import MembersModal from "./MembersModal";
 import GoogleMapReact from "google-map-react";
 import MapMarker from "../Home/MapMarker";
+import useAxios from "../../Hooks/useAxios";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import moment from "moment";
+import { Carousel } from "react-responsive-carousel";
 
 const EventDetails = () => {
+  const { Axios } = useAxios();
   const [openModal, setOpenModal] = useState(false);
+  const [events, setEvents] = useState({});
   const { isExpand, setIsExpand } = useContext(MyProvider);
-
+  const { id } = useParams();
   function handleCloseModal() {
     setOpenModal(false);
   }
@@ -25,6 +31,13 @@ const EventDetails = () => {
     },
     zoom: 11,
   };
+
+  useEffect(() => {
+    Axios.get(`/event-details/${id}`)
+      .then((res) => setEvents(res.data.data))
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
     <section className="flex">
       <MembersModal
@@ -54,17 +67,29 @@ const EventDetails = () => {
           <Profile />
         </div>
         <div className="p-6">
-          <div className="w-full h-[300px]">
-            <img
-              src={eventDetails}
-              alt=""
-              className="w-full h-full object-cover"
-            />
-          </div>
+          <Carousel
+            showArrows={false}
+            showThumbs={false}
+            autoPlay={true}
+            swipeable={true}
+            showStatus={false}
+          >
+            {events?.event_images?.map((img, i) => (
+              <div key={i} className="w-full h-[300px]">
+                <img
+                  src={img?.image}
+                  alt=""
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ))}
+          </Carousel>
+
           <div>
             <div className="flex justify-between mt-5">
               <h1 className="text-[24px] font-bold mb-1">
-                Lunch menu uptp 50%
+                {console.log(events)}
+                {events?.event_title}
               </h1>
               <div className="flex items-center gap-5">
                 <span className="flex items-center cursor-pointer">
@@ -87,56 +112,64 @@ const EventDetails = () => {
             </div>
             <p className="text-black font-semibold mb-1">B&F</p>
             <p className="text-[#828282] text-[14px] font-medium">
-              3 hours | 12, june 2021, 10:00 am
+              {moment(events?.event_time?.time_end).diff(
+                moment(events?.event_time?.time_start),
+                "hours"
+              ) == 0
+                ? `${moment(events?.event_time?.time_end).diff(
+                    moment(events?.event_time?.time_start),
+                    "minutes"
+                  )} minutes `
+                : `${moment(events?.event_time?.time_end).diff(
+                    moment(events?.event_time?.time_start),
+                    "hours"
+                  )} hours `}
+              | {moment(events?.event_date).format("MMMM D, YYYY")},{" "}
+              {moment(events?.event_time?.time_start).format("hh:mm a")}
             </p>
           </div>
 
           <div className="mb-3">
             <span className="block text-[16px] font-medium text-[#333333] mb-4">
-              24 people has joined
+              {events?.joinedPeople?.length} people has joined
             </span>
-            <div className="flex items-center gap-2">
+            {events?.joinedPeople?.length !== 0 && (
               <div className="flex items-center gap-2">
-                <img
-                  src={Image}
-                  alt=""
-                  className="w-[40px] h-[40px] rounded-full object-cover"
-                />
-                <img
-                  src={Image}
-                  alt=""
-                  className="w-[40px] h-[40px] rounded-full object-cover"
-                />
-                <img
-                  src={Image}
-                  alt=""
-                  className="w-[40px] h-[40px] rounded-full object-cover"
-                />
-              </div>
-              <span className="w-[40px] h-[40px] text-[15px] rounded-full bg-[#1BB6ED] text-white flex items-center justify-center">
-                24+
-              </span>
+                <div className="flex items-center gap-2">
+                  <img
+                    src={Image}
+                    alt=""
+                    className="w-[40px] h-[40px] rounded-full object-cover"
+                  />
+                  <img
+                    src={Image}
+                    alt=""
+                    className="w-[40px] h-[40px] rounded-full object-cover"
+                  />
+                  <img
+                    src={Image}
+                    alt=""
+                    className="w-[40px] h-[40px] rounded-full object-cover"
+                  />
+                </div>
+                <span className="w-[40px] h-[40px] text-[15px] rounded-full bg-[#1BB6ED] text-white flex items-center justify-center">
+                  24+
+                </span>
 
-              <span
-                className="text-[15px] text-[#1BB6ED] cursor-pointer"
-                onClick={handleOpenModal}
-              >
-                See all
-              </span>
-            </div>
+                <span
+                  className="text-[15px] text-[#1BB6ED] cursor-pointer"
+                  onClick={handleOpenModal}
+                >
+                  See all
+                </span>
+              </div>
+            )}
           </div>
 
           <div className="mb-4 mt-8">
             <h3 className="text-[22px] font-semibold mb-1">Descriptions</h3>
             <p className="text-[#828282] text-[16px]">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Voluptate, animi. Debitis aliquam fugiat quaerat alias ad numquam,
-              hic natus deleniti molestiae voluptatem quam itaque placeat
-              recusandae illum soluta exercitationem tenetur! Lorem ipsum dolor
-              sit amet consectetur adipisicing elit. Voluptate, animi. Debitis
-              aliquam fugiat quaerat alias ad numquam, hic natus deleniti
-              molestiae voluptatem quam itaque placeat recusandae illum soluta
-              exercitationem tenetur!
+              {events?.event_Details}
             </p>
           </div>
           <div>
@@ -155,9 +188,11 @@ const EventDetails = () => {
                 </svg>
               </span>
               <div>
-                <h3 className="text-[22px] font-semibold">Commonwealth Club</h3>
+                <h3 className="text-[22px] font-semibold">
+                  {events?.event_clubName}
+                </h3>
                 <small className="text-[#828282] font-medium">
-                  110 The Embarcadero, San Fransisco
+                  {events?.location}
                 </small>
               </div>
             </div>
