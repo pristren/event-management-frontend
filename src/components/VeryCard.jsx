@@ -55,11 +55,11 @@ const deleteIcon = (
   </svg>
 );
 
-const VeryCard = () => {
+const VeryCard = ({ imge }) => {
   return (
     <div className="h-40 w-full text-center group rounded-md relative transition duration-300 cursor-pointer">
       <figure className="w-full h-full overflow-hidden">
-        <img src={transparentBg} className="w-auto h-full" />
+        <img src={URL.createObjectURL(imge)} className="w-auto h-full" />
       </figure>
 
       <div className="py-2 px-3 z-10 top-0 absolute w-full flex justify-between ">

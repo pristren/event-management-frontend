@@ -6,8 +6,10 @@ import GoogleMapReact from "google-map-react";
 import MapMarker from "./MapMarker";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import useAxios from "../../Hooks/useAxios";
 
 const Home = () => {
+  const { Axios } = useAxios();
   const navigate = useNavigate();
   const [isExpand, setIsExpand] = useState(false);
   const defaultProps = {
@@ -18,6 +20,12 @@ const Home = () => {
     zoom: 11,
   };
   const state = useSelector((state) => state.auth);
+  const [events, setEvents] = useState([]);
+  useEffect(() => {
+    Axios.get("/all-events").then((res) => {
+      setEvents(res.data.data);
+    });
+  }, []);
   return (
     <div className="text-whitefont-semibold">
       <HomeNavbar
@@ -35,7 +43,15 @@ const Home = () => {
             defaultCenter={defaultProps.center}
             defaultZoom={defaultProps.zoom}
           >
-            <MapMarker lat={23.7330218} lng={90.3983829} text="My Marker" />
+            {events?.length > 0 &&
+              events?.map((event, i) => (
+                <MapMarker
+                  key={i}
+                  lat={event?.mapLocation?.lat}
+                  lng={event?.mapLocation?.lng}
+                  text="My Marker"
+                />
+              ))}
           </GoogleMapReact>
         </div>
       </div>

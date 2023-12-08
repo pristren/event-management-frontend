@@ -532,7 +532,7 @@ const CreateEvent = () => {
           </div>
 
           {/* Right Content  */}
-          <div className="shadow-primary rounded-2xl overflow-hidden md:w-full">
+          {/* <div className="shadow-primary rounded-2xl overflow-hidden md:w-full">
             <div style={{ height: "100%", width: "100%" }}>
               <GoogleMapReact
                 // bootstrapURLKeys={{ key: import.meta.env.VITE_GOOGLE_API_KEY }}
@@ -547,7 +547,7 @@ const CreateEvent = () => {
                 })}
               </GoogleMapReact>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

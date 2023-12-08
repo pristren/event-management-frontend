@@ -69,7 +69,7 @@ const SignUp = () => {
     const { firstName, lastName, email, password, confirmPW, rememberMe } =
       signUpData;
 
-    if (password === confirmPW && rememberMe) {
+    if (password === confirmPW) {
       if (firstName || lastName || email || password) {
         const newData = { firstName, lastName, email, password };
         register(newData).then((res) => {
@@ -104,6 +104,8 @@ const SignUp = () => {
         //     toast.error(err?.message);
         //   });
       }
+    } else {
+      toast.error("Password is not matched!");
     }
   };
 
