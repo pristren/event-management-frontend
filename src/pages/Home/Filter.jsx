@@ -181,7 +181,7 @@ const Filter = () => {
                           >
                             <span> {s.name}</span>
 
-                            <button className="w-5 h-5"> {closeIcons} </button>
+                            <span className="w-5 h-5"> {closeIcons} </span>
                             {/* {selected2.length > i + 1 ? "," : ""} */}
                           </span>
                         );

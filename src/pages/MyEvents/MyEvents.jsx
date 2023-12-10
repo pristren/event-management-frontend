@@ -3,10 +3,21 @@ import useMyEvent from "../../Hooks/useMyEvent";
 import MyProvider from "../../Provider/Provider";
 import Profile from "../../components/Profile";
 import MyEventsCart from "./MyEventsCart";
+import useAxios from "../../Hooks/useAxios";
+import { useSelector } from "react-redux";
 
 const MyEvents = () => {
-  const { ownEvent, isLoading, isError } = useMyEvent();
+  const { ownEvent, setMyEvent } = useMyEvent();
   const { isExpand, setIsExpand } = useContext(MyProvider);
+  const { user } = useSelector((state) => state.auth);
+
+  const { Axios } = useAxios();
+  const handleDelete = async (id) => {
+    const res = await Axios.delete(`/events/${id}`);
+    if (res.data.message) {
+      Axios.get(`/my-events/${user?._id}`).then((res) => setMyEvent(res.data));
+    }
+  };
 
   return (
     <section className="flex">
@@ -35,7 +46,11 @@ const MyEvents = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-5">
           {ownEvent?.ownEvents &&
             ownEvent?.ownEvents.map((event, idx) => (
-              <MyEventsCart key={idx} event={event} />
+              <MyEventsCart
+                key={idx}
+                event={event}
+                handleDelete={handleDelete}
+              />
             ))}
         </div>
       </div>

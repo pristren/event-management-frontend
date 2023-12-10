@@ -2,7 +2,7 @@ import moment from "moment/moment";
 import { Link, useNavigate } from "react-router-dom";
 // import invitedCardImage from "../../assets/invite-card-banner.png";
 
-const MyEventsCart = ({ event }) => {
+const MyEventsCart = ({ event, handleDelete }) => {
   const navigate = useNavigate();
   return (
     <div>
@@ -42,12 +42,20 @@ const MyEventsCart = ({ event }) => {
             </p>
           </div>
 
-          <Link
-            className="w-full text-[#33BDEF] bg-[#33BDEF] bg-opacity-[0.15] hover:bg-opacity-80 hover:text-white transition duration-200 block text-center py-2 mt-7"
-            to="#"
-          >
-            Edit
-          </Link>
+          <div className="flex justify-between gap-4">
+            <Link
+              className="rounded-lg w-full text-[#33BDEF] bg-[#33BDEF] bg-opacity-[0.15] hover:bg-opacity-80 hover:text-white transition duration-200 block text-center py-2 mt-7"
+              to="#"
+            >
+              Edit
+            </Link>
+            <button
+              className="rounded-lg w-full text-white bg-[#f77979]  hover:text-white transition duration-200 block text-center py-2 mt-7"
+              onClick={() => handleDelete(event?._id)}
+            >
+              Delete
+            </button>
+          </div>
         </div>
       </div>
     </div>

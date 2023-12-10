@@ -27,7 +27,15 @@ const useMyEvent = () => {
     setJointedEvent(myEvent?.data?.joinedEvents);
   }, [myEvent]);
 
-  return { jointedEvent, invitedEvent, ownEvent, myEvent, isLoading, isError };
+  return {
+    jointedEvent,
+    invitedEvent,
+    ownEvent,
+    myEvent,
+    isLoading,
+    isError,
+    setMyEvent,
+  };
 };
 
 export default useMyEvent;

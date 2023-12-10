@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import VeryCard from "../../components/VeryCard";
 import Profile from "../../components/Profile";
 import MyProvider from "../../Provider/Provider";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   businessIcon,
   lockIcon,
@@ -14,11 +14,12 @@ import {
 } from "../../components/SVGIcons/Icons";
 import axios from "axios";
 import useAxios from "../../Hooks/useAxios";
+import { userLoggedIn } from "../../features/auth/authSlice";
 
 const ProfileSetting = () => {
   const { Axios } = useAxios();
   const [number, setNumber] = useState();
-  const [selectedBtn, setSelectedBtn] = useState("Private");
+  const [selectedBtn, setSelectedBtn] = useState("");
   const [upload, setUpload] = useState(false);
   const state = useSelector((state) => state.auth);
   const [inputData, setInputData] = useState({});
@@ -32,7 +33,8 @@ const ProfileSetting = () => {
   const { isExpand, setIsExpand } = useContext(MyProvider);
 
   useEffect(() => {
-    setInputData(state.user);
+    setInputData(state?.user);
+    setSelectedBtn(state?.user?.account_type);
   }, []);
 
   const fileInputRef = useRef(null);
@@ -41,10 +43,34 @@ const ProfileSetting = () => {
     fileInputRef.current.click();
   };
   const [selectedFile, setSelectedFile] = useState([]);
-  const handleUploadFileChange = (event) => {
+  const [uploadImages, setUploadImages] = useState([]);
+  const API_KEY = "c8818fe821c0aee81ebf0b77344f0e2b";
+  useEffect(() => {
+    setUploadImages(state?.user?.profile_images);
+    if (state?.user?.profile_images?.length) {
+      setUpload(true);
+    }
+  }, []);
+
+  const dispatch = useDispatch();
+
+  const [loading, setLoading] = useState(false);
+  const handleUploadFileChange = async (event) => {
     // Handle the selected file(s) here
-    const file = event.target.files[0];
-    setSelectedFile([...selectedFile, file]);
+    setLoading(true);
+    const formData = new FormData();
+    formData.append("image", event.target.files[0]);
+    // const file = event.target.files[0];
+
+    const response = await axios.post(
+      `https://api.imgbb.com/1/upload?key=${API_KEY}`,
+      formData
+    );
+
+    setUploadImages([...uploadImages, response.data.data.url]);
+    // const file = event.target.files[0];
+    setLoading(false);
+    // setSelectedFile([...selectedFile, file]);
   };
 
   const handleInputChange = (event) => {
@@ -56,18 +82,42 @@ const ProfileSetting = () => {
   };
 
   const handleSubmit = () => {
-    console.log("number ", number);
-    console.log("verifyPin ", verifyPin);
+    // console.log("number ", number);
+    // console.log("verifyPin ", verifyPin);
     // function here.....
-    const newData = { ...inputData, account_type: selectedBtn };
+    const newData = {
+      ...inputData,
+      account_type: selectedBtn,
+      profile_images: uploadImages,
+    };
     Axios.put(`/user/updates/${state.user._id}`, newData).then((res) => {
-      console.log(res);
+      // console.log(res.data);
+      setUploadImages(res.data?.profile_images);
+      setInputData(res.data);
+      localStorage.setItem(
+        "authUser",
+        JSON.stringify({
+          accessToken: state.accessToken,
+          user: res.data,
+        })
+      );
+      dispatch(
+        userLoggedIn({
+          accessToken: state.accessToken,
+          user: res.data,
+        })
+      );
     });
   };
 
+  const handleImgDelete = (url) => {
+    const res = uploadImages.filter((u) => u !== url);
+    setUploadImages(res);
+  };
+
   return (
-    <section className="flex">
-      <div>
+    <section className="flex  ">
+      <div className=" w-full">
         <div className="flex items-center justify-between pt-4 pb-5 sm:pb-10 px-4">
           <span
             className="cursor-pointer sm:hidden"
@@ -92,15 +142,12 @@ const ProfileSetting = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div className="bg-[#F2F6FF] rounded">
             <div className="flex flex-col items-center justify-center py-6 px-12">
-              <a
-                href="#"
-                className="flex relative rounded-3xl text-lg min-w-[15rem] bg-white shadow-md text-center py-[0.125rem]"
-              >
+              <div className="flex relative rounded-3xl text-lg min-w-[15rem] bg-white shadow-md text-center py-[0.125rem]">
                 <span className="bg-[#30BEEC] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center absolute left-1 top-0.5 ">
                   {settingIcon}
                 </span>
                 <span className="mx-auto text-lg">Profile</span>
-              </a>
+              </div>
 
               <div className="mt-10 flex flex-col items-center mb-3">
                 <figure className="bg-[#30BEEC] text-white px-1 py-1 rounded-full w-24 h-24 flex justify-center items-center">
@@ -109,8 +156,7 @@ const ProfileSetting = () => {
 
                 <div className="text-center">
                   <h2 className="text-2xl font-semibold">
-                    {state?.user?.firstName}
-                    {state?.user?.lastName}
+                    {state?.user?.firstName} {state?.user?.lastName}
                   </h2>
                   <p className="text-gray-500 text-base">
                     {state?.user?.email}
@@ -157,8 +203,8 @@ const ProfileSetting = () => {
                   <div className="relative">
                     <textarea
                       type="text"
-                      name="sort_bio"
-                      value={inputData?.sort_bio}
+                      name="short_bio"
+                      value={inputData?.short_bio}
                       onChange={handleInputChange}
                       placeholder="Short Bio"
                       className="py-3 px-4 text-base rounded-3xl shadow-md w-full resize-none focus:outline-none h-40"
@@ -168,7 +214,7 @@ const ProfileSetting = () => {
                     </p>
                   </div>
 
-                  <div>
+                  {/* <div>
                     <input
                       value={inputData?.connect_account}
                       onChange={handleInputChange}
@@ -177,7 +223,7 @@ const ProfileSetting = () => {
                       placeholder="Connect Account"
                       className="py-1 px-4 text-base rounded-[5rem] shadow-md w-full"
                     />
-                  </div>
+                  </div> */}
 
                   <button
                     onClick={() => setUpload(!upload)}
@@ -219,8 +265,11 @@ const ProfileSetting = () => {
                 </button>
               </div>
 
-              <button className="py-2 min-w-[14rem] bg-[#30BEEC] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mt-10">
-                <span>Save</span>
+              <button
+                onClick={handleSubmit}
+                className="py-2 min-w-[14rem] bg-[#30BEEC] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mt-10"
+              >
+                <span>Update Profile</span>
               </button>
             </div>
           </div>
@@ -253,15 +302,14 @@ const ProfileSetting = () => {
               <form className="mt-7">
                 <div className="flex flex-col gap-6">
                   <div className="grid grid-cols-3 gap-5">
-                    {selectedFile?.map((img, i) => (
-                      <VeryCard key={i} imge={img} />
+                    {uploadImages?.map((img, i) => (
+                      <VeryCard
+                        key={i}
+                        img={img}
+                        handleImgDelete={handleImgDelete}
+                      />
                     ))}
-                    {/* // }
-                    // <VeryCard />
-                    // <VeryCard />
-                    // <VeryCard />
-                    // <VeryCard />
-                    // <VeryCard /> */}
+                    {loading && <div>loading...</div>}
                   </div>
                   <div className="w-[80%] mx-auto flex justify-between items-center gap-2 rounded-3xl text-lg min-w-[15rem] bg-white shadow-md px-1 overflow-hidden mt-8 mb-2">
                     <span className="bg-[#30BEEC] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center">
@@ -373,7 +421,7 @@ const ProfileSetting = () => {
                 onClick={handleSubmit}
                 className="py-2 min-w-[14rem] bg-[#30BEEC] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mt-10"
               >
-                <span>Done</span>
+                <span>Verify Phone</span>
               </button>
             </div>
           </div>

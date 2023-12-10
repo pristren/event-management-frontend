@@ -42,6 +42,11 @@ const CreateEvent = () => {
   const [eventDate, setEventDate] = useState(false);
   const [error, setError] = useState(false);
   const [createSuccess, setCreateSuccess] = useState(false);
+  const [startTime, setStartTime] = useState(null);
+  const [endTime, setEndTime] = useState(null);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+
   const [inputData, setInputData] = useState({
     invitedUserId: "",
     event_title: "",
@@ -52,8 +57,6 @@ const CreateEvent = () => {
     joinedPeople: "",
     anOtherParticipants: false,
   });
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
 
   // input handle change set object value dynamical
   const handleInputChange = (event) => {
@@ -124,10 +127,13 @@ const CreateEvent = () => {
           lat: selectedPlace?.latitude,
           lng: selectedPlace?.longitude,
         },
-        event_date: eventDate,
+        event_date: {
+          date_start: startDate,
+          date_end: endDate,
+        },
         event_time: {
-          time_start: startDate,
-          time_end: endDate,
+          time_start: startTime,
+          time_end: endTime,
         },
         sharable: selectedBtn,
         anOtherParticipants: inputData?.anOtherParticipants,
@@ -200,7 +206,7 @@ const CreateEvent = () => {
           <Profile />
         </div>
 
-        <div className="min-h-screen bg-[#F2F6FF] py-10 px-5 grid items-stretch grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        <div className="min-h-screen bg-[#F2F6FF] py-10 px-5 grid items-stretch grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-10">
           {/* Left Content  */}
           <div>
             <div className="flex items-center bg-white rounded-full overflow-hidden px-4 shadow-primary">
@@ -253,12 +259,37 @@ const CreateEvent = () => {
                 <Calender setEventDate={setEventDate} />
               </div>
             </div>
-
+            {/* date */}
             <div className="flex gap-5 mt-5">
               <div className="w-full flex gap-3 items-center justify-between bg-white rounded-full shadow-primary">
                 <DatePicker
                   selected={startDate}
                   onChange={(date) => setStartDate(date)}
+                  // showTimeSelect
+                  // showTimeSelectOnly
+                  // timeIntervals={15}
+                  // timeCaption="Time"
+                  dateFormat="MM/dd/yyyy"
+                  className="w-full py-2 px-4 outline-none border-none text-[15px] text-[#1BB6ED] bg-white font-medium rounded-full placeholder:text-[#6c757d] placeholder:font-medium"
+                  placeholderText="Start Date"
+                />
+              </div>
+
+              <div className="w-full flex gap-3 items-center justify-between bg-white rounded-full shadow-primary">
+                <DatePicker
+                  selected={endDate}
+                  onChange={(date) => setEndDate(date)}
+                  dateFormat="MM/dd/yyyy"
+                  className="w-full py-2 px-4 outline-none border-none text-[15px] text-[#1BB6ED] bg-white font-medium rounded-full placeholder:text-[#6c757d] placeholder:font-medium"
+                  placeholderText="End Date"
+                />
+              </div>
+            </div>
+            <div className="flex gap-5 mt-5">
+              <div className="w-full flex gap-3 items-center justify-between bg-white rounded-full shadow-primary">
+                <DatePicker
+                  selected={startTime}
+                  onChange={(date) => setStartTime(date)}
                   showTimeSelect
                   showTimeSelectOnly
                   timeIntervals={15}
@@ -267,28 +298,12 @@ const CreateEvent = () => {
                   className="w-full py-2 px-4 outline-none border-none text-[15px] text-[#1BB6ED] bg-white font-medium rounded-full placeholder:text-[#6c757d] placeholder:font-medium"
                   placeholderText="Time start"
                 />
-                {/* <input
-                  type="time"
-                  placeholder="Time start"
-                  title="Time start"
-                  name="time_start"
-                  onChange={handleInputChange}
-                  required
-                /> */}
               </div>
 
               <div className="w-full flex gap-3 items-center justify-between bg-white rounded-full shadow-primary">
-                {/* <input
-                  type="time"
-                  placeholder="Time end"
-                  title="Time end"
-                  name="time_end"
-                  onChange={handleInputChange}
-                  className="w-full py-2 px-4 outline-none border-none text-[15px] text-[#1BB6ED] bg-white font-medium rounded-full placeholder:text-[#6c757d] placeholder:font-medium"
-                /> */}
                 <DatePicker
-                  selected={endDate}
-                  onChange={(date) => setEndDate(date)}
+                  selected={endTime}
+                  onChange={(date) => setEndTime(date)}
                   showTimeSelect
                   showTimeSelectOnly
                   timeIntervals={15}
@@ -318,19 +333,11 @@ const CreateEvent = () => {
                     </g>
                   </g>
                 </svg>
-                {/* <span className="text-[#1D1D1D] font-medium whitespace-nowrap"></span> */}
               </span>
               <input
                 id="autocomplete"
                 type="text"
                 placeholder="Place"
-                // value={selectedPlace?.address}
-                // onChange={(e) =>
-                //   setSelectedPlace({
-                //     ...selectedPlace,
-                //     address: e.target.value,
-                //   })
-                // }
                 className="w-full px-2 py-2 outline-none border-none text-[15px] font-normal focus:outline-none placeholder:text-[#6c757d] placeholder:font-medium"
               />
             </div>
