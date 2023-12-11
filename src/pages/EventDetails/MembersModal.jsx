@@ -2,7 +2,8 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import MemberCard from "./MemberCard";
 
-export default function MembersModal({ openModal, handleCloseModal }) {
+export default function MembersModal({ openModal, handleCloseModal, events }) {
+  const people = events?.joinedPeople;
   const arr = [{}, {}, {}];
   return (
     <>
@@ -44,7 +45,7 @@ export default function MembersModal({ openModal, handleCloseModal }) {
                         <svg
                           stroke="currentColor"
                           fill="red"
-                          stroke-width="0"
+                          strokeWidth="0"
                           viewBox="0 0 1024 1024"
                           height="22px"
                           width="22px"
@@ -56,8 +57,8 @@ export default function MembersModal({ openModal, handleCloseModal }) {
                     </div>
 
                     <div className="flex flex-col gap-2">
-                      {arr?.map((member, index) => (
-                        <MemberCard key={index} />
+                      {people?.map((member, index) => (
+                        <MemberCard member={member} key={index} />
                       ))}
                     </div>
                   </div>

@@ -34,7 +34,7 @@ const radioIcons = (
   <svg
     stroke="currentColor"
     fill="currentColor"
-    stroke-width="0"
+    strokeWidth="0"
     className="w-full h-full"
     viewBox="0 0 512 512"
     xmlns="http://www.w3.org/2000/svg"
@@ -46,7 +46,7 @@ const radioIconsFocus = (
   <svg
     stroke="currentColor"
     fill="currentColor"
-    stroke-width="0"
+    strokeWidth="0"
     viewBox="0 0 512 512"
     className="w-full h-full"
     xmlns="http://www.w3.org/2000/svg"
@@ -58,7 +58,7 @@ const upArrowIcon = (
   <svg
     stroke="currentColor"
     fill="currentColor"
-    stroke-width="0"
+    strokeWidth="0"
     viewBox="0 0 512 512"
     className="w-full h-full"
     xmlns="http://www.w3.org/2000/svg"
