@@ -13,6 +13,8 @@ const useMyEvent = () => {
   const [invitedEvent, setInvitedEvent] = useState({});
   const [jointedEvent, setJointedEvent] = useState({});
 
+  // console.log(myEvent);
+
   useEffect(() => {
     if (user?._id) {
       Axios.get(`/my-events/${user?._id}`)

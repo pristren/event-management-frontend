@@ -1,10 +1,37 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Profile from "../../components/Profile";
 import InvitedEventCart from "./InvitedEventCart";
 import MyProvider from "../../Provider/Provider";
+import useMyEvent from "../../Hooks/useMyEvent";
+import useAxios from "../../Hooks/useAxios";
+import { useSelector } from "react-redux";
 
 const InvitedEvents = () => {
   const { isExpand, setIsExpand } = useContext(MyProvider);
+
+  const { Axios } = useAxios();
+
+  const { user } = useSelector((state) => state.auth);
+  // console.log(user);
+
+  const [invitedEvent, setInvitedEvent] = useState([]);
+  console.log(invitedEvent);
+
+  useEffect(() => {
+    const allEvents = async () => {
+      const res = await Axios.get("/all-events");
+      const data = await res.data;
+      setInvitedEvent(
+        data?.data?.filter(
+          (event) =>
+            event?.joinedPeople?.find((v) => v === user?.email) &&
+            event?.userId !== user._id
+        )
+      );
+    };
+    allEvents();
+  }, []);
+
   return (
     <section className="flex">
       <div className="w-full">
@@ -30,9 +57,10 @@ const InvitedEvents = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 px-5">
-          <InvitedEventCart />
-          <InvitedEventCart />
-          <InvitedEventCart />
+          {invitedEvent &&
+            invitedEvent.map((event, i) => {
+              return <InvitedEventCart event={event} key={i} />;
+            })}
         </div>
       </div>
     </section>

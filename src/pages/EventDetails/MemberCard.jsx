@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import Image from "../../assets/client.jpg";
 import axios from "axios";
 import useAxios from "../../Hooks/useAxios";
+import { useNavigate } from "react-router-dom";
 
 const MemberCard = ({ member }) => {
+  const navigate = useNavigate();
   const { Axios } = useAxios();
   const [user, setUser] = useState({});
   useEffect(() => {
@@ -16,7 +18,10 @@ const MemberCard = ({ member }) => {
     user();
   }, [member]);
   return (
-    <div className="bg-white rounded-xl p-3">
+    <div
+      className="bg-white rounded-xl p-3 "
+      onClick={() => navigate(`/profile/${user._id}`)}
+    >
       <div className="flex items-center gap-3">
         <img
           src={Image}

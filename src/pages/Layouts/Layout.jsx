@@ -1,9 +1,11 @@
 import { Outlet, useLocation, useParams } from "react-router-dom";
 import Sidebar from "../../components/Sidebar";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const Layout = () => {
-  const [isUser, setIsUser] = useState(true);
+  const { user } = useSelector((state) => state.auth);
+  console.log(user);
   const location = useLocation();
   const pathname = location.pathname;
 
@@ -11,7 +13,7 @@ const Layout = () => {
     <div className="flex">
       {pathname === "/" || pathname === "/login" || pathname === "/sign-up"
         ? null
-        : isUser && <Sidebar />}
+        : user !== null && <Sidebar />}
       <main className="w-full">
         <Outlet />
       </main>

@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import Filter from "./Filter";
 import HomeNavbar from "./HomeNavbar";
 import HomeSidebar from "./HomeSidebar";
-import GoogleMapReact from "google-map-react";
-import MapMarker from "./MapMarker";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import useAxios from "../../Hooks/useAxios";
@@ -65,21 +63,6 @@ const Home = () => {
           <HomeSidebar setIsExpand={setIsExpand} isExpand={isExpand} />
         )}
         <div style={{ height: "100vh", width: "100%" }}>
-          {/* <GoogleMapReact
-            bootstrapURLKeys={{ key: import.meta.env.VITE_GOOGLE_API_KEY }}
-            defaultCenter={defaultProps.center}
-            defaultZoom={defaultProps.zoom}
-          >
-            {events?.length > 0 &&
-              events?.map((event, i) => (
-                <MapMarker
-                  key={i}
-                  lat={event?.mapLocation?.lat}
-                  lng={event?.mapLocation?.lng}
-                  text="My Marker"
-                />
-              ))}
-          </GoogleMapReact> */}
           {userLocation?.center?.lat !== undefined &&
             userLocation?.center?.lng !== undefined && (
               <div
@@ -87,7 +70,6 @@ const Home = () => {
                   height: "100%",
                   width: "100%",
                   border: 0,
-                  // position: "absolute",
                 }}
               >
                 {events?.length > 0 && (
@@ -105,10 +87,9 @@ const Home = () => {
                           defaultProps?.center?.lng,
                       }}
                       gestureHandling={"greedy"}
-                      // disableDefaultUI={true}
+                      disableDefaultUI={true}
                       mapId={"4504f8b37365c3d0"}
                     >
-                      {/* {console.log(userLocation.center)} */}
                       {events?.map((event, i) => {
                         return (
                           <AdvancedMarker
@@ -135,71 +116,8 @@ const Home = () => {
                           </AdvancedMarker>
                         );
                       })}
-                      {/* <AdvancedMarker
-                        className="relative"
-                        position={{
-                          lat: defaultProps?.center?.lat,
-                          lng: defaultProps?.center?.lng,
-                        }}
-                        onClick={() => setPopOver(!popover)}
-                      >
-                        <img
-                          src="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
-                          alt=""
-                        />
-                        {popover && (
-                          <div className="grid grid-cols-2 absolute z-10">
-                            <div className="!bg-white w-72 !z-[999] p-6 text-lg -translate-x-2/4">
-                              <h2>Event Details</h2>
-                              <p>Email: some@mail.com</p>
-                            </div>
-                          </div>
-                        )}
-                      </AdvancedMarker>
-                      <AdvancedMarker
-                        className="relative"
-                        position={{
-                          lat: userLocation?.center?.lat,
-                          lng: userLocation?.center?.lng,
-                        }}
-                        onClick={() => setPopOver(!popover)}
-                      >
-                        <img
-                          src="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
-                          alt=""
-                        />
-                        {popover && (
-                          <div className="grid grid-cols-2 absolute z-10">
-                            <div className="!bg-white w-72 !z-[999] p-6 text-lg -translate-x-2/4">
-                              <h2>Event Details</h2>
-                              <p>Email: some@mail.com</p>
-                            </div>
-                          </div>
-                        )}
-                      </AdvancedMarker> */}
                     </Map>
                   </APIProvider>
-                  // <GoogleMapReact
-                  //   bootstrapURLKeys={{
-                  //     key: `${import.meta.env.VITE_GOOGLE_API_KEY}`,
-                  //   }}
-                  //   defaultCenter={userLocation?.center}
-                  //   defaultZoom={userLocation?.zoom}
-                  // >
-                  //   {events?.map((event, i) =>
-                  //     event?.mapLocation?.lat !== undefined &&
-                  //     event?.mapLocation?.lng !== undefined ? (
-                  //       <div
-                  //         key={i}
-                  //         lat={event?.mapLocation?.lat}
-                  //         lng={event?.mapLocation?.lng}
-                  //         className="marker"
-                  //       ></div>
-                  //     ) : (
-                  //       "loading..."
-                  //     )
-                  //   )}
-                  // </GoogleMapReact>
                 )}
               </div>
             )}

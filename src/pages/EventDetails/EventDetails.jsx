@@ -6,7 +6,7 @@ import MembersModal from "./MembersModal";
 import GoogleMapReact from "google-map-react";
 import MapMarker from "../Home/MapMarker";
 import useAxios from "../../Hooks/useAxios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import moment from "moment";
 import { Carousel } from "react-responsive-carousel";
@@ -34,6 +34,7 @@ const EventDetails = () => {
   const [openModal, setOpenModal] = useState(false);
   const [events, setEvents] = useState({});
   const [userLocation, setUserLocation] = useState({});
+  const navigate = useNavigate();
   const { isExpand, setIsExpand } = useContext(MyProvider);
   const { id } = useParams();
   function handleCloseModal() {
@@ -85,6 +86,17 @@ const EventDetails = () => {
   //   }
   // }, []);
   const [popover, setPopOver] = useState(false);
+  const handleJoin = async (id) => {
+    const updated = await Axios.put(`/join/${id}`, { email: user?.email }).then(
+      (res) => {
+        if (res.status === 200) {
+          Axios.get(`/event-details/${id}`)
+            .then((res) => setEvents(res.data.data))
+            .catch((err) => console.log(err));
+        }
+      }
+    );
+  };
   return (
     <section className="flex">
       {openModal && (
@@ -155,8 +167,19 @@ const EventDetails = () => {
                     <path d="M383.822 344.427c-16.045 0-31.024 5.326-41.721 15.979l-152.957-88.42c1.071-5.328 2.142-9.593 2.142-14.919 0-5.328-1.071-9.593-2.142-14.919l150.826-87.35c11.762 10.653 26.741 17.041 43.852 17.041 35.295 0 64.178-28.766 64.178-63.92C448 72.767 419.117 44 383.822 44c-35.297 0-64.179 28.767-64.179 63.92 0 5.327 1.065 9.593 2.142 14.919l-150.821 87.35c-11.767-10.654-26.741-17.041-43.856-17.041-35.296 0-63.108 28.766-63.108 63.92 0 35.153 28.877 63.92 64.178 63.92 17.115 0 32.089-6.389 43.856-17.042l151.891 88.421c-1.076 4.255-2.141 8.521-2.141 13.847 0 34.094 27.806 61.787 62.037 61.787 34.229 0 62.036-27.693 62.036-61.787.001-34.094-27.805-61.787-62.035-61.787z"></path>
                   </svg>
                 </span>
+                {user && !events?.anOtherParticipants && (
+                  <button
+                    className="bg-green-200 text-greeen-700 py-2 px-6 rounded-lg font-semibold"
+                    onClick={() => navigate("/login")}
+                  >
+                    Add Images
+                  </button>
+                )}
                 {!user && (
-                  <button className="bg-[#E0F5FD] text-[#1BB6ED] py-2 px-6 rounded-lg font-semibold">
+                  <button
+                    className="bg-[#E0F5FD] text-[#1BB6ED] py-2 px-6 rounded-lg font-semibold"
+                    onClick={() => navigate("/login")}
+                  >
                     Join
                   </button>
                 )}
@@ -166,7 +189,10 @@ const EventDetails = () => {
                     Joined
                   </button>
                 ) : (
-                  <button className="bg-[#E0F5FD] text-[#1BB6ED] py-2 px-6 rounded-lg font-semibold">
+                  <button
+                    onClick={() => handleJoin(events?._id)}
+                    className="bg-[#E0F5FD] text-[#1BB6ED] py-2 px-6 rounded-lg font-semibold"
+                  >
                     Join
                   </button>
                 )}
@@ -252,51 +278,6 @@ const EventDetails = () => {
               </div>
             </div>
             <div className="mt-4 bg-white p-4 rounded-xl shadow-primary">
-              {/* <div
-                style={{ border: "0", height: "300px", borderRadius: "16px" }}
-              >
-                <GoogleMapReact
-                  bootstrapURLKeys={{
-                    key: import.meta.env.VITE_GOOGLE_API_KEY,
-                  }}
-                  defaultCenter={defaultProps.center}
-                  defaultZoom={defaultProps.zoom}
-                >
-                  <MapMarker
-                    lat={events?.mapLocation?.lat}
-                    lng={events?.mapLocation?.lng}
-                    text="My Marker"
-                  />
-                </GoogleMapReact>
-              </div> */}
-              {/* {console.log(defaultProps?.center.lat)} */}
-              {/* {defaultProps?.center.lat !== undefined &&
-                defaultProps?.center.lng !== undefined && (
-                  <div
-                    style={{
-                      height: "600px",
-                      width: "100%",
-                      border: 0,
-                      // position: "absolute",
-                    }}
-                  >
-                    {console.log(defaultProps?.center)}
-                    <GoogleMapReact
-                      bootstrapURLKeys={{
-                        key: `${import.meta.env.VITE_GOOGLE_API_KEY}`,
-                      }}
-                      defaultCenter={defaultProps?.center}
-                      defaultZoom={defaultProps?.zoom}
-                    >
-                      <AnyReactComponent
-                        lat={defaultProps?.center?.lat}
-                        lng={defaultProps?.center?.lng}
-                        text="two"
-                      />
-                    </GoogleMapReact>
-                  </div>
-                )} */}
-
               {defaultProps?.center.lat !== undefined &&
                 defaultProps?.center.lng !== undefined && (
                   <div
@@ -320,7 +301,6 @@ const EventDetails = () => {
                         // disableDefaultUI={true}
                         mapId={"4504f8b37365c3d0"}
                       >
-                        {/* <Marker position={{ lat: 53.54992, lng: 10.00678 }} /> */}
                         <AdvancedMarker
                           className="relative"
                           // className={customMarker}
@@ -342,39 +322,7 @@ const EventDetails = () => {
                               </div>
                             </div>
                           )}
-                          {/* <Popover className="relative">
-                            <Popover.Button className={"font-bold text-3xl"}>
-                              y
-                            </Popover.Button>
-
-                            <Popover.Panel className="absolute z-10">
-                              <div className="grid grid-cols-2">
-                                <a href="/analytics">Analytics</a>
-                                <a href="/engagement">Engagement</a>
-                                <a href="/security">Security</a>
-                                <a href="/integrations">Integrations</a>
-                              </div>
-                            </Popover.Panel>
-                          </Popover> */}
                         </AdvancedMarker>
-
-                        {/* <Marker
-                          // icon={glyphImg}
-                          onClick={() => alert("some")}
-                          position={{
-                            lat: defaultProps?.center?.lat,
-                            lng: defaultProps?.center?.lng,
-                          }}
-                        >
-                          anth
-                        </Marker> */}
-                        {/* <AdvancedMarker
-                          // className={customMarker}
-                          position={{ lat: 53.54992, lng: 10.00678 }}
-                        >
-                          <h2>I am so customized</h2>
-                          <p>That is pretty awesome!</p>
-                        </AdvancedMarker> */}
                       </Map>
                     </APIProvider>
                   </div>

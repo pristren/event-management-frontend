@@ -13,6 +13,7 @@ import Layout from "./pages/Layouts/Layout";
 import MyProvider from "./Provider/Provider";
 import { useState } from "react";
 import AuthProtected from "./routes/AuthProtected";
+import ProfilePage from "./pages/Profile/ProfilePage";
 
 function App() {
   const [isExpand, setIsExpand] = useState(false);
@@ -37,6 +38,7 @@ function App() {
           <Route path="my-events" element={<MyEvents />} />
           <Route path="invited-events" element={<InvitedEvents />} />
           <Route path="event-details/:id" element={<EventDetails />} />
+          <Route path="profile/:id" element={<ProfilePage />} />
         </Route>
       </Routes>
     </MyProvider.Provider>
