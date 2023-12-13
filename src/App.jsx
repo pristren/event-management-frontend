@@ -26,7 +26,14 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route path="sign-up" element={<SignUp />} />
           <Route path="home-screen" element={<HomeScreen />} />
-          <Route path="create-event" element={<CreateEvent />} />
+          <Route
+            path="create-event"
+            element={
+              <AuthProtected>
+                <CreateEvent />
+              </AuthProtected>
+            }
+          />
           <Route
             path="profile-settings"
             element={
@@ -35,8 +42,22 @@ function App() {
               </AuthProtected>
             }
           />
-          <Route path="my-events" element={<MyEvents />} />
-          <Route path="invited-events" element={<InvitedEvents />} />
+          <Route
+            path="my-events"
+            element={
+              <AuthProtected>
+                <MyEvents />
+              </AuthProtected>
+            }
+          />
+          <Route
+            path="invited-events"
+            element={
+              <AuthProtected>
+                <InvitedEvents />
+              </AuthProtected>
+            }
+          />
           <Route path="event-details/:id" element={<EventDetails />} />
           <Route path="profile/:id" element={<ProfilePage />} />
         </Route>

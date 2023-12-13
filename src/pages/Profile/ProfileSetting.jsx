@@ -15,6 +15,9 @@ import {
 import axios from "axios";
 import useAxios from "../../Hooks/useAxios";
 import { userLoggedIn } from "../../features/auth/authSlice";
+import ImageUploader from "react-images-upload";
+import { toast } from "react-hot-toast";
+import useMyEvent from "../../Hooks/useMyEvent";
 
 const ProfileSetting = () => {
   const { Axios } = useAxios();
@@ -31,6 +34,7 @@ const ProfileSetting = () => {
     five: "",
   });
   const { isExpand, setIsExpand } = useContext(MyProvider);
+  const { phone, setPhone, sendOtp } = useMyEvent();
 
   useEffect(() => {
     setInputData(state?.user);
@@ -90,29 +94,57 @@ const ProfileSetting = () => {
       account_type: selectedBtn,
       profile_images: uploadImages,
     };
-    Axios.put(`/user/updates/${state.user._id}`, newData).then((res) => {
-      // console.log(res.data);
-      setUploadImages(res.data?.profile_images);
-      setInputData(res.data);
-      localStorage.setItem(
-        "authUser",
-        JSON.stringify({
-          accessToken: state.accessToken,
-          user: res.data,
-        })
-      );
-      dispatch(
-        userLoggedIn({
-          accessToken: state.accessToken,
-          user: res.data,
-        })
-      );
-    });
+    Axios.put(`/user/updates/${state.user._id}`, newData)
+      .then((res) => {
+        // console.log(res.data);
+        setUploadImages(res.data?.profile_images);
+        setInputData(res.data);
+        localStorage.setItem(
+          "authUser",
+          JSON.stringify({
+            accessToken: state.accessToken,
+            user: res.data,
+          })
+        );
+        dispatch(
+          userLoggedIn({
+            accessToken: state.accessToken,
+            user: res.data,
+          })
+        );
+        toast.success("profile update was successful.");
+      })
+      .catch((err) => {
+        toast.error("error while updating the profile.");
+      });
   };
 
   const handleImgDelete = (url) => {
     const res = uploadImages.filter((u) => u !== url);
     setUploadImages(res);
+  };
+
+  const onDrop = async (pictureFiles) => {
+    setLoading(true);
+    // setPictures(pictureFiles);
+    const uploadedImagesArray = [];
+
+    for (const image of pictureFiles) {
+      const formData = new FormData();
+      formData.append("image", image);
+
+      const response = await Axios.post(
+        `https://api.imgbb.com/1/upload?key=${API_KEY}`,
+        formData
+      );
+
+      uploadedImagesArray.push(response?.data?.data?.url);
+    }
+
+    if (uploadedImagesArray?.length) {
+      setLoading(false);
+      setUploadImages(uploadedImagesArray);
+    }
   };
 
   return (
@@ -214,17 +246,6 @@ const ProfileSetting = () => {
                     </p>
                   </div>
 
-                  {/* <div>
-                    <input
-                      value={inputData?.connect_account}
-                      onChange={handleInputChange}
-                      type="text"
-                      name="connect_account"
-                      placeholder="Connect Account"
-                      className="py-1 px-4 text-base rounded-[5rem] shadow-md w-full"
-                    />
-                  </div> */}
-
                   <button
                     onClick={() => setUpload(!upload)}
                     onChange={handleInputChange}
@@ -290,14 +311,14 @@ const ProfileSetting = () => {
                 <span className="mx-auto text-lg text-gray-600">
                   Upload Pictures
                 </span>
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  style={{ display: "none" }}
-                  onChange={handleUploadFileChange}
-                  accept="image/*"
-                />
               </div>
+              <ImageUploader
+                withIcon={true}
+                buttonText="Choose images"
+                onChange={onDrop}
+                maxFileSize={5242880}
+                className="border-none"
+              />
 
               <form className="mt-7">
                 <div className="flex flex-col gap-6">
@@ -317,13 +338,23 @@ const ProfileSetting = () => {
                     </span>
 
                     <input
-                      onKeyUp={(e) => setNumber(e.target.value)}
-                      type="number"
+                      onChange={(e) => setPhone(e.target.value)}
+                      type="text"
+                      value={phone}
                       placeholder="Phone Verification"
                       className="py-2 px-4 text-base w-full outline-none border-none"
                     />
                   </div>
-
+                  <div className="">
+                    <button
+                      type="button"
+                      id="sign-in-button"
+                      // onClick={sendOtp}
+                      className="py-2 min-w-[14rem] bg-[#30BEEC] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mx-auto mb-4"
+                    >
+                      <span>Send Otp</span>
+                    </button>
+                  </div>
                   <div>
                     <div className="flex gap-1 text-center justify-center items-center">
                       <input
@@ -418,7 +449,7 @@ const ProfileSetting = () => {
               </form>
 
               <button
-                onClick={handleSubmit}
+                // onClick={handleSubmit}
                 className="py-2 min-w-[14rem] bg-[#30BEEC] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mt-10"
               >
                 <span>Verify Phone</span>

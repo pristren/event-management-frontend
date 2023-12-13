@@ -2,6 +2,19 @@ import { useEffect, useState } from "react";
 import useAxios from "./useAxios";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import initFirebase from "../services/auth/firebase.init";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  updateProfile,
+  getIdToken,
+  signOut,
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
+} from "firebase/auth";
+initFirebase();
 
 const useMyEvent = () => {
   const { Axios } = useAxios();
@@ -12,6 +25,35 @@ const useMyEvent = () => {
   const [ownEvent, setOwnEvent] = useState({});
   const [invitedEvent, setInvitedEvent] = useState({});
   const [jointedEvent, setJointedEvent] = useState({});
+  const auth = getAuth();
+
+  const [phone, setPhone] = useState("");
+
+  const sendOtp = async () => {
+    const recaptcha = new RecaptchaVerifier(auth, "sign-in-button", {
+      size: "invisible",
+    });
+
+    // console.log();
+    const ph = "+" + Number(phone);
+    signInWithPhoneNumber(auth, ph, recaptcha)
+      .then((confirmationResult) => {
+        // SMS sent. Prompt user to type the code from the message, then sign the
+        // user in with confirmationResult.confirm(code).
+        // console.log(confirmationResult);
+        // ...
+      })
+      .catch((error) => {
+        console.log(error);
+        // Error; SMS not sent
+        // ...
+      });
+    // const recaptcha = new RecaptchaVerifier(auth, "sign-in-button", {
+    //   size: "invisible",
+    // });
+    // const confirmation = await signInWithPhoneNumber(auth, phone, recaptcha);
+    // console.log(confirmation);
+  };
 
   // console.log(myEvent);
 
@@ -37,6 +79,9 @@ const useMyEvent = () => {
     isLoading,
     isError,
     setMyEvent,
+    sendOtp,
+    phone,
+    setPhone,
   };
 };
 

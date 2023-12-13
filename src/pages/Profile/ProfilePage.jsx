@@ -41,7 +41,7 @@ export default function ProfilePage() {
         <Profile />
       </div>
 
-      {user && user?.account_type === "Private" ? (
+      {user && user?.account_type !== "Private" ? (
         <div className="">
           <div className="flex flex-col items-center gap-6 p-4 md:p-6 lg:p-10">
             <div className="h-24 w-24 ">
@@ -55,16 +55,16 @@ export default function ProfilePage() {
               </h1>
               <p className="text-gray-500 dark:text-gray-400">{user?.email}</p>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-8 w-full max-w-xl">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-8 w-full max-w-2xl ">
               {user?.profile_images?.map((l, i) => {
                 return (
                   <div
                     key={i}
-                    className="bg-gray-300 w-full h-32 object-cover rounded-md"
+                    className="bg-gray-300 w-full h-48 object-cover items-center rounded-md flex"
                   >
                     <img
                       src={l}
-                      className="h-full w-full overflow-hidden rounded-lg"
+                      className="h-auto w-full overflow-hidden rounded-lg"
                     />
                   </div>
                 );

@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import useAxios from "../../Hooks/useAxios";
 import { APIProvider, AdvancedMarker, Map } from "@vis.gl/react-google-maps";
+import moment from "moment";
 
 const Home = () => {
   const { Axios } = useAxios();
@@ -49,7 +50,60 @@ const Home = () => {
       setEvents(res.data.data);
     });
   }, []);
-  const [popover, setPopOver] = useState(false);
+  const [popover, setPopOver] = useState({
+    popover: false,
+    id: "",
+  });
+  const [selectedBtn, setSelectedBtn] = useState("Public");
+
+  const { user } = useSelector((state) => state.auth);
+  // console.log(user);
+
+  const [invitedEvent, setInvitedEvent] = useState([]);
+
+  useEffect(() => {
+    const allEvents = async () => {
+      const res = await Axios.get("/all-events");
+      const data = await res.data;
+      setInvitedEvent(
+        data?.data?.filter(
+          (event) =>
+            event?.joinedPeople?.find((v) => v === user?.email) &&
+            event?.userId !== user._id
+        )
+      );
+    };
+    allEvents();
+  }, []);
+
+  const [selected2, setSelected2] = useState([]);
+
+  const today = new Date();
+
+  // Calculate two days from now
+  const twoDaysLater = new Date();
+  twoDaysLater.setDate(today.getDate() + 2);
+
+  // Filter events within today and the next two days
+  const upcomingEvents = events.filter((event) => {
+    // console.log(event?.event_date?.date_start);
+    return (
+      moment(event?.event_date?.date_start).format("MMMM D, YYYY") >=
+        moment(today).format("MMMM D, YYYY") &&
+      moment(event?.event_date?.date_start).format("MMMM D, YYYY") <=
+        moment(twoDaysLater).format("MMMM D, YYYY")
+    );
+  });
+
+  const upcomingEventsInvited = invitedEvent.filter((event) => {
+    // console.log(event?.event_date?.date_start);
+    return (
+      moment(event?.event_date?.date_start).format("MMMM D, YYYY") >=
+        moment(today).format("MMMM D, YYYY") &&
+      moment(event?.event_date?.date_start).format("MMMM D, YYYY") <=
+        moment(twoDaysLater).format("MMMM D, YYYY")
+    );
+  });
 
   return (
     <div className="text-whitefont-semibold">
@@ -57,12 +111,22 @@ const Home = () => {
         user={state.user}
         setIsExpand={setIsExpand}
         isExpand={isExpand}
+        selectedBtn={selectedBtn}
+        setSelectedBtn={setSelectedBtn}
       />
       <div className="flex">
         {state.user && (
           <HomeSidebar setIsExpand={setIsExpand} isExpand={isExpand} />
         )}
-        <div style={{ height: "100vh", width: "100%" }}>
+        <div
+          style={{ height: "100vh", width: "100%" }}
+          onClick={() => {
+            setPopOver({
+              ...popover,
+              popover: false,
+            });
+          }}
+        >
           {userLocation?.center?.lat !== undefined &&
             userLocation?.center?.lng !== undefined && (
               <div
@@ -72,7 +136,7 @@ const Home = () => {
                   border: 0,
                 }}
               >
-                {events?.length > 0 && (
+                {selectedBtn === "Public" ? (
                   <APIProvider
                     apiKey={`${import.meta.env.VITE_GOOGLE_API_KEY}`}
                   >
@@ -90,7 +154,148 @@ const Home = () => {
                       disableDefaultUI={true}
                       mapId={"4504f8b37365c3d0"}
                     >
-                      {events?.map((event, i) => {
+                      {selected2.length
+                        ? upcomingEvents
+                            .filter((event) => {
+                              return selected2.find((s) => {
+                                return s?.name === event?.category;
+                              });
+                            })
+                            ?.map((event, i) => {
+                              return (
+                                <AdvancedMarker
+                                  key={i}
+                                  className="relative"
+                                  position={{
+                                    lat: Number(event.mapLocation?.lat),
+                                    lng: Number(event.mapLocation?.lng),
+                                  }}
+                                  onClick={() =>
+                                    setPopOver({
+                                      popover: !popover?.popover,
+                                      id: event?._id,
+                                    })
+                                  }
+                                >
+                                  <div className="bg-white p-2 rounded-lg rotate-45 shadow-blue-300 shadow-2xl text-center">
+                                    <img
+                                      width={50}
+                                      height={50}
+                                      src="https://img.icons8.com/bubbles/50/today.png"
+                                      alt=""
+                                      className="-rotate-45"
+                                    />
+                                  </div>
+                                  {popover?.popover &&
+                                    popover.id === event._id && (
+                                      <div className="grid grid-cols-2 absolute z-10">
+                                        <div
+                                          className="!bg-white w-72 !z-[999] p-6 text-lg -translate-x-[40%] rounded-lg shadow-2xl shadow-blue-300 text-center mt-2"
+                                          onClick={() =>
+                                            navigate(
+                                              `/event-details/${event?._id}`
+                                            )
+                                          }
+                                        >
+                                          <img
+                                            src={event?.event_images[0]?.image}
+                                            className="w-full"
+                                          />
+                                          <h2>Event Details</h2>
+                                          <p>Title: {event?.event_title}</p>
+                                          <p className="text-[#828282] text-[14px] font-medium">
+                                            {moment(events?.event_date).format(
+                                              "MMMM D, YYYY"
+                                            )}
+                                            ,{" "}
+                                            {moment(
+                                              events?.event_time?.time_start
+                                            ).format("hh:mm a")}
+                                          </p>
+                                        </div>
+                                      </div>
+                                    )}
+                                </AdvancedMarker>
+                              );
+                            })
+                        : upcomingEvents?.map((event, i) => {
+                            return (
+                              <AdvancedMarker
+                                key={i}
+                                className="relative"
+                                position={{
+                                  lat: Number(event.mapLocation?.lat),
+                                  lng: Number(event.mapLocation?.lng),
+                                }}
+                                onClick={() =>
+                                  setPopOver({
+                                    popover: !popover?.popover,
+                                    id: event?._id,
+                                  })
+                                }
+                              >
+                                <div className="bg-white p-2 rounded-lg rotate-45 shadow-blue-300 shadow-2xl text-center">
+                                  <img
+                                    width={50}
+                                    height={50}
+                                    src="https://img.icons8.com/bubbles/50/today.png"
+                                    alt=""
+                                    className="-rotate-45"
+                                  />
+                                </div>
+                                {popover?.popover &&
+                                  popover.id === event._id && (
+                                    <div className="grid grid-cols-2 absolute z-10">
+                                      <div
+                                        className="!bg-white w-72 !z-[999] p-6 text-lg -translate-x-[40%] rounded-lg shadow-2xl shadow-blue-300 text-center mt-2"
+                                        onClick={() =>
+                                          navigate(
+                                            `/event-details/${event?._id}`
+                                          )
+                                        }
+                                      >
+                                        <img
+                                          src={event?.event_images[0]?.image}
+                                          className="w-full"
+                                        />
+                                        <h2>Event Details</h2>
+                                        <p>Title: {event?.event_title}</p>
+                                        <p className="text-[#828282] text-[14px] font-medium">
+                                          {moment(events?.event_date).format(
+                                            "MMMM D, YYYY"
+                                          )}
+                                          ,{" "}
+                                          {moment(
+                                            events?.event_time?.time_start
+                                          ).format("hh:mm a")}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  )}
+                              </AdvancedMarker>
+                            );
+                          })}
+                    </Map>
+                  </APIProvider>
+                ) : (
+                  <APIProvider
+                    apiKey={`${import.meta.env.VITE_GOOGLE_API_KEY}`}
+                  >
+                    <Map
+                      zoom={13}
+                      center={{
+                        lat:
+                          userLocation?.center?.lat ||
+                          defaultProps?.center?.lat,
+                        lng:
+                          userLocation?.center?.lng ||
+                          defaultProps?.center?.lng,
+                      }}
+                      gestureHandling={"greedy"}
+                      disableDefaultUI={true}
+                      mapId={"4504f8b37365c3d0"}
+                    >
+                      {/* {upcomingEventsInvited?.map((event, i) => {
                         return (
                           <AdvancedMarker
                             key={i}
@@ -99,23 +304,172 @@ const Home = () => {
                               lat: Number(event.mapLocation?.lat),
                               lng: Number(event.mapLocation?.lng),
                             }}
-                            onClick={() => setPopOver(!popover)}
+                            onClick={() =>
+                              setPopOver({
+                                popover: !popover?.popover,
+                                id: event?._id,
+                              })
+                            }
                           >
-                            <img
-                              src="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
-                              alt=""
-                            />
-                            {popover && (
+                            <div className="bg-white p-2 rounded-lg rotate-45 shadow-blue-300 shadow-2xl text-center">
+                              <img
+                                width={50}
+                                height={50}
+                                src="https://img.icons8.com/bubbles/50/today.png"
+                                alt=""
+                                className="-rotate-45"
+                              />
+                            </div>
+                            {popover?.popover && popover.id === event._id && (
                               <div className="grid grid-cols-2 absolute z-10">
-                                <div className="!bg-white w-72 !z-[999] p-6 text-lg -translate-x-2/4">
+                                <div
+                                  className="!bg-white w-72 !z-[999] p-6 text-lg -translate-x-[40%] rounded-lg shadow-2xl shadow-blue-300 text-center mt-2"
+                                  onClick={() =>
+                                    navigate(`/event-details/${event?._id}`)
+                                  }
+                                >
+                                  <img
+                                    src={event?.event_images[0]?.image}
+                                    className="w-full"
+                                  />
                                   <h2>Event Details</h2>
-                                  <p>Email: {event?.event_title}</p>
+                                  <p>Title: {event?.event_title}</p>
+                                  <p className="text-[#828282] text-[14px] font-medium">
+                                    {moment(events?.event_date).format(
+                                      "MMMM D, YYYY"
+                                    )}
+                                    ,{" "}
+                                    {moment(
+                                      events?.event_time?.time_start
+                                    ).format("hh:mm a")}
+                                  </p>
                                 </div>
                               </div>
                             )}
                           </AdvancedMarker>
                         );
-                      })}
+                      })} */}
+                      {selected2.length
+                        ? upcomingEventsInvited
+                            .filter((event) => {
+                              return selected2.find((s) => {
+                                return s?.name === event?.category;
+                              });
+                            })
+                            ?.map((event, i) => {
+                              return (
+                                <AdvancedMarker
+                                  key={i}
+                                  className="relative"
+                                  position={{
+                                    lat: Number(event.mapLocation?.lat),
+                                    lng: Number(event.mapLocation?.lng),
+                                  }}
+                                  onClick={() =>
+                                    setPopOver({
+                                      popover: !popover?.popover,
+                                      id: event?._id,
+                                    })
+                                  }
+                                >
+                                  <div className="bg-white p-2 rounded-lg rotate-45 shadow-blue-300 shadow-2xl text-center">
+                                    <img
+                                      width={50}
+                                      height={50}
+                                      src="https://img.icons8.com/bubbles/50/today.png"
+                                      alt=""
+                                      className="-rotate-45"
+                                    />
+                                  </div>
+                                  {popover?.popover &&
+                                    popover.id === event._id && (
+                                      <div className="grid grid-cols-2 absolute z-10">
+                                        <div
+                                          className="!bg-white w-72 !z-[999] p-6 text-lg -translate-x-[40%] rounded-lg shadow-2xl shadow-blue-300 text-center mt-2"
+                                          onClick={() =>
+                                            navigate(
+                                              `/event-details/${event?._id}`
+                                            )
+                                          }
+                                        >
+                                          <img
+                                            src={event?.event_images[0]?.image}
+                                            className="w-full"
+                                          />
+                                          <h2>Event Details</h2>
+                                          <p>Title: {event?.event_title}</p>
+                                          <p className="text-[#828282] text-[14px] font-medium">
+                                            {moment(events?.event_date).format(
+                                              "MMMM D, YYYY"
+                                            )}
+                                            ,{" "}
+                                            {moment(
+                                              events?.event_time?.time_start
+                                            ).format("hh:mm a")}
+                                          </p>
+                                        </div>
+                                      </div>
+                                    )}
+                                </AdvancedMarker>
+                              );
+                            })
+                        : upcomingEventsInvited?.map((event, i) => {
+                            return (
+                              <AdvancedMarker
+                                key={i}
+                                className="relative"
+                                position={{
+                                  lat: Number(event.mapLocation?.lat),
+                                  lng: Number(event.mapLocation?.lng),
+                                }}
+                                onClick={() =>
+                                  setPopOver({
+                                    popover: !popover?.popover,
+                                    id: event?._id,
+                                  })
+                                }
+                              >
+                                <div className="bg-white p-2 rounded-lg rotate-45 shadow-blue-300 shadow-2xl text-center">
+                                  <img
+                                    width={50}
+                                    height={50}
+                                    src="https://img.icons8.com/bubbles/50/today.png"
+                                    alt=""
+                                    className="-rotate-45"
+                                  />
+                                </div>
+                                {popover?.popover &&
+                                  popover.id === event._id && (
+                                    <div className="grid grid-cols-2 absolute z-10">
+                                      <div
+                                        className="!bg-white w-72 !z-[999] p-6 text-lg -translate-x-[40%] rounded-lg shadow-2xl shadow-blue-300 text-center mt-2"
+                                        onClick={() =>
+                                          navigate(
+                                            `/event-details/${event?._id}`
+                                          )
+                                        }
+                                      >
+                                        <img
+                                          src={event?.event_images[0]?.image}
+                                          className="w-full"
+                                        />
+                                        <h2>Event Details</h2>
+                                        <p>Title: {event?.event_title}</p>
+                                        <p className="text-[#828282] text-[14px] font-medium">
+                                          {moment(events?.event_date).format(
+                                            "MMMM D, YYYY"
+                                          )}
+                                          ,{" "}
+                                          {moment(
+                                            events?.event_time?.time_start
+                                          ).format("hh:mm a")}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  )}
+                              </AdvancedMarker>
+                            );
+                          })}
                     </Map>
                   </APIProvider>
                 )}
@@ -123,7 +477,7 @@ const Home = () => {
             )}
         </div>
       </div>
-      <Filter />
+      <Filter selected2={selected2} setSelected2={setSelected2} />
     </div>
   );
 };

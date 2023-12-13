@@ -50,8 +50,13 @@ const logOutIcon = (
   </svg>
 );
 
-const HomeNavbar = ({ user, isExpand, setIsExpand }) => {
-  const [selectedBtn, setSelectedBtn] = useState("Public");
+const HomeNavbar = ({
+  user,
+  isExpand,
+  setIsExpand,
+  selectedBtn,
+  setSelectedBtn,
+}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 

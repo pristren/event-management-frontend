@@ -15,7 +15,6 @@ const InvitedEvents = () => {
   // console.log(user);
 
   const [invitedEvent, setInvitedEvent] = useState([]);
-  console.log(invitedEvent);
 
   useEffect(() => {
     const allEvents = async () => {

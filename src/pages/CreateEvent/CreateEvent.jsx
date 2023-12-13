@@ -1,17 +1,14 @@
-import * as Bytescale from "@bytescale/sdk";
-import GoogleMapReact from "google-map-react";
 import React, { useContext, useEffect, useState } from "react";
-import { usePlacesWidget } from "react-google-autocomplete";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import useAxios from "../../Hooks/useAxios";
 import MyProvider from "../../Provider/Provider";
 import Profile from "../../components/Profile";
-import MapMarker from "../Home/MapMarker";
 import Calender from "./Calender";
 import DatePicker from "react-datepicker";
 import { useSelector } from "react-redux";
 import CreateEventModal from "./CreateEventModal";
+import ImageUploader from "react-images-upload";
 
 const clubIcons = (
   <svg
@@ -26,26 +23,13 @@ const clubIcons = (
     <path d="M483.424 24.638L449.83 39.98c.944.974 1.864 1.99 2.754 3.068 3.544 4.29 6.546 8.89 9.07 13.745l21.77-32.155zm-221.18 14.426l4.217 42.527c7.223-6.983 14.875-13.594 22.97-19.575l-27.186-22.95zm143.17 2.358c-2 .03-4.06.133-6.18.298-11.58.906-24.367 3.983-37.02 7.41l23.55 36.178.404.62.297.68c3.1 7.08 2.3 14.488-.006 21.41-2.308 6.924-6.405 13.565-12.487 18.53-6.082 4.962-14.756 8.037-23.813 6.118-9.056-1.92-17.6-8.213-25.506-18.803l-1.718-2.305-1.104-48.535c-25.135 12.94-47.54 34.326-66.178 57.047l17.14 9.428 2.892 1.59 1.177 3.08c4.892 12.782 5.147 26.122-1.43 37.13-6.575 11.01-18.66 18.744-35.435 24.293l-6.9 2.285-11.653-19.82c-1.71 3.762-3.41 7.56-5.093 11.43l-17.225 108.624-2.75-61.597c-10.444 24.205-21.82 48.42-36.09 70.063C119.643 368.216 28.322 462.01 28.322 462.01l-.07.072-.07.07c-3.905 3.85-3.91 5.573-3.475 7.693.29 1.418 1.348 3.368 3.168 5.43l97.166-78.713-84.007 87.3c5.778 2.305 11.906 3.587 15.895 3.495 6.885-6.482 66.713-62.5 107.11-88.644 38.117-24.67 69.79-54.084 106.32-82.045l12.213-70.723.37-2.147 1.312-1.74c6.783-8.997 15.585-14.236 24.506-15.33a31.905 31.905 0 0 1 6.588-.113c6.464.56 12.5 3.047 17.584 6.59 11.895 8.287 20.172 22.808 18.008 37.68 6.76-3 13.436-6.003 19.883-9.153 20.67-10.1 38.705-21.33 51.063-37.56-7.023-.544-13.58-3.672-19.03-7.846-7.455-5.707-13.412-13.558-17.25-22.2-3.84-8.64-5.723-18.287-2.974-27.615 2.75-9.326 11.142-17.274 22.833-20.01l.645-.153 45.662-3.797c.92-5.208 1.667-10.42 2.19-15.58 1.022-10.1 1.175-19.927.35-29.187l-28.927 31.25 19.88-64.613c-1.88-3.562-4.056-6.88-6.556-9.907-7.064-8.55-16.195-12.217-27.474-12.957a72.25 72.25 0 0 0-5.82-.134zm-65.937 5.773l1.316 57.93c5.447 6.628 10.038 9.285 13.098 9.933 3.385.717 5.85-.13 8.702-2.457 2.852-2.327 5.483-6.348 6.79-10.272 1.253-3.757 1.01-7.105.624-8.23l-30.53-46.903zm-136.057 64.69l37.62 63.984c10.068-4.252 16.137-9.108 18.94-13.802 3.017-5.05 3.41-10.74.962-18.547l-57.522-31.636zm284.063 45.76l-78.336 6.513c-6.528 1.622-8.23 3.973-9.252 7.443-1.05 3.558-.457 9.338 2.156 15.218 2.614 5.88 7.085 11.648 11.745 15.217 4.102 3.14 7.867 4.322 10.924 4.105.6-.433 1.22-.876 2.16-1.576a960.486 960.486 0 0 0 10.226-7.758c8.388-6.43 19.428-14.995 30.408-23.547 10.038-7.82 12.08-9.442 19.97-15.616zM312.38 244.497c-.48.007-.957.04-1.43.097-3.424.42-7.092 2.18-11.067 6.868l-16.496 95.523 49.18-76.508c2.014-7.113-2.495-17.326-9.926-22.504-2.873-2.002-5.883-3.162-8.806-3.422a14.095 14.095 0 0 0-1.453-.054zm74.02 29.52a328.805 328.805 0 0 1-7.677 3.886c-5.127 2.505-10.308 4.887-15.488 7.232l27.76 17.047-4.594-28.166z"></path>
   </svg>
 );
-const deleteIcon = (
-  <svg
-    stroke="currentColor"
-    fill="currentColor"
-    strokeWidth="0"
-    viewBox="0 0 1024 1024"
-    height="1em"
-    width="1em"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path d="M360 184h-8c4.4 0 8-3.6 8-8v8h304v-8c0 4.4 3.6 8 8 8h-8v72h72v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80h72v-72zm504 72H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zM731.3 840H292.7l-24.2-512h487l-24.2 512z"></path>
-  </svg>
-);
 
 const CreateEvent = () => {
   const navigate = useNavigate();
   const { Axios } = useAxios();
   const { isExpand, setIsExpand } = useContext(MyProvider);
   const { user } = useSelector((state) => state.auth);
-  const [selectedBtn, setSelectedBtn] = useState("private");
+  const [selectedBtn, setSelectedBtn] = useState("Public");
   const [multipleImages, setMultipleImages] = useState([]);
   const [fileUploadLoading, setFileUploadLoading] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState({
@@ -54,7 +38,7 @@ const CreateEvent = () => {
     longitude: "",
   });
   const [eventDate, setEventDate] = useState(false);
-  const [error, setError] = useState(false);
+  // const [error, setError] = useState(false);
   const [createSuccess, setCreateSuccess] = useState(false);
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
@@ -66,11 +50,13 @@ const CreateEvent = () => {
     event_title: "",
     event_Details: "",
     event_clubName: "",
-    time_start: "",
-    time_end: "",
+    time_start: startTime || "",
+    time_end: endTime || "",
     joinedPeople: [user?.email],
     anOtherParticipants: false,
     category: "",
+    startDate: startDate || null,
+    endDate: endDate || null,
   });
 
   // input handle change set object value dynamical
@@ -88,41 +74,44 @@ const CreateEvent = () => {
     }
   };
 
-  const defaultProps = {
-    center: {
-      lat: 23.7330218,
-      lng: 90.3983829,
-    },
-    zoom: 11,
-  };
+  // const defaultProps = {
+  //   center: {
+  //     lat: 23.7330218,
+  //     lng: 90.3983829,
+  //   },
+  //   zoom: 11,
+  // };
 
-  const images = [];
-  const uploadManager = new Bytescale.UploadManager({
-    apiKey: "public_W142iMq3aDCn9NTRMSpXjPdpgg5W",
-  });
-  const imageUpload = async (file) => {
-    try {
-      const { fileUrl, filePath } = await uploadManager.upload({ data: file });
-      images.push({ image: fileUrl });
-    } catch (e) {
-      console.log("catch e ", e);
-      alert(`Error:\n${e.message}`);
-    }
-  };
-  const handleFileChange = async (e) => {
-    setFileUploadLoading(true);
-    const files = e.target.files;
-    await Promise.all(
-      Array.from(files).map(async (file) => {
-        if (file.size) {
-          await imageUpload(file);
-        }
-      })
-    );
+  // const images = [];
+  // const uploadManager = new Bytescale.UploadManager({
+  //   apiKey: "public_W142iMq3aDCn9NTRMSpXjPdpgg5W",
+  // });
+  // const imageUpload = async (file) => {
+  //   try {
+  //     const { fileUrl, filePath } = await uploadManager.upload({ data: file });
+  //     images.push({ image: fileUrl });
+  //   } catch (e) {
+  //     console.log("catch e ", e);
+  //     alert(`Error:\n${e.message}`);
+  //   }
+  // };
+  // const handleFileChange = async (e) => {
+  //   setFileUploadLoading(true);
+  //   const files = e.target.files;
+  //   await Promise.all(
+  //     Array.from(files).map(async (file) => {
+  //       if (file.size) {
+  //         await imageUpload(file);
+  //       }
+  //     })
+  //   );
 
-    setFileUploadLoading(false);
-    setMultipleImages(images);
-  };
+  //   setFileUploadLoading(false);
+  //   setMultipleImages(images);
+  // };
+
+  const [success, setSuccess] = useState(false);
+
   const [createdEvent, setCreatedEvent] = useState({});
   const createEvent = () => {
     if (
@@ -162,6 +151,28 @@ const CreateEvent = () => {
           setCreateSuccess(res?.data?.event);
           setCreatedEvent(res.data?.event);
           // console.log(res.data?.event);
+          setInputData({
+            invitedUserId: "",
+            event_title: "",
+            event_Details: "",
+            event_clubName: "",
+            time_start: "",
+            time_end: "",
+            joinedPeople: [user?.email],
+            anOtherParticipants: false,
+            category: "",
+          });
+          setStartDate(null);
+          setEndDate(null);
+          setStartTime(null);
+          setEndTime(null);
+          setSuccess(true);
+          const file = document.getElementById("autocomplete");
+          if (file) {
+            file.value = "";
+          }
+          //  file?.value="";
+
           handleOpenModal();
           // navigate("/my-events");
         })
@@ -189,19 +200,49 @@ const CreateEvent = () => {
     initAutocomplete();
   }, []);
 
-  const handleImgDelete = (url) => {
-    const res = multipleImages.filter((u) => u.image !== url);
-    setMultipleImages(res);
-  };
+  // const handleImgDelete = (url) => {
+  //   const res = multipleImages.filter((u) => u.image !== url);
+  //   setMultipleImages(res);
+  // };
+
   const [openModal, setOpenModal] = useState(false);
 
   function handleCloseModal() {
     setOpenModal(false);
+    navigate("/my-events");
   }
 
   function handleOpenModal() {
     setOpenModal(true);
   }
+  // const [pictures, setPictures] = useState([]);
+  const API_KEY = "c8818fe821c0aee81ebf0b77344f0e2b";
+
+  const onDrop = async (pictureFiles) => {
+    setFileUploadLoading(true);
+    // setPictures(pictureFiles);
+    const uploadedImagesArray = [];
+
+    for (const image of pictureFiles) {
+      const formData = new FormData();
+      formData.append("image", image);
+
+      const response = await Axios.post(
+        `https://api.imgbb.com/1/upload?key=${API_KEY}`,
+        formData
+      );
+      // console.log(response.data);
+
+      uploadedImagesArray.push({ image: response?.data?.data?.url });
+    }
+
+    // setUploadedImages(uploadedImagesArray);
+    if (uploadedImagesArray?.length) {
+      setFileUploadLoading(false);
+      setMultipleImages(uploadedImagesArray);
+      // images.push({ image: fileUrl });
+    }
+  };
 
   return (
     <div className="flex">
@@ -258,6 +299,7 @@ const CreateEvent = () => {
                 placeholder={"Name of event"}
                 name="event_title"
                 onChange={handleInputChange}
+                value={inputData?.event_title}
                 className="w-full px-2 py-2 outline-none border-none text-[15px] focus:outline-none font-normal placeholder:text-[#6c757d] placeholder:font-medium"
                 required
               />
@@ -294,6 +336,7 @@ const CreateEvent = () => {
                 id="category"
                 className="outline-none p-2 rounded-full "
                 onChange={handleInputChange}
+                value={inputData?.category}
               >
                 <option value="">Chose a category</option>
                 <option value="Sports">Sports</option>
@@ -305,6 +348,7 @@ const CreateEvent = () => {
               <div className="w-full flex gap-3 items-center justify-between bg-white rounded-full shadow-primary">
                 <DatePicker
                   selected={startDate}
+                  value={inputData.startDate}
                   onChange={(date) => setStartDate(date)}
                   dateFormat="MM/dd/yyyy"
                   className="w-full py-2 px-4 outline-none border-none text-[15px] text-[#1BB6ED] bg-white font-medium rounded-full placeholder:text-[#6c757d] placeholder:font-medium"
@@ -315,6 +359,7 @@ const CreateEvent = () => {
               <div className="w-full flex gap-3 items-center justify-between bg-white rounded-full shadow-primary">
                 <DatePicker
                   selected={endDate}
+                  value={inputData.endDate}
                   onChange={(date) => setEndDate(date)}
                   dateFormat="MM/dd/yyyy"
                   className="w-full py-2 px-4 outline-none border-none text-[15px] text-[#1BB6ED] bg-white font-medium rounded-full placeholder:text-[#6c757d] placeholder:font-medium"
@@ -326,6 +371,7 @@ const CreateEvent = () => {
               <div className="w-full flex gap-3 items-center justify-between bg-white rounded-full shadow-primary">
                 <DatePicker
                   selected={startTime}
+                  value={startTime}
                   onChange={(date) => setStartTime(date)}
                   showTimeSelect
                   showTimeSelectOnly
@@ -340,6 +386,7 @@ const CreateEvent = () => {
               <div className="w-full flex gap-3 items-center justify-between bg-white rounded-full shadow-primary">
                 <DatePicker
                   selected={endTime}
+                  value={endTime}
                   onChange={(date) => setEndTime(date)}
                   showTimeSelect
                   showTimeSelectOnly
@@ -395,6 +442,7 @@ const CreateEvent = () => {
                 onChange={handleInputChange}
                 className="w-full px-2 py-2 outline-none border-none text-[15px] focus:outline-none font-normal placeholder:text-[#6c757d] placeholder:font-medium"
                 required
+                value={inputData?.event_clubName}
               />
             </div>
 
@@ -406,6 +454,7 @@ const CreateEvent = () => {
                 placeholder="Event Details"
                 className="w-full h-[200px] p-4 font-normal outline-none border-none text-[15px] placeholder:text-[#6c757d] placeholder:font-medium"
                 required
+                value={inputData?.event_Details}
               ></textarea>
             </div>
 
@@ -417,262 +466,51 @@ const CreateEvent = () => {
                 name="anOtherParticipants"
                 onChange={handleInputChange}
                 className="checkbox"
+                value={inputData.anOtherParticipants}
               />
               <label htmlFor="enable">
                 Enable picture uploads from another participants
               </label>
             </div>
 
-            {/* Share event  */}
-            {/* <div className="bg-white rounded-2xl p-4 shadow-primary mt-5 overflow-hidden">
-              <span className="block mb-5">Share event</span>
-
-              <div className="w-full flex gap-6 items-center overflow-hidden">
-                <button
-                  onClick={(e) => setSelectedBtn("public")}
-                  className={`w-full py-2 px-6 rounded-full  ${
-                    selectedBtn === "public" ? "bg-[#1BB6ED]" : "bg-[#C3C3C5]"
-                  } text-white`}
-                >
-                  Public
-                </button>
-
-                <button
-                  onClick={(e) => setSelectedBtn("contract")}
-                  className={`w-full py-2 px-6 rounded-full ${
-                    selectedBtn === "contract" ? "bg-[#1BB6ED]" : "bg-[#C3C3C5]"
-                  } text-white`}
-                >
-                  Contract
-                </button>
-              </div>
-
-              <div className="w-full flex flex-col gap-3 mt-8">
-                <div
-                  className="flex items-center justify-center overflow-hidden relative w-full bg-white py-2 border-[1px] border-[#1BB6ED] border-dotted rounded-full"
-                  style={{
-                    boxShadow: "-1px 4px 110px 9px rgba(0, 0, 0, 0.06)",
-                  }}
-                >
-                  <input
-                    type="file"
-                    style={{
-                      boxShadow: "-1px 4px 110px 9px rgba(43, 37, 37, 0.06)",
-                    }}
-                    multiple
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    className="absolute top-0 right-0 w-full h-full opacity-0 font-Jost text-[#000000] font-semibold leading-[22px] uppercase border-[1px] border-[#0070D2] rounded-[10px] py-4 px-8 bg-white placeholder:text-[16px] placeholder:font-normal placeholder:capitalize cursor-pointer"
-                  />
-                  <div
-                    className="flex gap-3 text-center text-[#A7A7A7] font-Jost text-[16px] md:text-[18px]"
-                    onClick={() => {
-                      document.getElementById("fileInput").click();
-                    }}
-                  >
-                    {multipleImages ? (
-                      <p className="text-[#1BB6ED] text-[15px]">
-                        {fileUploadLoading
-                          ? "Uploading..."
-                          : `Uploaded files:
-                        ${multipleImages?.length}`}
-                      </p>
-                    ) : (
-                      <>
-                        <span className="flex items-center">
-                          <svg
-                            stroke="currentColor"
-                            fill="currentColor"
-                            strokeWidth="0"
-                            viewBox="0 0 256 256"
-                            height="1em"
-                            width="1em"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path d="M165.66,90.34a8,8,0,0,1,0,11.32l-64,64a8,8,0,0,1-11.32-11.32l64-64A8,8,0,0,1,165.66,90.34ZM215.6,40.4a56,56,0,0,0-79.2,0L106.34,70.45a8,8,0,0,0,11.32,11.32l30.06-30a40,40,0,0,1,56.57,56.56l-30.07,30.06a8,8,0,0,0,11.31,11.32L215.6,119.6a56,56,0,0,0,0-79.2ZM138.34,174.22l-30.06,30.06a40,40,0,1,1-56.56-56.57l30.05-30.05a8,8,0,0,0-11.32-11.32L40.4,136.4a56,56,0,0,0,79.2,79.2l30.06-30.07a8,8,0,0,0-11.32-11.31Z"></path>
-                          </svg>
-                        </span>
-                        <span className="text-[#1BB6ED] text-[15px]">
-                          {fileUploadLoading
-                            ? "Uploading..."
-                            : `Uploaded files:
-                        ${multipleImages?.length}`}
-                        </span>
-                      </>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div> */}
             <div className="w-full flex flex-col gap-3 mt-8">
               <div
-                className="flex items-center justify-center overflow-hidden relative w-full bg-white py-2 border-[1px] border-[#1BB6ED] border-dotted rounded-full"
+                className="flex items-center justify-center overflow-hidden relative w-full bg-white py-2 border-[1px] border-[#1BB6ED] border-dotted "
                 style={{
                   boxShadow: "-1px 4px 110px 9px rgba(0, 0, 0, 0.06)",
                 }}
               >
-                <input
-                  type="file"
-                  style={{
-                    boxShadow: "-1px 4px 110px 9px rgba(43, 37, 37, 0.06)",
-                  }}
-                  multiple
-                  accept="image/*"
-                  onChange={handleFileChange}
-                  className="absolute top-0 right-0 w-full h-full opacity-0 font-Jost text-[#000000] font-semibold leading-[22px] uppercase border-[1px] border-[#0070D2] rounded-[10px] py-4 px-8 bg-white placeholder:text-[16px] placeholder:font-normal placeholder:capitalize cursor-pointer"
-                />
-                <div
-                  className="flex gap-3 text-center text-[#A7A7A7] font-Jost text-[16px] md:text-[18px]"
-                  onClick={() => {
-                    document.getElementById("fileInput").click();
-                  }}
-                >
-                  {multipleImages ? (
-                    <p className="text-[#1BB6ED] text-[15px]">
-                      {fileUploadLoading
-                        ? "Uploading..."
-                        : `Select One or more images at a time:`}
-                    </p>
-                  ) : (
-                    <>
-                      <span className="flex items-center">
-                        <svg
-                          stroke="currentColor"
-                          fill="currentColor"
-                          strokeWidth="0"
-                          viewBox="0 0 256 256"
-                          height="1em"
-                          width="1em"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path d="M165.66,90.34a8,8,0,0,1,0,11.32l-64,64a8,8,0,0,1-11.32-11.32l64-64A8,8,0,0,1,165.66,90.34ZM215.6,40.4a56,56,0,0,0-79.2,0L106.34,70.45a8,8,0,0,0,11.32,11.32l30.06-30a40,40,0,0,1,56.57,56.56l-30.07,30.06a8,8,0,0,0,11.31,11.32L215.6,119.6a56,56,0,0,0,0-79.2ZM138.34,174.22l-30.06,30.06a40,40,0,1,1-56.56-56.57l30.05-30.05a8,8,0,0,0-11.32-11.32L40.4,136.4a56,56,0,0,0,79.2,79.2l30.06-30.07a8,8,0,0,0-11.32-11.31Z"></path>
-                        </svg>
-                      </span>
-                      <span className="text-[#1BB6ED] text-[15px]">
-                        {fileUploadLoading
-                          ? "Uploading..."
-                          : `Select One or more images at a time:`}
-                      </span>
-                    </>
-                  )}
+                <div className="flex gap-3 text-center text-[#A7A7A7] font-Jost text-[16px] md:text-[18px]">
+                  <ImageUploader
+                    withIcon={true}
+                    buttonText="Choose images"
+                    onChange={onDrop}
+                    // imgExtension={[".jpg", ".gif", ".png", ".gif"]}
+                    maxFileSize={5242880}
+                    withPreview={!success ? true : false}
+                    className="border-none"
+                  />
                 </div>
               </div>
             </div>
-            {/* img show */}
-            <div className="grid grid-cols-2 mt-6 mb-8 gap-5">
-              {multipleImages?.map((img, i) => (
-                <div
-                  key={i}
-                  className="h-40 w-full text-center group rounded-md relative transition duration-300 cursor-pointer"
-                >
-                  <figure className="w-full h-full overflow-hidden">
-                    <img src={img?.image} className="w-auto h-full" />
-                  </figure>
 
-                  <div className="py-2 px-3 z-10 top-0 absolute w-full flex justify-end ">
-                    <div onClick={() => handleImgDelete(img?.image)}>
-                      <span className="float-right p-1 text-[1.4rem] text-red-600 font-extrabold bg-white">
-                        {deleteIcon}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Share button  */}
             <div
               className="flex justify-center mt-6"
               style={{
                 boxShadow: "24px 83px 106px -52px rgba(79,70,70,0.75)",
               }}
             >
-              {/* {createSuccess ? (
-                <button className="flex items-center gap-4 bg-[#1BB6ED] py-2 px-7 rounded-full">
-                  <span className="flex items-center">
-                    <svg
-                      stroke="#fff"
-                      fill="#fff"
-                      strokeWidth="0"
-                      viewBox="0 0 512 512"
-                      height="1em"
-                      width="1em"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <circle
-                        cx="128"
-                        cy="256"
-                        r="48"
-                        fill="#fff"
-                        strokeLinecap="round"
-                        stroke-linejoin="round"
-                        strokeWidth="32"
-                      ></circle>
-                      <circle
-                        cx="384"
-                        cy="112"
-                        r="48"
-                        fill="#fff"
-                        strokeLinecap="round"
-                        stroke-linejoin="round"
-                        strokeWidth="32"
-                      ></circle>
-                      <circle
-                        cx="384"
-                        cy="400"
-                        r="48"
-                        fill="#fff"
-                        strokeLinecap="round"
-                        stroke-linejoin="round"
-                        strokeWidth="32"
-                      ></circle>
-                      <path
-                        fill="#fff"
-                        strokeLinecap="round"
-                        stroke-linejoin="round"
-                        strokeWidth="32"
-                        d="M169.83 279.53l172.34 96.94m0-240.94l-172.34 96.94"
-                      ></path>
-                    </svg>
-                  </span>
-                  <span className="text-white">Share</span>
-                </button>
-              ) : (
-                <button
-                  onClick={createEvent}
-                  className="flex items-center gap-4 bg-[#1BB6ED] py-2 px-7 rounded-full"
-                  disabled={fileUploadLoading}
-                >
-                  <span className="text-white">create Event</span>
-                </button>
-              )} */}
               <button
                 onClick={createEvent}
-                className="flex items-center gap-4 bg-[#1BB6ED] py-2 px-7 rounded-full"
+                className={`flex items-center gap-4  py-2 px-7 rounded-full ${
+                  fileUploadLoading ? "bg-[#70c0dde3]" : "bg-[#1BB6ED]"
+                }`}
                 disabled={fileUploadLoading}
               >
                 <span className="text-white">create Event</span>
               </button>
             </div>
           </div>
-
-          {/* Right Content  */}
-          {/* <div className="shadow-primary rounded-2xl overflow-hidden md:w-full">
-            <div style={{ height: "100%", width: "100%" }}>
-              <GoogleMapReact
-                // bootstrapURLKeys={{ key: import.meta.env.VITE_GOOGLE_API_KEY }}
-                defaultCenter={defaultProps.center}
-                defaultZoom={defaultProps.zoom}
-              >
-                {[
-                  { lat: 23.7330218, lng: 90.3983829 },
-                  { lat: 23.7330215, lng: 90.3983829 },
-                ]?.map((res) => {
-                  <MapMarker text="My Marker" />;
-                })}
-              </GoogleMapReact>
-            </div>
-          </div> */}
         </div>
       </div>
     </div>

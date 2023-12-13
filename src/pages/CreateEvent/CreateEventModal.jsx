@@ -6,11 +6,37 @@ export default function CreateEventModal({
   handleCloseModal,
   createdEvent,
 }) {
-  const arr = [{}, {}, {}];
-  console.log(createdEvent);
+  // console.log(createdEvent);
 
   const url = window?.location?.href;
   const path = url.split("/create-event")[0];
+  function copyToClipboard() {
+    // Get the text from the input field
+    const textToCopy = document.getElementById("textToCopy").value;
+
+    // Create a temporary textarea element
+    const textarea = document.createElement("textarea");
+    textarea.value = textToCopy;
+
+    // Make the textarea out of the viewport by setting the position off-screen
+    textarea.style.position = "absolute";
+    textarea.style.left = "-9999px";
+
+    // Append the textarea to the document
+    document.body.appendChild(textarea);
+
+    // Select the text in the textarea
+    textarea.select();
+
+    // Copy the selected text to the clipboard
+    document.execCommand("copy");
+
+    // Remove the textarea
+    document.body.removeChild(textarea);
+
+    // Alert or provide feedback to the user
+    alert("Text has been copied to the clipboard!");
+  }
   return (
     <>
       <Transition appear show={openModal} as={Fragment}>
@@ -67,11 +93,12 @@ export default function CreateEventModal({
                             className="w-full border rounded-lg px-3"
                             readOnly
                             type="text"
+                            id="textToCopy"
                             value={`${path}/event-details/${createdEvent._id}`}
                           />
-                          <button>Copy</button>
+                          <button onClick={copyToClipboard}>Copy</button>
                         </div>
-                        <div className="grid grid-cols-4 gap-4">
+                        {/* <div className="grid grid-cols-4 gap-4">
                           <button className="flex items-center justify-center ">
                             <FacebookIcon className="w-10 h-10 text-blue-600 border p-2" />
                             <span className="sr-only">Share on Facebook</span>
@@ -97,7 +124,7 @@ export default function CreateEventModal({
                             <MailIcon className="w-10 h-10 text-gray-500 border p-2" />
                             <span className="sr-only">Share via Email</span>
                           </button>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   </div>

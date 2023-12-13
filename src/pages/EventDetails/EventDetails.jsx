@@ -3,30 +3,15 @@ import Profile from "../../components/Profile";
 import Image from "../../assets/members/1.png";
 import MyProvider from "../../Provider/Provider";
 import MembersModal from "./MembersModal";
-import GoogleMapReact from "google-map-react";
-import MapMarker from "../Home/MapMarker";
 import useAxios from "../../Hooks/useAxios";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import moment from "moment";
 import { Carousel } from "react-responsive-carousel";
 import { useSelector } from "react-redux";
-import {
-  APIProvider,
-  AdvancedMarker,
-  Map,
-  Marker,
-  Pin,
-} from "@vis.gl/react-google-maps";
-import { Popover } from "@headlessui/react";
+import { APIProvider, AdvancedMarker, Map } from "@vis.gl/react-google-maps";
+import AddImageModal from "./AddImageModal";
 
-const AnyReactComponent = ({ text }) => (
-  <div className=" text-2xl font-bold marker">
-    {/* <GiMechanicGarage style={{ fontSize: "30px" }} />
-    {text} */}
-    {text}
-  </div>
-);
 const EventDetails = () => {
   const { user } = useSelector((state) => state?.auth);
 
@@ -87,16 +72,24 @@ const EventDetails = () => {
   // }, []);
   const [popover, setPopOver] = useState(false);
   const handleJoin = async (id) => {
-    const updated = await Axios.put(`/join/${id}`, { email: user?.email }).then(
-      (res) => {
-        if (res.status === 200) {
-          Axios.get(`/event-details/${id}`)
-            .then((res) => setEvents(res.data.data))
-            .catch((err) => console.log(err));
-        }
+    await Axios.put(`/join/${id}`, { email: user?.email }).then((res) => {
+      if (res.status === 200) {
+        Axios.get(`/event-details/${id}`)
+          .then((res) => setEvents(res.data.data))
+          .catch((err) => console.log(err));
       }
-    );
+    });
   };
+
+  const [openImgModal, setOpenImgModal] = useState(false);
+
+  function handleCloseModal2() {
+    setOpenImgModal(false);
+  }
+
+  function handleOpenModal2() {
+    setOpenImgModal(true);
+  }
   return (
     <section className="flex">
       {openModal && (
@@ -107,6 +100,12 @@ const EventDetails = () => {
           events={events}
         />
       )}
+      <AddImageModal
+        openImgModal={openImgModal}
+        handleCloseModal2={handleCloseModal2}
+        event={events}
+        setEvents={setEvents}
+      />
       <div className="w-full">
         <div className="flex items-center justify-between pt-4 pb-5 sm:pb-10 px-4">
           <span
@@ -150,7 +149,7 @@ const EventDetails = () => {
           <div>
             <div className="flex justify-between mt-5">
               <h1 className="text-[24px] font-bold mb-1">
-                {console.log(events)}
+                {/* {console.log(events)} */}
                 {events?.event_title}
               </h1>
               <div className="flex items-center gap-5">
@@ -167,10 +166,10 @@ const EventDetails = () => {
                     <path d="M383.822 344.427c-16.045 0-31.024 5.326-41.721 15.979l-152.957-88.42c1.071-5.328 2.142-9.593 2.142-14.919 0-5.328-1.071-9.593-2.142-14.919l150.826-87.35c11.762 10.653 26.741 17.041 43.852 17.041 35.295 0 64.178-28.766 64.178-63.92C448 72.767 419.117 44 383.822 44c-35.297 0-64.179 28.767-64.179 63.92 0 5.327 1.065 9.593 2.142 14.919l-150.821 87.35c-11.767-10.654-26.741-17.041-43.856-17.041-35.296 0-63.108 28.766-63.108 63.92 0 35.153 28.877 63.92 64.178 63.92 17.115 0 32.089-6.389 43.856-17.042l151.891 88.421c-1.076 4.255-2.141 8.521-2.141 13.847 0 34.094 27.806 61.787 62.037 61.787 34.229 0 62.036-27.693 62.036-61.787.001-34.094-27.805-61.787-62.035-61.787z"></path>
                   </svg>
                 </span>
-                {user && !events?.anOtherParticipants && (
+                {user && events?.anOtherParticipants && (
                   <button
                     className="bg-green-200 text-greeen-700 py-2 px-6 rounded-lg font-semibold"
-                    onClick={() => navigate("/login")}
+                    onClick={handleOpenModal2}
                   >
                     Add Images
                   </button>

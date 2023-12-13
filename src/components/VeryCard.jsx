@@ -62,27 +62,18 @@ const VeryCard = ({ img, handleImgDelete }) => {
   //   console.log(response);
   // };
   return (
-    <div className="h-40 w-full text-center group rounded-md relative transition duration-300 cursor-pointer">
-      <figure className="w-full h-full overflow-hidden">
-        <img src={img} className="w-auto h-full" />
+    <div className="h-full w-full text-center group rounded-md relative transition duration-300 cursor-pointer bg-white">
+      <figure className="w-full h-60 overflow-hidden">
+        <img src={img} className="w-full h-full" />
       </figure>
 
-      <div className="py-2 px-3 z-10 top-0 absolute w-full flex justify-end ">
-        {/* <span className="text-2xl text-red-600"> {heartIcon} </span> */}
+      <div className=" z-10  top-0 absolute  right-0 ">
         <div onClick={() => handleImgDelete(img)}>
           <span className="float-right p-1 text-[1.4rem] text-red-600 font-extrabold bg-white">
             {deleteIcon}
           </span>
-          {/* <span className="p-1 text-[1.4rem] text-teal-400 font-extrabold bg-white">
-            {checkedIcons}
-          </span> */}
         </div>
       </div>
-
-      {/* <div className="bg-gradient-to-t from-gray-900 py-3 z-10 bottom-0 invisible group-hover:visible absolute w-full transition-all duration-300">
-        <h1 className="leading-4 text-white">Name of Picture </h1>
-        <p className="text-base text-gray-300">- Location Here </p>
-      </div> */}
     </div>
   );
 };

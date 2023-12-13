@@ -85,68 +85,15 @@ const searchIcons = (
 
 const type = [
   {
-    name: "Shopping",
-  },
-  {
-    name: "Culture",
-  },
-  {
     name: "Food",
   },
+
   {
-    name: "Nightlife",
-  },
-  {
-    name: "sports",
+    name: "Sports",
   },
 ];
 
-const data = (
-  <div>
-    <div className="pr-2"></div>
-
-    <div className="w-full flex items-center justify-between">
-      {/* search result  */}
-      <div className="bg-[#1BB6ED] py-4 px-6 rounded-2xl flex items-center gap-2">
-        <span>Hello</span>
-        <span>
-          <svg
-            stroke="currentColor"
-            fill="currentColor"
-            strokeWidth="0"
-            viewBox="0 0 512 512"
-            height="20px"
-            width="20px"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M331.3 308.7L278.6 256l52.7-52.7c6.2-6.2 6.2-16.4 0-22.6-6.2-6.2-16.4-6.2-22.6 0L256 233.4l-52.7-52.7c-6.2-6.2-15.6-7.1-22.6 0-7.1 7.1-6 16.6 0 22.6l52.7 52.7-52.7 52.7c-6.7 6.7-6.4 16.3 0 22.6 6.4 6.4 16.4 6.2 22.6 0l52.7-52.7 52.7 52.7c6.2 6.2 16.4 6.2 22.6 0 6.3-6.2 6.3-16.4 0-22.6z"></path>
-            <path d="M256 76c48.1 0 93.3 18.7 127.3 52.7S436 207.9 436 256s-18.7 93.3-52.7 127.3S304.1 436 256 436c-48.1 0-93.3-18.7-127.3-52.7S76 304.1 76 256s18.7-93.3 52.7-127.3S207.9 76 256 76m0-28C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48z"></path>
-          </svg>
-        </span>
-      </div>
-
-      <span className="bg-[#1BB6ED] p-4 rounded-2xl">
-        <svg
-          stroke="currentColor"
-          fill="none"
-          strokeWidth="2"
-          viewBox="0 0 24 24"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          height="20px"
-          width="20px"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <circle cx="11" cy="11" r="8"></circle>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-        </svg>
-      </span>
-    </div>
-  </div>
-);
-
-const Filter = () => {
-  const [selected2, setSelected2] = useState([]);
+const Filter = ({ selected2, setSelected2 }) => {
   const [fieldError, setFieldError] = useState(false);
 
   const filterBtn = (
@@ -162,9 +109,9 @@ const Filter = () => {
       <div className="w-full flex items-center justify-between">
         <div className="w-full">
           <Listbox value={selected2} onChange={setSelected2} multiple>
-            <div className="relative shadow-xl">
+            <div className="relative shadow-xl ">
               <Listbox.Button
-                className={`relative w-1/2 cursor-default rounded-lg bg-white text-left ${
+                className={`relative w-full cursor-default rounded-lg bg-white text-left ${
                   fieldError && selected2.length === 0
                     ? "border-red-500"
                     : "border-[#E5E7EC] "
@@ -195,7 +142,7 @@ const Filter = () => {
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
               >
-                <Listbox.Options className="!z-[9999] absolute mt-1 w-1/2 rounded-md bg-white py-1 text-base ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm shadow-xl">
+                <Listbox.Options className="!z-[9999] absolute mt-1 w-1/2 rounded-md bg-white py-1 text-base ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm shadow-xl border ">
                   <span className="block truncate py-3 px-4 font-semibold text-[#1BB6ED] text-base border-b-2 border-[#1BB6ED] relative">
                     <span>Select Filter Option</span>
                     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
