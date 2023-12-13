@@ -85,11 +85,13 @@ const searchIcons = (
 
 const type = [
   {
-    name: "Food",
-  },
-
-  {
     name: "Sports",
+  },
+  {
+    name: "BirstDay",
+  },
+  {
+    name: "Study",
   },
 ];
 
