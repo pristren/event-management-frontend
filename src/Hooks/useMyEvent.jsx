@@ -18,7 +18,7 @@ initFirebase();
 
 const useMyEvent = () => {
   const { Axios } = useAxios();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(true);
   const { user } = useSelector((state) => state.auth);
   const [myEvent, setMyEvent] = useState([]);
@@ -58,8 +58,8 @@ const useMyEvent = () => {
   // console.log(myEvent);
 
   useEffect(() => {
+    setIsLoading(true);
     if (user?._id) {
-      setIsLoading(true);
       Axios.get(`/my-events/${user?._id}`)
         .then((res) => setMyEvent(res.data))
         .catch((err) => setIsError(err))
@@ -70,11 +70,9 @@ const useMyEvent = () => {
   }, []);
 
   useEffect(() => {
-    setIsLoading(true);
     setOwnEvent(myEvent?.data?.ownEvents);
     setInvitedEvent(myEvent?.data?.invitedEvents);
     setJointedEvent(myEvent?.data?.joinedEvents);
-    setIsLoading(false);
   }, [myEvent]);
 
   return {

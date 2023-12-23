@@ -25,7 +25,7 @@ const MemberCard = ({ member }) => {
   }, [member]);
   return (
     <div
-      className="bg-white rounded-xl p-3 "
+      className="bg-white rounded-xl p-3 cursor-pointer"
       onClick={() => navigate(`/profile/${user._id}`)}
     >
       {!loading ? (

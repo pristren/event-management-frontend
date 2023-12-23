@@ -46,18 +46,15 @@ const MyEvents = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-5">
-          {!isLoading ? (
-            ownEvent?.ownEvents &&
+          {isLoading === true && <p className="px-4 text-black">Loading...</p>}
+          {ownEvent?.ownEvents &&
             ownEvent?.ownEvents.map((event, idx) => (
               <MyEventsCart
                 key={idx}
                 event={event}
                 handleDelete={handleDelete}
               />
-            ))
-          ) : (
-            <p className="px-4">Loading...</p>
-          )}
+            ))}
         </div>
       </div>
     </section>

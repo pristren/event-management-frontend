@@ -28,9 +28,9 @@ const InvitedEvents = () => {
             event?.userId !== user._id
         )
       );
+      setLoading(false);
     };
     allEvents();
-    setLoading(false);
   }, []);
 
   return (
