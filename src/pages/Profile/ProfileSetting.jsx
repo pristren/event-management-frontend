@@ -127,7 +127,7 @@ const ProfileSetting = () => {
   const onDrop = async (pictureFiles) => {
     setLoading(true);
     // setPictures(pictureFiles);
-    const uploadedImagesArray = [];
+    let uploadedImagesArray = [];
 
     for (const image of pictureFiles) {
       const formData = new FormData();
@@ -143,7 +143,11 @@ const ProfileSetting = () => {
 
     if (uploadedImagesArray?.length) {
       setLoading(false);
-      setUploadImages(uploadedImagesArray);
+
+      setUploadImages([...uploadImages, ...uploadedImagesArray]);
+      // console.log(uploadedImagesArray);
+      // console.log(uploadImages);
+      uploadedImagesArray = [];
     }
   };
 
@@ -182,8 +186,15 @@ const ProfileSetting = () => {
               </div>
 
               <div className="mt-10 flex flex-col items-center mb-3">
-                <figure className="bg-[#30BEEC] text-white px-1 py-1 rounded-full w-24 h-24 flex justify-center items-center">
-                  <span className="text-6xl">{profileUserIcon}</span>
+                <figure className="bg-[#30BEEC] text-white  rounded-full w-24 h-24 flex justify-center items-center">
+                  {uploadImages.length ? (
+                    <img
+                      src={uploadImages[0]}
+                      className="w-24 h-24 rounded-full"
+                    />
+                  ) : (
+                    <span className="text-6xl">{profileUserIcon}</span>
+                  )}
                 </figure>
 
                 <div className="text-center">
@@ -320,19 +331,24 @@ const ProfileSetting = () => {
                 className="border-none"
               />
 
-              <form className="mt-7">
+              <div className="mt-7">
                 <div className="flex flex-col gap-6">
                   <div className="grid grid-cols-3 gap-5">
-                    {uploadImages?.map((img, i) => (
-                      <VeryCard
-                        key={i}
-                        img={img}
-                        handleImgDelete={handleImgDelete}
-                      />
-                    ))}
+                    {uploadImages
+                      ?.filter(
+                        (obj, index, array) =>
+                          array.findIndex((item) => item === obj) === index
+                      )
+                      ?.map((img, i) => (
+                        <VeryCard
+                          key={i}
+                          img={img}
+                          handleImgDelete={handleImgDelete}
+                        />
+                      ))}
                     {loading && <div>loading...</div>}
                   </div>
-                  <div className="w-[80%] mx-auto flex justify-between items-center gap-2 rounded-3xl text-lg min-w-[15rem] bg-white shadow-md px-1 overflow-hidden mt-8 mb-2">
+                  {/* <div className="w-[80%] mx-auto flex justify-between items-center gap-2 rounded-3xl text-lg min-w-[15rem] bg-white shadow-md px-1 overflow-hidden mt-8 mb-2">
                     <span className="bg-[#30BEEC] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center">
                       {lockIcon}
                     </span>
@@ -444,16 +460,16 @@ const ProfileSetting = () => {
                         className="text-2xl px-1 w-[2.5rem] h-[3rem] rounded-xl border-[2px] border-gray-400 text-center flex justify-center items-center"
                       />
                     </div>
-                  </div>
+                  </div> */}
                 </div>
-              </form>
+              </div>
 
-              <button
+              {/* <button
                 // onClick={handleSubmit}
                 className="py-2 min-w-[14rem] bg-[#30BEEC] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mt-10"
               >
                 <span>Verify Phone</span>
-              </button>
+              </button> */}
             </div>
           </div>
         </div>

@@ -15,8 +15,9 @@ const InvitedEvents = () => {
   // console.log(user);
 
   const [invitedEvent, setInvitedEvent] = useState([]);
-
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
+    setLoading(true);
     const allEvents = async () => {
       const res = await Axios.get("/all-events");
       const data = await res.data;
@@ -29,6 +30,7 @@ const InvitedEvents = () => {
       );
     };
     allEvents();
+    setLoading(false);
   }, []);
 
   return (
@@ -56,10 +58,14 @@ const InvitedEvents = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 px-5">
-          {invitedEvent &&
+          {!loading ? (
+            invitedEvent &&
             invitedEvent.map((event, i) => {
               return <InvitedEventCart event={event} key={i} />;
-            })}
+            })
+          ) : (
+            <p className="px-4">Loading...</p>
+          )}
         </div>
       </div>
     </section>

@@ -14,6 +14,7 @@ import MyProvider from "./Provider/Provider";
 import { useState } from "react";
 import AuthProtected from "./routes/AuthProtected";
 import ProfilePage from "./pages/Profile/ProfilePage";
+import UpdateEvent from "./pages/UpdateEvent/UpdateEvent";
 
 function App() {
   const [isExpand, setIsExpand] = useState(false);
@@ -25,12 +26,20 @@ function App() {
           <Route index element={<Home />} />
           <Route path="login" element={<Login />} />
           <Route path="sign-up" element={<SignUp />} />
-          <Route path="home-screen" element={<HomeScreen />} />
+          {/* <Route path="home-screen" element={<HomeScreen />} /> */}
           <Route
             path="create-event"
             element={
               <AuthProtected>
                 <CreateEvent />
+              </AuthProtected>
+            }
+          />
+          <Route
+            path="update-event/:id"
+            element={
+              <AuthProtected>
+                <UpdateEvent />
               </AuthProtected>
             }
           />

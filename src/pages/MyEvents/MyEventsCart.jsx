@@ -43,12 +43,12 @@ const MyEventsCart = ({ event, handleDelete }) => {
           </div>
 
           <div className="flex justify-between gap-4">
-            {/* <Link
+            <Link
               className="rounded-lg w-full text-[#33BDEF] bg-[#33BDEF] bg-opacity-[0.15] hover:bg-opacity-80 hover:text-white transition duration-200 block text-center py-2 mt-7"
-              to="#"
+              to={`/update-event/${event?._id}`}
             >
               Edit
-            </Link> */}
+            </Link>
             <button
               className="rounded-lg w-full text-white bg-[#f77979]  hover:text-white transition duration-200 block text-center py-2 mt-7"
               onClick={() => handleDelete(event?._id)}

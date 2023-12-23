@@ -188,30 +188,62 @@ const Home = () => {
                                   </div>
                                   {popover?.popover &&
                                     popover.id === event._id && (
+                                      // <div className="grid grid-cols-2 absolute z-10">
+                                      //   <div
+                                      //     className="!bg-white w-72 !z-[999] p-6 text-lg -translate-x-[40%] rounded-lg shadow-2xl shadow-blue-300 text-center mt-2"
+                                      //     onClick={() =>
+                                      //       navigate(
+                                      //         `/event-details/${event?._id}`
+                                      //       )
+                                      //     }
+                                      //   >
+                                      //     <img
+                                      //       src={event?.event_images[0]?.image}
+                                      //       className="w-full"
+                                      //     />
+                                      //     <h2>Event Details</h2>
+                                      //     <p>Title: {event?.event_title}</p>
+                                      //     <p className="text-[#828282] text-[14px] font-medium">
+                                      //       {moment(events?.event_date).format(
+                                      //         "MMMM D, YYYY"
+                                      //       )}
+                                      //       ,{" "}
+                                      //       {moment(
+                                      //         events?.event_time?.time_start
+                                      //       ).format("hh:mm a")}
+                                      //     </p>
+                                      //   </div>
+                                      // </div>
                                       <div className="grid grid-cols-2 absolute z-10">
                                         <div
-                                          className="!bg-white w-72 !z-[999] p-6 text-lg -translate-x-[40%] rounded-lg shadow-2xl shadow-blue-300 text-center mt-2"
+                                          className="!bg-white w-80 !z-[999] py-6 px-4 text-lg -translate-x-[40%] rounded-lg shadow-2xl shadow-blue-300 h-36 text-center mt-2 flex items-center gap-2"
                                           onClick={() =>
                                             navigate(
                                               `/event-details/${event?._id}`
                                             )
                                           }
                                         >
-                                          <img
-                                            src={event?.event_images[0]?.image}
-                                            className="w-full"
-                                          />
-                                          <h2>Event Details</h2>
-                                          <p>Title: {event?.event_title}</p>
-                                          <p className="text-[#828282] text-[14px] font-medium">
-                                            {moment(events?.event_date).format(
-                                              "MMMM D, YYYY"
-                                            )}
-                                            ,{" "}
-                                            {moment(
-                                              events?.event_time?.time_start
-                                            ).format("hh:mm a")}
-                                          </p>
+                                          <div className="w-[40%] h-full rounded-xl">
+                                            <img
+                                              src={
+                                                event?.event_images[0]?.image
+                                              }
+                                              className="w-full h-full rounded-xl"
+                                            />
+                                          </div>
+
+                                          <div className="w-[60%]">
+                                            <p>{event?.event_title}</p>
+                                            <p className="text-[#828282] text-[12px] font-medium">
+                                              {moment(event?.event_date).format(
+                                                "MMMM D, YYYY"
+                                              )}
+                                              ,{" "}
+                                              {moment(
+                                                event?.event_time?.time_start
+                                              ).format("hh:mm a")}
+                                            </p>
+                                          </div>
                                         </div>
                                       </div>
                                     )}
@@ -219,6 +251,7 @@ const Home = () => {
                               );
                             })
                         : upcomingEvents?.map((event, i) => {
+                            // console.log(event);
                             return (
                               <AdvancedMarker
                                 key={i}
@@ -247,28 +280,38 @@ const Home = () => {
                                   popover.id === event._id && (
                                     <div className="grid grid-cols-2 absolute z-10">
                                       <div
-                                        className="!bg-white w-72 !z-[999] p-6 text-lg -translate-x-[40%] rounded-lg shadow-2xl shadow-blue-300 text-center mt-2"
+                                        className="!bg-white w-80 !z-[999] py-6 px-4 text-lg -translate-x-[40%] rounded-lg shadow-2xl shadow-blue-300 h-36 text-center mt-2 flex items-center gap-2"
                                         onClick={() =>
                                           navigate(
                                             `/event-details/${event?._id}`
                                           )
                                         }
                                       >
-                                        <img
-                                          src={event?.event_images[0]?.image}
-                                          className="w-full"
-                                        />
-                                        <h2>Event Details</h2>
-                                        <p>Title: {event?.event_title}</p>
-                                        <p className="text-[#828282] text-[14px] font-medium">
-                                          {moment(events?.event_date).format(
-                                            "MMMM D, YYYY"
+                                        <div className="w-[40%] h-full rounded-xl border flex items-center justify-center">
+                                          {event?.event_images[0]?.image ? (
+                                            <img
+                                              src={
+                                                event?.event_images[0]?.image
+                                              }
+                                              className="w-full h-full rounded-xl"
+                                            />
+                                          ) : (
+                                            <p>no images</p>
                                           )}
-                                          ,{" "}
-                                          {moment(
-                                            events?.event_time?.time_start
-                                          ).format("hh:mm a")}
-                                        </p>
+                                        </div>
+
+                                        <div className="w-[60%]">
+                                          <p>{event?.event_title}</p>
+                                          <p className="text-[#828282] text-[12px] font-medium">
+                                            {moment(event?.event_date).format(
+                                              "MMMM D, YYYY"
+                                            )}
+                                            ,{" "}
+                                            {moment(
+                                              event?.event_time?.time_start
+                                            ).format("hh:mm a")}
+                                          </p>
+                                        </div>
                                       </div>
                                     </div>
                                   )}
@@ -385,28 +428,34 @@ const Home = () => {
                                     popover.id === event._id && (
                                       <div className="grid grid-cols-2 absolute z-10">
                                         <div
-                                          className="!bg-white w-72 !z-[999] p-6 text-lg -translate-x-[40%] rounded-lg shadow-2xl shadow-blue-300 text-center mt-2"
+                                          className="!bg-white w-80 !z-[999] py-6 px-4 text-lg -translate-x-[40%] rounded-lg shadow-2xl shadow-blue-300 h-36 text-center mt-2 flex items-center gap-2"
                                           onClick={() =>
                                             navigate(
                                               `/event-details/${event?._id}`
                                             )
                                           }
                                         >
-                                          <img
-                                            src={event?.event_images[0]?.image}
-                                            className="w-full"
-                                          />
-                                          <h2>Event Details</h2>
-                                          <p>Title: {event?.event_title}</p>
-                                          <p className="text-[#828282] text-[14px] font-medium">
-                                            {moment(events?.event_date).format(
-                                              "MMMM D, YYYY"
-                                            )}
-                                            ,{" "}
-                                            {moment(
-                                              events?.event_time?.time_start
-                                            ).format("hh:mm a")}
-                                          </p>
+                                          <div className="w-[40%] h-full rounded-xl">
+                                            <img
+                                              src={
+                                                event?.event_images[0]?.image
+                                              }
+                                              className="w-full h-full rounded-xl"
+                                            />
+                                          </div>
+
+                                          <div className="w-[60%]">
+                                            <p>{event?.event_title}</p>
+                                            <p className="text-[#828282] text-[12px] font-medium">
+                                              {moment(event?.event_date).format(
+                                                "MMMM D, YYYY"
+                                              )}
+                                              ,{" "}
+                                              {moment(
+                                                event?.event_time?.time_start
+                                              ).format("hh:mm a")}
+                                            </p>
+                                          </div>
                                         </div>
                                       </div>
                                     )}
@@ -442,28 +491,32 @@ const Home = () => {
                                   popover.id === event._id && (
                                     <div className="grid grid-cols-2 absolute z-10">
                                       <div
-                                        className="!bg-white w-72 !z-[999] p-6 text-lg -translate-x-[40%] rounded-lg shadow-2xl shadow-blue-300 text-center mt-2"
+                                        className="!bg-white w-80 !z-[999] py-6 px-4 text-lg -translate-x-[40%] rounded-lg shadow-2xl shadow-blue-300 h-36 text-center mt-2 flex items-center gap-2"
                                         onClick={() =>
                                           navigate(
                                             `/event-details/${event?._id}`
                                           )
                                         }
                                       >
-                                        <img
-                                          src={event?.event_images[0]?.image}
-                                          className="w-full"
-                                        />
-                                        <h2>Event Details</h2>
-                                        <p>Title: {event?.event_title}</p>
-                                        <p className="text-[#828282] text-[14px] font-medium">
-                                          {moment(events?.event_date).format(
-                                            "MMMM D, YYYY"
-                                          )}
-                                          ,{" "}
-                                          {moment(
-                                            events?.event_time?.time_start
-                                          ).format("hh:mm a")}
-                                        </p>
+                                        <div className="w-[40%] h-full rounded-xl">
+                                          <img
+                                            src={event?.event_images[0]?.image}
+                                            className="w-full h-full rounded-xl"
+                                          />
+                                        </div>
+
+                                        <div className="w-[60%]">
+                                          <p>{event?.event_title}</p>
+                                          <p className="text-[#828282] text-[12px] font-medium">
+                                            {moment(event?.event_date).format(
+                                              "MMMM D, YYYY"
+                                            )}
+                                            ,{" "}
+                                            {moment(
+                                              event?.event_time?.time_start
+                                            ).format("hh:mm a")}
+                                          </p>
+                                        </div>
                                       </div>
                                     </div>
                                   )}

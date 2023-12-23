@@ -45,8 +45,16 @@ export default function ProfilePage() {
         <div className="">
           <div className="flex flex-col items-center gap-6 p-4 md:p-6 lg:p-10">
             <div className="h-24 w-24 ">
-              <figure className="bg-[#30BEEC] text-white px-1 py-1 rounded-full w-24 h-24 flex justify-center items-center">
-                <span className="text-6xl">{profileUserIcon}</span>
+              <figure className="bg-[#30BEEC] text-white rounded-full w-24 h-24 flex justify-center items-center">
+                {user?.profile_images?.length ? (
+                  <img
+                    src={user?.profile_images[0]}
+                    className="w-full h-full rounded-full"
+                    alt=""
+                  />
+                ) : (
+                  <span className="text-6xl">{profileUserIcon}</span>
+                )}
               </figure>
             </div>
             <div className="text-center">
@@ -64,7 +72,7 @@ export default function ProfilePage() {
                   >
                     <img
                       src={l}
-                      className="h-auto w-full overflow-hidden rounded-lg"
+                      className="h-full w-full overflow-hidden rounded-lg"
                     />
                   </div>
                 );

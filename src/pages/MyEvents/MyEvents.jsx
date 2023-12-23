@@ -7,7 +7,7 @@ import useAxios from "../../Hooks/useAxios";
 import { useSelector } from "react-redux";
 
 const MyEvents = () => {
-  const { ownEvent, setMyEvent } = useMyEvent();
+  const { ownEvent, setMyEvent, isLoading } = useMyEvent();
   const { isExpand, setIsExpand } = useContext(MyProvider);
   const { user } = useSelector((state) => state.auth);
 
@@ -18,6 +18,8 @@ const MyEvents = () => {
       Axios.get(`/my-events/${user?._id}`).then((res) => setMyEvent(res.data));
     }
   };
+
+  console.log(isLoading);
 
   return (
     <section className="flex">
@@ -44,14 +46,18 @@ const MyEvents = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-5">
-          {ownEvent?.ownEvents &&
+          {!isLoading ? (
+            ownEvent?.ownEvents &&
             ownEvent?.ownEvents.map((event, idx) => (
               <MyEventsCart
                 key={idx}
                 event={event}
                 handleDelete={handleDelete}
               />
-            ))}
+            ))
+          ) : (
+            <p className="px-4">Loading...</p>
+          )}
         </div>
       </div>
     </section>

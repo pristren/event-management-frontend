@@ -1,15 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useAxios from "../../Hooks/useAxios";
 import MyProvider from "../../Provider/Provider";
 import Profile from "../../components/Profile";
-import Calender from "./Calender";
+// import Calender from "./Calender";
 import DatePicker from "react-datepicker";
 import { useSelector } from "react-redux";
-import CreateEventModal from "./CreateEventModal";
+import CreateEventModal from "../CreateEvent/CreateEventModal";
 import ImageUploader from "react-images-upload";
 import CustomDatePicker from "@/components/DatePicker";
+import VeryCard2 from "@/components/VeryCard2";
 
 const clubIcons = (
   <svg
@@ -25,12 +26,13 @@ const clubIcons = (
   </svg>
 );
 
-const CreateEvent = () => {
+export default function UpdateEvent() {
+  const { id } = useParams();
   const navigate = useNavigate();
   const { Axios } = useAxios();
   const { isExpand, setIsExpand } = useContext(MyProvider);
   const { user } = useSelector((state) => state.auth);
-  const [selectedBtn, setSelectedBtn] = useState("Public");
+  const [selectedBtn, setSelectedBtn] = useState("public");
   const [multipleImages, setMultipleImages] = useState([]);
   const [fileUploadLoading, setFileUploadLoading] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState({
@@ -45,6 +47,9 @@ const CreateEvent = () => {
   const [endTime, setEndTime] = useState(null);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [uploadImages, setUploadImages] = useState([]);
+
+  //   console.log(endTime);
 
   const [inputData, setInputData] = useState({
     invitedUserId: "",
@@ -59,6 +64,32 @@ const CreateEvent = () => {
     startDate: startDate || null,
     endDate: endDate || null,
   });
+  console.log(inputData);
+  useEffect(() => {
+    const getData = async () => {
+      await Axios.get(`/event-details/${id}`).then((res) => {
+        setInputData(res.data.data);
+        // console.log(new Date(res.data.data.event_date.date_start));
+        setStartDate(new Date(res.data.data.event_date.date_start));
+        setEndDate(new Date(res.data.data.event_date.date_end));
+        setStartTime(new Date(res.data.data.event_time.time_start));
+        setEndTime(new Date(res.data.data.event_time.time_end));
+        const input = document.getElementById("autocomplete");
+        if (input) {
+          updateEvent;
+          input.value = res.data?.data?.location;
+        }
+        setUploadImages(res.data.data?.event_images);
+        setMultipleImages(res.data.data?.event_images);
+        setSelectedPlace({
+          address: res.data.data.location,
+          latitude: res.data.data.mapLocation.lat,
+          longitude: res.data.data.mapLocation.lng,
+        });
+      });
+    };
+    getData();
+  }, []);
 
   // input handle change set object value dynamical
   const handleInputChange = (event) => {
@@ -79,7 +110,8 @@ const CreateEvent = () => {
   const [status, setStatus] = useState("public");
 
   const [createdEvent, setCreatedEvent] = useState({});
-  const createEvent = () => {
+  //   console.log(multipleImages);
+  const updateEvent = async () => {
     if (
       user?._id !== "" &&
       inputData?.event_title !== "" &&
@@ -87,9 +119,13 @@ const CreateEvent = () => {
       inputData?.event_clubName !== "" &&
       inputData?.category !== ""
     ) {
+      const event_img = multipleImages?.filter(
+        (obj, index, array) =>
+          array.findIndex((item) => item.image === obj.image) === index
+      );
       const newData = {
         userId: user?._id,
-        event_images: multipleImages,
+        event_images: [...event_img],
         event_title: inputData?.event_title,
         event_Details: inputData?.event_Details,
         event_clubName: inputData?.event_clubName,
@@ -111,36 +147,14 @@ const CreateEvent = () => {
         category: inputData.category,
         joinedPeople: inputData.joinedPeople,
       };
-      Axios.post("/create-event", newData)
+      //   console.log(newData);
+      await Axios.put(`/update-event/${id}`, newData)
         .then((res) => {
-          // toast.success("Event Created Successfully!");
           setCreateSuccess(res?.data?.event);
-          setCreatedEvent(res.data?.event);
-          // console.log(res.data?.event);
-          setInputData({
-            invitedUserId: "",
-            event_title: "",
-            event_Details: "",
-            event_clubName: "",
-            time_start: "",
-            time_end: "",
-            joinedPeople: [user?.email],
-            anOtherParticipants: false,
-            category: "",
-          });
-          setStartDate(null);
-          setEndDate(null);
-          setStartTime(null);
-          setEndTime(null);
-          setSuccess(true);
-          const file = document.getElementById("autocomplete");
-          if (file) {
-            file.value = "";
-          }
-          //  file?.value="";
-
-          handleOpenModal();
-          // navigate("/my-events");
+          toast.success("event was updated successfully!");
+          setTimeout(() => {
+            navigate("/my-events");
+          }, 500);
         })
         .catch((err) => {
           toast.error("creating error");
@@ -165,11 +179,6 @@ const CreateEvent = () => {
     };
     initAutocomplete();
   }, []);
-
-  // const handleImgDelete = (url) => {
-  //   const res = multipleImages.filter((u) => u.image !== url);
-  //   setMultipleImages(res);
-  // };
 
   const [openModal, setOpenModal] = useState(false);
 
@@ -205,9 +214,13 @@ const CreateEvent = () => {
     // setUploadedImages(uploadedImagesArray);
     if (uploadedImagesArray?.length) {
       setFileUploadLoading(false);
-      setMultipleImages(uploadedImagesArray);
+      setMultipleImages([...multipleImages, ...uploadedImagesArray]);
       // images.push({ image: fileUrl });
     }
+  };
+  const handleImgDelete = (url) => {
+    const res = multipleImages.filter((u) => u.image !== url);
+    setMultipleImages(res);
   };
 
   return (
@@ -273,27 +286,6 @@ const CreateEvent = () => {
 
             {/* Calender  */}
             <div className="my-10 relative">
-              {/* <span className="bg-[#1BB6ED] p-3 rounded-xl flex items-center justify-center absolute -top-5 left-5">
-                <svg
-                  stroke="currentColor"
-                  fill="#fff"
-                  strokeWidth="0"
-                  viewBox="0 0 16 16"
-                  height="25px"
-                  width="25px"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M6.445 12.688V7.354h-.633A12.6 12.6 0 0 0 4.5 8.16v.695c.375-.257.969-.62 1.258-.777h.012v4.61h.675zm1.188-1.305c.047.64.594 1.406 1.703 1.406 1.258 0 2-1.066 2-2.871 0-1.934-.781-2.668-1.953-2.668-.926 0-1.797.672-1.797 1.809 0 1.16.824 1.77 1.676 1.77.746 0 1.23-.376 1.383-.79h.027c-.004 1.316-.461 2.164-1.305 2.164-.664 0-1.008-.45-1.05-.82h-.684zm2.953-2.317c0 .696-.559 1.18-1.184 1.18-.601 0-1.144-.383-1.144-1.2 0-.823.582-1.21 1.168-1.21.633 0 1.16.398 1.16 1.23z"></path>
-                  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H2z"></path>
-                  <path d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V4z"></path>
-                </svg>
-              </span>
-              <div
-                className="bg-white py-12 px-20 sm:px-8 md:px-3 md:py-12 lg:px-3 xl:px-4 rounded-3xl"
-                style={{ boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px" }}
-              >
-                <Calender setEventDate={setEventDate} />
-              </div> */}
               <div className="w-full flex flex-col gap-3 mt-5">
                 <div className="flex items-center justify-center overflow-hidden relative w-full bg-white py-2 border-[1px] border-[#1BB6ED] border-dotted ">
                   <div className="flex gap-3 text-center text-[#A7A7A7] font-Jost text-[16px] md:text-[18px] ">
@@ -303,13 +295,28 @@ const CreateEvent = () => {
                       onChange={onDrop}
                       // imgExtension={[".jpg", ".gif", ".png", ".gif"]}
                       maxFileSize={5242880}
-                      withPreview={!success ? true : false}
+                      //   withPreview={true}
                       className="border-none shadow-none"
                       fileContainerStyle={{
                         boxShadow: "none",
                       }}
                     />
                   </div>
+                </div>
+                <div className="grid grid-cols-2 gap-5">
+                  {multipleImages
+                    ?.filter(
+                      (obj, index, array) =>
+                        array.findIndex((item) => item.image === obj.image) ===
+                        index
+                    )
+                    ?.map((img, i) => (
+                      <VeryCard2
+                        key={i}
+                        img={img}
+                        handleImgDelete={handleImgDelete}
+                      />
+                    ))}
                 </div>
               </div>
             </div>
@@ -417,6 +424,7 @@ const CreateEvent = () => {
                 type="text"
                 placeholder="Place"
                 className="w-full px-2 py-2 outline-none border-none text-[15px] font-normal focus:outline-none placeholder:text-[#6c757d] placeholder:font-medium"
+                // defaultValue={mapLocation}
               />
             </div>
           </div>
@@ -460,6 +468,7 @@ const CreateEvent = () => {
                 name="anOtherParticipants"
                 onChange={handleInputChange}
                 className="checkbox"
+                checked={inputData.anOtherParticipants}
                 value={inputData.anOtherParticipants}
               />
               <label htmlFor="enable">
@@ -545,7 +554,7 @@ const CreateEvent = () => {
               }}
             >
               <button
-                onClick={createEvent}
+                onClick={updateEvent}
                 className={`flex items-center gap-4  py-2 px-7 rounded-full ${
                   fileUploadLoading ? "bg-[#70c0dde3]" : "bg-[#1BB6ED]"
                 }`}
@@ -559,6 +568,4 @@ const CreateEvent = () => {
       </div>
     </div>
   );
-};
-
-export default CreateEvent;
+}

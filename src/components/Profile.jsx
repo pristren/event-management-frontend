@@ -1,21 +1,88 @@
-import React from "react";
+import React, { Fragment, useEffect, useState } from "react";
+// import useAxios from "../Hooks/useAxios";
+import { useDispatch, useSelector } from "react-redux";
+import { profileUserIcon } from "./SVGIcons/Icons";
+import { Menu, Transition } from "@headlessui/react";
+import { userLoggedOut } from "../features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
+// import useAxios from "../../Hooks/useAxios";
 
 const Profile = () => {
+  const state = useSelector((state) => state.auth);
+
+  const { user } = state || {};
+  // console.log(user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   return (
-    <div>
-      <span className=" bg-[#1BB6ED] p-3 rounded-2xl flex justify-center items-center">
-        <svg
-          stroke="currentColor"
-          fill="#fff"
-          strokeWidth="0"
-          viewBox="0 0 512 512"
-          height="25px"
-          width="25px"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M256 288A144 144 0 1 0 256 0a144 144 0 1 0 0 288zm-94.7 32C72.2 320 0 392.2 0 481.3c0 17 13.8 30.7 30.7 30.7H481.3c17 0 30.7-13.8 30.7-30.7C512 392.2 439.8 320 350.7 320H161.3z"></path>
-        </svg>
-      </span>
+    <div className="">
+      <div className=" w-56 text-right">
+        {user?.profile_images?.length ? (
+          <Menu as="div" className="relative inline-block text-left">
+            <div>
+              <Menu.Button className="inline-flex  justify-center bg-black/20 text-sm font-medium text-white focus:outline-none  bg-[#30BEEC]  rounded-full w-10 h-10  items-center">
+                <img
+                  src={user?.profile_images[0]}
+                  className="w-full h-full rounded-full"
+                  alt=""
+                />
+              </Menu.Button>
+            </div>
+            <Transition
+              as={Fragment}
+              enter="transition ease-out duration-100"
+              enterFrom="transform opacity-0 scale-95"
+              enterTo="transform opacity-100 scale-100"
+              leave="transition ease-in duration-75"
+              leaveFrom="transform opacity-100 scale-100"
+              leaveTo="transform opacity-0 scale-95"
+            >
+              <Menu.Items className="absolute right-0   origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
+                <div className=" ">
+                  <Menu.Item>
+                    {({ active }) => (
+                      <button
+                        className={`${
+                          active ? " text-violet-500" : "text-gray-900"
+                        } group flex w-full items-center rounded-md px-6 py-2 text-sm`}
+                        onClick={() => {
+                          localStorage.removeItem("authUser");
+                          dispatch(userLoggedOut());
+                          navigate("/login");
+                        }}
+                      >
+                        LogOut
+                      </button>
+                    )}
+                  </Menu.Item>
+                </div>
+              </Menu.Items>
+            </Transition>
+          </Menu>
+        ) : (
+          <div className="flex bg-[#30BEEC] justify-center rounded-full w-10 h-10  items-center">
+            <span className="text-3xl ">{profileUserIcon}</span>
+          </div>
+        )}
+      </div>
+      {/* {user?.profile_images?.length ? (
+        <Menu>
+          <Menu.Button
+            className={
+              "bg-[#30BEEC] text-white rounded-full w-10 h-10 flex justify-center items-center"
+            }
+          >
+            <img
+              src={user?.profile_images[0]}
+              className="w-full h-full rounded-full"
+              alt=""
+            />
+          </Menu.Button>
+        </Menu>
+      ) : (
+        <span className="text-6xl">{profileUserIcon}</span>
+      )} */}
     </div>
   );
 };
