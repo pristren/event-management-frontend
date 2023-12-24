@@ -17,7 +17,7 @@ const Profile = () => {
 
   return (
     <div className="">
-      <div className=" w-56 text-right">
+      <div className=" w-56 text-right flex justify-end">
         {user?.profile_images?.length ? (
           <Menu as="div" className="relative inline-block text-left">
             <div>

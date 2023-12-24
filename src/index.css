@@ -78,6 +78,9 @@
   display: none;
   /* Hide the default checkbox */
 }
+* {
+  /* background-color: #7d7d7d2f; */
+}
 
 .checkbox + label {
   position: relative;

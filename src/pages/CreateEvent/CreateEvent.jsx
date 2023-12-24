@@ -30,7 +30,7 @@ const CreateEvent = () => {
   const { Axios } = useAxios();
   const { isExpand, setIsExpand } = useContext(MyProvider);
   const { user } = useSelector((state) => state.auth);
-  const [selectedBtn, setSelectedBtn] = useState("Public");
+  const [selectedBtn, setSelectedBtn] = useState("public");
   const [multipleImages, setMultipleImages] = useState([]);
   const [fileUploadLoading, setFileUploadLoading] = useState(false);
   const [selectedPlace, setSelectedPlace] = useState({

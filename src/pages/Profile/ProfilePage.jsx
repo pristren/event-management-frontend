@@ -13,11 +13,16 @@ export default function ProfilePage() {
   useEffect(() => {
     const user = async () => {
       await Axios.get(`/user/u/${id}`).then((res) => {
+        // const event_img = multipleImages?.filter(
+        //   (obj, index, array) =>
+        //     array.findIndex((item) => item.image === obj.image) === index
+        // );
         setUser(res.data?.data?.user);
       });
     };
     user();
   }, []);
+  console.log(user);
   return (
     <div>
       <div className="flex items-center justify-between pt-4 pb-5 sm:pb-10 px-4">

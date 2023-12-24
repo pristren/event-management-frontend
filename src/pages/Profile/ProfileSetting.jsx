@@ -89,10 +89,13 @@ const ProfileSetting = () => {
     // console.log("number ", number);
     // console.log("verifyPin ", verifyPin);
     // function here.....
+    const event_img = uploadImages?.filter(
+      (obj, index, array) => array.findIndex((item) => item === obj) === index
+    );
     const newData = {
       ...inputData,
       account_type: selectedBtn,
-      profile_images: uploadImages,
+      profile_images: event_img,
     };
     Axios.put(`/user/updates/${state.user._id}`, newData)
       .then((res) => {
@@ -333,7 +336,7 @@ const ProfileSetting = () => {
 
               <div className="mt-7">
                 <div className="flex flex-col gap-6">
-                  <div className="grid grid-cols-3 gap-5">
+                  <div className="grid grid-cols-2 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
                     {uploadImages
                       ?.filter(
                         (obj, index, array) =>
