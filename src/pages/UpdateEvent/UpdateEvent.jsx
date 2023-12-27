@@ -64,7 +64,6 @@ export default function UpdateEvent() {
     startDate: startDate || null,
     endDate: endDate || null,
   });
-  console.log(inputData);
   useEffect(() => {
     const getData = async () => {
       await Axios.get(`/event-details/${id}`).then((res) => {
@@ -560,7 +559,7 @@ export default function UpdateEvent() {
                 }`}
                 disabled={fileUploadLoading}
               >
-                <span className="text-white">create Event</span>
+                <span className="text-white">update Event</span>
               </button>
             </div>
           </div>

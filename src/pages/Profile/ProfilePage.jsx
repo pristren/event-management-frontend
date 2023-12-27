@@ -22,7 +22,6 @@ export default function ProfilePage() {
     };
     user();
   }, []);
-  console.log(user);
   return (
     <div>
       <div className="flex items-center justify-between pt-4 pb-5 sm:pb-10 px-4">
@@ -66,7 +65,9 @@ export default function ProfilePage() {
               <h1 className="font-bold text-2xl">
                 {user?.firstName} {user?.lastName}
               </h1>
-              <p className="text-gray-500 dark:text-gray-400">{user?.email}</p>
+              <p className="text-gray-500 dark:text-gray-400">
+                Bio: {user?.short_bio}
+              </p>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-8 w-full max-w-2xl ">
               {user?.profile_images?.map((l, i) => {

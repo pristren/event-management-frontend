@@ -288,15 +288,15 @@ const ProfileSetting = () => {
                 </button>
 
                 <button
-                  onClick={(e) => setSelectedBtn("Business")}
+                  onClick={(e) => setSelectedBtn("Public")}
                   className={`flex gap-3 py-2 min-w-[14rem] px-3 items-center justify-center rounded-3xl text-lg text-slate-950 shadow-md text-center font-semibold ${
-                    selectedBtn === "Business"
+                    selectedBtn === "Public"
                       ? "bg-[#1BB6ED] text-white"
                       : "bg-gray-300 text-black"
                   }`}
                 >
                   <span>{businessIcon}</span>
-                  <span>Business</span>
+                  <span>Public</span>
                 </button>
               </div>
 

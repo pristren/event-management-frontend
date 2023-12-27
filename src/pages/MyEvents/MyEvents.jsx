@@ -1,10 +1,11 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import useMyEvent from "../../Hooks/useMyEvent";
 import MyProvider from "../../Provider/Provider";
 import Profile from "../../components/Profile";
 import MyEventsCart from "./MyEventsCart";
 import useAxios from "../../Hooks/useAxios";
 import { useSelector } from "react-redux";
+import { Input } from "@/components/ui/input";
 
 const MyEvents = () => {
   const { ownEvent, setMyEvent, isLoading } = useMyEvent();
@@ -18,8 +19,8 @@ const MyEvents = () => {
       Axios.get(`/my-events/${user?._id}`).then((res) => setMyEvent(res.data));
     }
   };
-
-  console.log(isLoading);
+  const [category, setCategory] = useState("");
+  const [input, setInput] = useState("");
 
   return (
     <section className="flex">
@@ -45,16 +46,53 @@ const MyEvents = () => {
           <Profile />
         </div>
 
+        <div className="p-5 pb-12 flex justify-between">
+          <div className="w-2/4">
+            <h3 className="text-gray-500 mb-2">Filter By Name</h3>
+            <Input
+              className="focus-visible:ring-0  focus-visible:ring-offset-0 "
+              placeholder="Type event name..."
+              onChange={(e) => setInput(e.target.value)}
+            />
+          </div>
+          <div>
+            <h3 className="mb-2 text-gray-500">Filter By Category</h3>
+            <select
+              name="category"
+              id="category"
+              className="outline-none p-2   border"
+              onChange={(e) => setCategory(e.target.value)}
+              value={category}
+            >
+              <option value="">All Categories</option>
+              <option value="Sports">Sports</option>
+              <option value="BirthDay">BirthDay</option>
+              <option value="Study">Study</option>
+            </select>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-5">
           {isLoading === true && <p className="px-4 text-black">Loading...</p>}
-          {ownEvent?.ownEvents &&
-            ownEvent?.ownEvents.map((event, idx) => (
-              <MyEventsCart
-                key={idx}
-                event={event}
-                handleDelete={handleDelete}
-              />
-            ))}
+          {ownEvent?.ownEvents?.length &&
+            ownEvent?.ownEvents
+              ?.filter((event) =>
+                event?.category
+                  ?.toLowerCase()
+                  ?.includes(category?.toLowerCase())
+              )
+              ?.filter((event) =>
+                event?.event_title
+                  ?.toLowerCase()
+                  ?.includes(input?.toLowerCase())
+              )
+              ?.map((event, idx) => (
+                <MyEventsCart
+                  key={idx}
+                  event={event}
+                  handleDelete={handleDelete}
+                />
+              ))}
         </div>
       </div>
     </section>

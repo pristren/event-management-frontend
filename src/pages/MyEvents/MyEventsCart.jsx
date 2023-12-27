@@ -21,7 +21,7 @@ const MyEventsCart = ({ event, handleDelete }) => {
           >
             <h2 className="text-2xl mb-1"> {event?.event_title} </h2>
             <p className="text-gray-500 mb-2">
-              {moment(event?.event_time?.time_end).diff(
+              {/* {moment(event?.event_time?.time_end).diff(
                 moment(event?.event_time?.time_start),
                 "hours"
               ) == 0
@@ -33,8 +33,12 @@ const MyEventsCart = ({ event, handleDelete }) => {
                     moment(event?.event_time?.time_start),
                     "hours"
                   )} hours `}
-              | {moment(event?.event_date).format("MMMM D, YYYY")},{" "}
-              {moment(event?.event_time?.time_start).format("hh:mm a")}
+              | 
+              {moment(event?.event_date).format("MMMM D, YYYY")},{" "} */}
+              {moment(event?.event_date?.date_start).format("MMMM D, YYYY")},{" "}
+              {moment(event?.event_time?.time_start).format("hh:mm a")} -{" "}
+              {moment(event?.event_date?.date_end).format("MMMM D, YYYY")},{" "}
+              {moment(event?.event_time?.time_end).format("hh:mm a")}
             </p>
 
             <p className="text-sm font-medium text-[#333]">

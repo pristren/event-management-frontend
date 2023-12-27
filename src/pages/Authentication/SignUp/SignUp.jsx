@@ -70,39 +70,51 @@ const SignUp = () => {
       signUpData;
 
     if (password === confirmPW) {
-      if (firstName || lastName || email || password) {
-        const newData = { firstName, lastName, email, password };
-        register(newData).then((res) => {
-          if (res?.data) {
-            toast.success("Regester Successful");
-            navigate("/");
-          } else {
-            toast.error(`${res?.error?.data?.message}`);
-          }
-        });
+      if (
+        password.length >= 6 &&
+        /[a-zA-Z]/.test(password) &&
+        /[0-9]/.test(password)
+      ) {
+        if (firstName || lastName || email || password) {
+          const newData = { firstName, lastName, email, password };
+          register(newData).then((res) => {
+            if (res?.data) {
+              toast.success("Regester Successful");
+              navigate("/");
+            } else {
+              toast.error(`${res?.error?.data?.message}`);
+            }
+          });
 
-        // Axios.post("/user/register", newData)
-        //   .then((res) => {
-        //     if (res.status == 201) {
-        //       const response = res?.data?.data;
-        //       const user = {
-        //         token: response?.accessToken,
-        //         data: {
-        //           email: response?.user?.email,
-        //           _id: response?.user?._id,
-        //           name: `${response?.user?.firstName} ${response?.user?.lastName}`,
-        //         },
-        //       };
-        //       localStorage.setItem("user", JSON.stringify(user));
-        //       toast.success("Registration Success");
-        //       navigate("/");
-        //     }
-        //   })
-        //   .catch((err) => {
-        //     console.log("err ", err);
+          // Axios.post("/user/register", newData)
+          //   .then((res) => {
+          //     if (res.status == 201) {
+          //       const response = res?.data?.data;
+          //       const user = {
+          //         token: response?.accessToken,
+          //         data: {
+          //           email: response?.user?.email,
+          //           _id: response?.user?._id,
+          //           name: `${response?.user?.firstName} ${response?.user?.lastName}`,
+          //         },
+          //       };
+          //       localStorage.setItem("user", JSON.stringify(user));
+          //       toast.success("Registration Success");
+          //       navigate("/");
+          //     }
+          //   })
+          //   .catch((err) => {
+          //     console.log("err ", err);
 
-        //     toast.error(err?.message);
-        //   });
+          //     toast.error(err?.message);
+          //   });
+        }
+        // Here, you might want to submit the form or perform other actions
+      } else {
+        toast.error(
+          "Password should be at least 6 characters long and include at least one number or letter."
+        );
+        // Optionally, you can add more specific instructions or validation messages
       }
     } else {
       toast.error("Password is not matched!");
