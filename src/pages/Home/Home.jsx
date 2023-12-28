@@ -77,12 +77,23 @@ const Home = () => {
   }, []);
 
   const [selected2, setSelected2] = useState([]);
+  const { date } = useSelector((state) => state.layout);
+  console.log(date);
 
   const today = new Date();
 
   // Calculate two days from now
   const twoDaysLater = new Date();
-  twoDaysLater.setDate(today.getDate() + 2);
+  twoDaysLater.setDate(
+    date.find((d) => d.name === "This Week") !== undefined
+      ? today.getDate() + 7
+      : date.find((d) => d.name === "Tomorrow") !== undefined
+      ? today.getDate() + 2
+      : date.find((d) => d.name === "Today") !== undefined
+      ? today.getDate() + 1
+      : today.getDate() + 30
+  );
+  console.log(twoDaysLater);
 
   // Filter events within today and the next two days
   const upcomingEvents = events.filter((event) => {
@@ -530,7 +541,12 @@ const Home = () => {
             )}
         </div>
       </div>
-      <Filter selected2={selected2} setSelected2={setSelected2} />
+      <Filter
+        selected2={selected2}
+        setSelected2={setSelected2}
+        // dateSelect={dateSelect}
+        // setDateSelect={setDateSelect}
+      />
     </div>
   );
 };
