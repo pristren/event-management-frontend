@@ -23,6 +23,7 @@ import {
 } from "../../components/SVGIcons/Icons";
 import CreateEventModal from "../CreateEvent/CreateEventModal";
 import ShareModal from "./ShareModal";
+import { UserRound } from "lucide-react";
 const EventDetails = () => {
   const { user } = useSelector((state) => state?.auth);
 
@@ -332,8 +333,9 @@ const EventDetails = () => {
                         className="w-[40px] h-[40px] rounded-full object-cover"
                       />
                     ) : (
-                      <figure className="bg-[#30BEEC] text-white  rounded-full w-16 h-16 flex justify-center items-center">
-                        <span className="text-2xl">{profileUserIcon}</span>
+                      <figure className="bg-[#30BEEC] text-white  rounded-full w-12 h-12 flex justify-center items-center">
+                        {/* <span className="text-2xl">{profileUserIcon}</span> */}
+                        <UserRound />
                       </figure>
                     )}
                   </div>

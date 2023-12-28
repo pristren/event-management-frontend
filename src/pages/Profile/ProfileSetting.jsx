@@ -18,6 +18,7 @@ import { userLoggedIn } from "../../features/auth/authSlice";
 import ImageUploader from "react-images-upload";
 import { toast } from "react-hot-toast";
 import useMyEvent from "../../Hooks/useMyEvent";
+import { UserRound } from "lucide-react";
 
 const ProfileSetting = () => {
   const { Axios } = useAxios();
@@ -189,14 +190,15 @@ const ProfileSetting = () => {
               </div>
 
               <div className="mt-10 flex flex-col items-center mb-3">
-                <figure className="bg-[#30BEEC] text-white  rounded-full w-24 h-24 flex justify-center items-center">
-                  {uploadImages.length ? (
+                <figure className="bg-[#30BEEC] text-white  rounded-full  w-24 h-24 flex justify-center items-center">
+                  {uploadImages?.length ? (
                     <img
                       src={uploadImages[0]}
                       className="w-24 h-24 rounded-full"
                     />
                   ) : (
-                    <span className="text-6xl">{profileUserIcon}</span>
+                    // <span className="text-6xl">{profileUserIcon}</span>
+                    <UserRound className="w-16 h-16 " />
                   )}
                 </figure>
 

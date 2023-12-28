@@ -74,25 +74,26 @@ const MyEvents = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-5">
           {isLoading === true && <p className="px-4 text-black">Loading...</p>}
-          {ownEvent?.ownEvents?.length &&
-            ownEvent?.ownEvents
-              ?.filter((event) =>
-                event?.category
-                  ?.toLowerCase()
-                  ?.includes(category?.toLowerCase())
-              )
-              ?.filter((event) =>
-                event?.event_title
-                  ?.toLowerCase()
-                  ?.includes(input?.toLowerCase())
-              )
-              ?.map((event, idx) => (
-                <MyEventsCart
-                  key={idx}
-                  event={event}
-                  handleDelete={handleDelete}
-                />
-              ))}
+          {ownEvent?.ownEvents?.length
+            ? ownEvent?.ownEvents
+                ?.filter((event) =>
+                  event?.category
+                    ?.toLowerCase()
+                    ?.includes(category?.toLowerCase())
+                )
+                ?.filter((event) =>
+                  event?.event_title
+                    ?.toLowerCase()
+                    ?.includes(input?.toLowerCase())
+                )
+                ?.map((event, idx) => (
+                  <MyEventsCart
+                    key={idx}
+                    event={event}
+                    handleDelete={handleDelete}
+                  />
+                ))
+            : null}
         </div>
       </div>
     </section>
