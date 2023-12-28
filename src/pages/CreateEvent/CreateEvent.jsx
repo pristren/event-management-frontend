@@ -337,9 +337,10 @@ const CreateEvent = () => {
                 value={inputData?.category}
               >
                 <option value="">Chose a category</option>
-                <option value="Sports">Sports</option>
-                <option value="BirthDay">BirthDay</option>
-                <option value="Study">Study</option>
+                <option value="Game">Game</option>
+                <option value="Tournament">Tournament</option>
+                <option value="Free Play">Free Play</option>
+                <option value="3vs3">3vs3</option>
               </select>
             </div>
             <div className="flex gap-5 mt-5">

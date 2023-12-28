@@ -90,13 +90,16 @@ const searchIcons = (
 
 const type = [
   {
-    name: "Sports",
+    name: "Game",
   },
   {
-    name: "BirthDay",
+    name: "Tournament",
   },
   {
-    name: "Study",
+    name: "Free Play",
+  },
+  {
+    name: "3vs3",
   },
 ];
 const dateCategory = [
@@ -134,7 +137,7 @@ const Filter = ({ selected2, setSelected2 }) => {
 
   return (
     <div className="realtive">
-      <div className="absolute top-[200px] right-5 max-w-[450px] lg:max-w-[500px] w-full bg-white rounded-2xl flex border-[2px] border-white shadow-xl  ">
+      <div className="absolute top-[200px] right-1 lg:right-5 max-w-[550px] lg:max-w-[650px] w-full bg-white rounded-2xl flex border-[2px] border-white shadow-xl  ">
         <div className="w-full flex items-center justify-between">
           <div className="w-full  h-full">
             <Listbox
@@ -236,7 +239,7 @@ const Filter = ({ selected2, setSelected2 }) => {
         </div>
       </div>
       {/* calendar */}
-      <div className="absolute top-[200px] left-72 rounded-2xl flex  ">
+      <div className="absolute top-[120px] lg:top-[200px] left-2 lg:left-72 rounded-2xl flex  ">
         <Listbox value={dateSelect} onChange={setDateSelect} multiple>
           <div className="relative mt-1">
             <Listbox.Button
