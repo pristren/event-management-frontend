@@ -355,7 +355,7 @@ const CreateEvent = () => {
                     variant={"outline"}
                     className={cn(
                       "w-[280px] justify-start text-left font-normal",
-                      !endDate
+                      !startDate
                         ? "text-muted-foreground bg-white hover:bg-gray-50 border active:bg-gray-100 focus-visible:bg-gray-100 focus:bg-white"
                         : "bg-white hover:bg-gray-50 border active:bg-gray-100 focus-visible:bg-gray-100 focus:bg-white"
                     )}
@@ -374,7 +374,7 @@ const CreateEvent = () => {
                     selected={startDate}
                     onSelect={(date) => {
                       if (endDate) {
-                        if (date < endDate) {
+                        if (date <= endDate) {
                           setStartDate(date);
                         } else {
                           toast.error("Start date must be less than end date!");
@@ -416,7 +416,7 @@ const CreateEvent = () => {
                     mode="single"
                     selected={endDate}
                     onSelect={(date) => {
-                      if (date > startDate) {
+                      if (date >= startDate) {
                         setEndDate(date);
                       } else {
                         toast.error(
@@ -436,7 +436,7 @@ const CreateEvent = () => {
                   value={startTime}
                   onChange={(date) => {
                     if (endTime) {
-                      if (date < endTime) {
+                      if (date <= endTime) {
                         setStartTime(date);
                       } else {
                         toast.error("start time must be less than end time!");
