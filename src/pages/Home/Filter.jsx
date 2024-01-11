@@ -164,7 +164,7 @@ const Filter = ({ selected2, setSelected2 }) => {
                           return (
                             <span
                               key={i}
-                              className="inline-flex truncate bg-[#1BB6ED] text-white px-3 py-2 rounded-2xl items-center gap-1 text-sm"
+                              className="inline-flex truncate bg-[black] text-white px-3 py-2 rounded-2xl items-center gap-1 text-sm"
                             >
                               <span> {s.name}</span>
 
@@ -193,10 +193,10 @@ const Filter = ({ selected2, setSelected2 }) => {
                     leaveTo="opacity-0"
                   >
                     <Listbox.Options className="!z-[9999] absolute mt-1 w-1/2 rounded-md bg-white py-1 text-base ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm shadow-xl border ">
-                      <span className="block truncate py-3 px-4 font-semibold text-[#1BB6ED] text-base border-b-2 border-[#1BB6ED] relative">
+                      <span className="block truncate py-3 px-4 font-semibold text-[black] text-base border-b-2 border-[black] relative">
                         <span>Select By Category</span>
                         <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                          <span className="h-5 w-5 text-[#1BB6ED]">
+                          <span className="h-5 w-5 text-[black]">
                             {upArrowIcon}
                           </span>
                         </span>
@@ -206,7 +206,7 @@ const Filter = ({ selected2, setSelected2 }) => {
                           key={tpIdx}
                           className={({ active }) =>
                             `relative font-semibold select-none py-4 pl-5 pr-4 cursor-pointer ${
-                              active ? "text-[#1BB6ED]" : "text-gray-900"
+                              active ? "text-[black]" : "text-gray-900"
                             } !z-[999]`
                           }
                           value={tp}
@@ -221,7 +221,7 @@ const Filter = ({ selected2, setSelected2 }) => {
                                 {tp.name}
                               </span>
                               {selected}
-                              <span className="absolute top-1/2 -translate-y-1/2 right-5 w-5 h-5 flex items-center text-[#1BB6ED]">
+                              <span className="absolute top-1/2 -translate-y-1/2 right-5 w-5 h-5 flex items-center text-[black]">
                                 {selected ? radioIconsFocus : radioIcons}
                               </span>
                             </div>
@@ -235,7 +235,7 @@ const Filter = ({ selected2, setSelected2 }) => {
             </Listbox>
           </div>
 
-          <button className="bg-[#1bb6ed] text-white p-4 rounded-2xl">
+          <button className="bg-[black] text-white p-4 rounded-2xl">
             {" "}
             {searchIcons}{" "}
           </button>
@@ -252,7 +252,7 @@ const Filter = ({ selected2, setSelected2 }) => {
                   : "border-[#E5E7EC] "
               } focus:outline-none flex gap-2 `}
             >
-              <span className="cursor-pointer text-white p-4 rounded-lg bg-[#1BB6ED]">
+              <span className="cursor-pointer text-white p-4 rounded-lg bg-[black]">
                 <CalendarDays />
               </span>
             </Listbox.Button>
@@ -286,7 +286,7 @@ const Filter = ({ selected2, setSelected2 }) => {
                         </span>
                         {selected}
                         {selected ? (
-                          <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-[#1BB6ED]">
+                          <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-[black]">
                             <CheckIcon className="h-5 w-5" aria-hidden="true" />
                           </span>
                         ) : null}
