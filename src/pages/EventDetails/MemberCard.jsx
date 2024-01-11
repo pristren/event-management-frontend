@@ -38,7 +38,7 @@ const MemberCard = ({ member }) => {
               className="w-[40px] h-[40px] rounded-full object-cover"
             />
           ) : (
-            <div className="bg-[#30BEEC] text-white  rounded-full  w-12 h-12 flex justify-center items-center">
+            <div className="bg-[black] text-white  rounded-full  w-12 h-12 flex justify-center items-center">
               <UserRound className="w-8 h-8" />
             </div>
           )}

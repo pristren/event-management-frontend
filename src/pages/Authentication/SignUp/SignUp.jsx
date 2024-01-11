@@ -136,7 +136,7 @@ const SignUp = () => {
             <div className="px-7 py-8">
               <div>
                 <p className="flex relative rounded-3xl text-lg max-w-[14rem] mx-auto bg-white shadow-primary text-center py-[0.125rem]">
-                  <span className="bg-[#30BEEC] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center absolute left-1 top-0.5 ">
+                  <span className="bg-[black] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center absolute left-1 top-0.5 ">
                     {loginIcons}
                   </span>
                   <span className="mx-auto text-lg"> Registration </span>
@@ -237,7 +237,7 @@ const SignUp = () => {
 
                     <button
                       type="submit"
-                      className={`flex relative rounded-3xl text-lg min-w-[15rem] w-full shadow-primary text-center py-[0.125rem] transition duration-300 uppercase bg-[#30BEEC] hover:bg-white text-white hover:text-black `}
+                      className={`flex relative rounded-3xl text-lg min-w-[15rem] w-full shadow-primary text-center py-[0.125rem] transition duration-300 uppercase bg-[black] hover:bg-white text-white hover:text-black `}
                     >
                       <span className="mx-auto text-lg"> Register now </span>
                     </button>
@@ -247,7 +247,7 @@ const SignUp = () => {
                 <p className="text-base mt-8 text-center">
                   already have account.
                   <Link
-                    className="text-[#30BEEC] hover:underline select-none"
+                    className="text-[black] hover:underline select-none"
                     to="/login"
                   >
                     I will login

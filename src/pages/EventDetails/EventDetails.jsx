@@ -333,7 +333,7 @@ const EventDetails = () => {
                         className="w-[40px] h-[40px] rounded-full object-cover"
                       />
                     ) : (
-                      <figure className="bg-[#30BEEC] text-white  rounded-full w-12 h-12 flex justify-center items-center">
+                      <figure className="bg-[black] text-white  rounded-full w-12 h-12 flex justify-center items-center">
                         {/* <span className="text-2xl">{profileUserIcon}</span> */}
                         <UserRound />
                       </figure>

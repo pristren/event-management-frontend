@@ -198,14 +198,14 @@ const ProfileSetting = () => {
           <div className="bg-[#F2F6FF] rounded">
             <div className="flex flex-col items-center justify-center py-6 px-12">
               <div className="flex relative rounded-3xl text-lg min-w-[15rem] bg-white shadow-md text-center py-[0.125rem]">
-                <span className="bg-[#30BEEC] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center absolute left-1 top-0.5 ">
+                <span className="bg-[black] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center absolute left-1 top-0.5 ">
                   {settingIcon}
                 </span>
                 <span className="mx-auto text-lg">Profile</span>
               </div>
 
               <div className="mt-10 flex flex-col items-center mb-3">
-                <figure className="bg-[#30BEEC] text-white  rounded-full  w-24 h-24 flex justify-center items-center">
+                <figure className="bg-[black] text-white  rounded-full  w-24 h-24 flex justify-center items-center">
                   {uploadImages?.length ? (
                     <img
                       src={profile_images ? profile_images : uploadImages[0]}
@@ -281,10 +281,10 @@ const ProfileSetting = () => {
                     onClick={() => setUpload(!upload)}
                     onChange={handleInputChange}
                     type="button"
-                    className="text-[#30BEEC] py-0.5 px-3 flex items-center justify-left relative rounded-3xl text-lg w-full bg-white shadow-md text-center"
+                    className="text-[black] py-0.5 px-3 flex items-center justify-left relative rounded-3xl text-lg w-full bg-white shadow-md text-center"
                   >
                     <span> Upload Pictures </span>
-                    <span className="text-[#30BEEC] text-2xl rounded-full w-7 h-7 flex justify-center items-center absolute right-1 top-0.5">
+                    <span className="text-[black] text-2xl rounded-full w-7 h-7 flex justify-center items-center absolute right-1 top-0.5">
                       {rightArrow}
                     </span>
                   </button>
@@ -319,7 +319,7 @@ const ProfileSetting = () => {
 
               <button
                 onClick={handleSubmit}
-                className="py-2 min-w-[14rem] bg-[#30BEEC] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mt-10"
+                className="py-2 min-w-[14rem] bg-[black] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mt-10"
               >
                 <span>Update Profile</span>
               </button>
@@ -336,7 +336,7 @@ const ProfileSetting = () => {
                 onClick={handleDivClick}
                 className="cursor-pointer flex relative rounded-3xl text-lg min-w-[15rem] bg-white shadow-md text-center py-[0.125rem]"
               >
-                <span className="bg-[#30BEEC] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center absolute left-1 top-0.5 ">
+                <span className="bg-[black] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center absolute left-1 top-0.5 ">
                   {uploadIcons}
                 </span>
                 <span className="mx-auto text-lg text-gray-600">
@@ -370,7 +370,7 @@ const ProfileSetting = () => {
                     {loading && <div>loading...</div>}
                   </div>
                   {/* <div className="w-[80%] mx-auto flex justify-between items-center gap-2 rounded-3xl text-lg min-w-[15rem] bg-white shadow-md px-1 overflow-hidden mt-8 mb-2">
-                    <span className="bg-[#30BEEC] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center">
+                    <span className="bg-[black] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center">
                       {lockIcon}
                     </span>
 
@@ -387,7 +387,7 @@ const ProfileSetting = () => {
                       type="button"
                       id="sign-in-button"
                       // onClick={sendOtp}
-                      className="py-2 min-w-[14rem] bg-[#30BEEC] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mx-auto mb-4"
+                      className="py-2 min-w-[14rem] bg-[black] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mx-auto mb-4"
                     >
                       <span>Send Otp</span>
                     </button>
@@ -487,7 +487,7 @@ const ProfileSetting = () => {
 
               {/* <button
                 // onClick={handleSubmit}
-                className="py-2 min-w-[14rem] bg-[#30BEEC] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mt-10"
+                className="py-2 min-w-[14rem] bg-[black] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mt-10"
               >
                 <span>Verify Phone</span>
               </button> */}

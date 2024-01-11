@@ -99,7 +99,7 @@ const HomeScreen = () => {
                   href="#"
                   className="flex relative rounded-3xl text-lg min-w-[15rem] w-full bg-white shadow-primary text-center py-[0.125rem]"
                 >
-                  <span className="bg-[#30BEEC] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center absolute left-1 top-0.5 ">
+                  <span className="bg-[black] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center absolute left-1 top-0.5 ">
                     {downloadIcon}
                   </span>
                   <span className="mx-auto text-lg"> Download app </span>
@@ -120,7 +120,7 @@ const HomeScreen = () => {
                   <a href="#"> Download link .......... </a>
                 </article>
 
-                <button className="py-1 min-w-max bg-[#30BEEC] px-4 flex items-center justify-center relative rounded-3xl text-base text-white shadow-primary text-center uppercase mx-auto hover:bg-white hover:text-black transition duration-300">
+                <button className="py-1 min-w-max bg-[black] px-4 flex items-center justify-center relative rounded-3xl text-base text-white shadow-primary text-center uppercase mx-auto hover:bg-white hover:text-black transition duration-300">
                   <span> Download now </span>
                   <span className="text-2xl font-bold ml-3 mr-auto">
                     {downloadRightIcon}
@@ -154,7 +154,7 @@ const HomeScreen = () => {
                     href="#"
                     className="flex relative rounded-3xl text-lg min-w-[15rem] w-full bg-white shadow-primary text-center py-[0.125rem]"
                   >
-                    <span className="bg-[#30BEEC] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center absolute left-1 top-0.5 ">
+                    <span className="bg-[black] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center absolute left-1 top-0.5 ">
                       {loginIcons}
                     </span>
                     <span className="mx-auto text-lg"> Login </span>
@@ -163,7 +163,7 @@ const HomeScreen = () => {
                   <form>
                     <div className=" mb-4">
                       <div className="my-3 relative">
-                        <span className="text-[#30BEEC] absolute left-3 top-4 text-lg">
+                        <span className="text-[black] absolute left-3 top-4 text-lg">
                           {userIcon}
                         </span>
                         <input
@@ -174,7 +174,7 @@ const HomeScreen = () => {
                       </div>
 
                       <div className="my-3 relative">
-                        <span className="text-[#30BEEC] absolute left-3 top-4 text-lg">
+                        <span className="text-[black] absolute left-3 top-4 text-lg">
                           {lockIcon}
                         </span>
                         <input
@@ -201,7 +201,7 @@ const HomeScreen = () => {
                         </div>
                       </div>
 
-                      <button className="flex relative rounded-xl text-lg max-w-[10rem] w-full bg-[#30BEEC] hover:bg-white text-white hover:text-black shadow-primary text-center py-[0.3rem] transition duration-300 uppercase">
+                      <button className="flex relative rounded-xl text-lg max-w-[10rem] w-full bg-[black] hover:bg-white text-white hover:text-black shadow-primary text-center py-[0.3rem] transition duration-300 uppercase">
                         <span className="mx-auto text-lg"> Login </span>
                       </button>
                     </div>
@@ -213,7 +213,7 @@ const HomeScreen = () => {
                     href="#"
                     className="flex relative rounded-3xl text-lg max-w-[14rem] mx-auto bg-white shadow-primary text-center py-[0.125rem]"
                   >
-                    <span className="bg-[#30BEEC] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center absolute left-1 top-0.5 ">
+                    <span className="bg-[black] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center absolute left-1 top-0.5 ">
                       {loginIcons}
                     </span>
                     <span className="mx-auto text-lg"> Registration </span>
@@ -270,7 +270,7 @@ const HomeScreen = () => {
                         <label htmlFor="rememberMe"> Remember Me </label>
                       </div>
 
-                      <button className="flex relative rounded-3xl text-lg min-w-[15rem] w-full bg-[#30BEEC] hover:bg-white text-white hover:text-black shadow-primary text-center py-[0.125rem] transition duration-300 uppercase">
+                      <button className="flex relative rounded-3xl text-lg min-w-[15rem] w-full bg-[black] hover:bg-white text-white hover:text-black shadow-primary text-center py-[0.125rem] transition duration-300 uppercase">
                         <span className="mx-auto text-lg"> Register now </span>
                       </button>
                     </div>

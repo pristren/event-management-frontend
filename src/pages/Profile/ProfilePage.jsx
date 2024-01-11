@@ -50,7 +50,7 @@ export default function ProfilePage() {
         <div className="">
           <div className="flex flex-col items-center gap-6 p-4 md:p-6 lg:p-10">
             <div className="h-24 w-24 ">
-              <figure className="bg-[#30BEEC] text-white rounded-full w-24 h-24 flex justify-center items-center">
+              <figure className="bg-[black] text-white rounded-full w-24 h-24 flex justify-center items-center">
                 {user?.profile_images?.length && (
                   <img
                     src={user?.profile_images[0]}
@@ -86,7 +86,7 @@ export default function ProfilePage() {
       ) : (
         <div>
           <div className="w-full flex justify-center">
-            <figure className="bg-[#30BEEC] text-white rounded-full w-24 h-24 p-4  flex justify-center items-center">
+            <figure className="bg-[black] text-white rounded-full w-24 h-24 p-4  flex justify-center items-center">
               <img src={p} className="w-full h-full rounded-full" alt="" />
             </figure>
           </div>

@@ -22,7 +22,7 @@ const Profile = () => {
         {user?.profile_images?.length ? (
           <Menu as="div" className="relative inline-block text-left">
             <div>
-              <Menu.Button className="inline-flex  justify-center bg-black/20 text-sm font-medium text-white focus:outline-none  bg-[#30BEEC]  rounded-full w-10 h-10  items-center">
+              <Menu.Button className="inline-flex  justify-center bg-black/20 text-sm font-medium text-white focus:outline-none  bg-[black]  rounded-full w-10 h-10  items-center">
                 <img
                   src={user?.profile_images[0]}
                   className="w-full h-full rounded-full"
@@ -62,7 +62,7 @@ const Profile = () => {
             </Transition>
           </Menu>
         ) : (
-          <div className="flex bg-[#30BEEC] justify-center rounded-full w-10 h-10  items-center">
+          <div className="flex bg-[black] justify-center rounded-full w-10 h-10  items-center">
             {/* <span className="text-3xl ">{profileUserIcon}</span> */}
             <UserRound />
           </div>
@@ -72,7 +72,7 @@ const Profile = () => {
         <Menu>
           <Menu.Button
             className={
-              "bg-[#30BEEC] text-white rounded-full w-10 h-10 flex justify-center items-center"
+              "bg-[black] text-white rounded-full w-10 h-10 flex justify-center items-center"
             }
           >
             <img

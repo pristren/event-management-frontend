@@ -117,7 +117,7 @@ const Login = () => {
                 href="#"
                 className="flex relative rounded-3xl text-lg bg-white shadow-primary text-center py-[0.125rem] max-w-[12rem] mx-auto mb-10"
               >
-                <span className="bg-[#30BEEC] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center absolute left-1 top-0.5 ">
+                <span className="bg-[black] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center absolute left-1 top-0.5 ">
                   {loginIcons}
                 </span>
                 <span className="mx-auto text-lg"> Login </span>
@@ -126,7 +126,7 @@ const Login = () => {
               <form onSubmit={handleSubmit}>
                 <div className=" mb-4">
                   <div className="my-3 relative">
-                    <span className="text-[#30BEEC] absolute left-3 top-4 text-lg">
+                    <span className="text-[black] absolute left-3 top-4 text-lg">
                       {userIcon}
                     </span>
                     <input
@@ -140,7 +140,7 @@ const Login = () => {
                   </div>
 
                   <div className="my-3 relative">
-                    <span className="text-[#30BEEC] absolute left-3 top-4 text-lg">
+                    <span className="text-[black] absolute left-3 top-4 text-lg">
                       {lockIcon}
                     </span>
                     <input
@@ -173,7 +173,7 @@ const Login = () => {
                       </div>
 
                       <Link
-                        className="italic select-none hover:text-[#30BEEC] hover:underline"
+                        className="italic select-none hover:text-[black] hover:underline"
                         to="#"
                       >
                         Forget Password?
@@ -183,7 +183,7 @@ const Login = () => {
 
                   <button
                     type="submit"
-                    className="flex relative rounded-xl text-lg max-w-[10rem] w-full bg-[#30BEEC] hover:bg-white text-white hover:text-black shadow-primary text-center py-[0.3rem] transition duration-300 uppercase mt-10 mx-auto"
+                    className="flex relative rounded-xl text-lg max-w-[10rem] w-full bg-[black] hover:bg-white text-white hover:text-black shadow-primary text-center py-[0.3rem] transition duration-300 uppercase mt-10 mx-auto"
                   >
                     <span className="mx-auto text-lg"> Login </span>
                   </button>
@@ -193,7 +193,7 @@ const Login = () => {
               <p className="text-base mt-6">
                 I don't have an account.
                 <Link
-                  className="text-[#30BEEC] hover:underline select-none ml-2 min-w-max "
+                  className="text-[black] hover:underline select-none ml-2 min-w-max "
                   to="/sign-up"
                 >
                   I want to open a new account
