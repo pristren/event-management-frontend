@@ -35,6 +35,53 @@ const closeIcons = (
     />
   </svg>
 );
+const checkboxIcon = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className="w-full h-full"
+  >
+    <rect
+      x="1"
+      y="5"
+      width="18"
+      height="18"
+      rx="2"
+      ry="2"
+      stroke="currentColor"
+    />
+  </svg>
+);
+
+const checkedCheckboxIcon = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className="w-full h-full"
+  >
+    <rect
+      x="1"
+      y="5"
+      width="18"
+      height="18"
+      rx="2"
+      ry="2"
+      stroke="currentColor"
+    />
+    <polyline points="5 12 9 16 18 7" fill="none" stroke="currentColor" />
+  </svg>
+);
+
 const radioIcons = (
   <svg
     stroke="currentColor"
@@ -120,11 +167,11 @@ const Filter = ({ selected2, setSelected2 }) => {
   const filterBtn = (
     <div className="block truncate text-gray-400">
       <button
-        className="bg-[black] text-white p-4 rounded-l-2xl flex items-center gap-2"
+        className="bg-[black] text-white p-4 rounded-2xl flex items-center gap-2"
         // className="bg-[#1BB6E-D--- ] text-white p-4 rounded-l-2xl flex items-center gap-2"
       >
         <span>{funnelIcons}</span>
-        <span>Filter</span>
+        <span>Basketball Category</span>
       </button>
     </div>
   );
@@ -140,7 +187,7 @@ const Filter = ({ selected2, setSelected2 }) => {
 
   return (
     <div className="realtive">
-      <div className="absolute top-[200px] right-1 lg:right-5 max-w-[550px] lg:max-w-[650px] w-full bg-white rounded-2xl flex border-[2px] border-white shadow-xl  ">
+      <div className="absolute top-[200px] right-1 lg:right-5  w-min bg-white rounded-2xl flex border-[2px] border-white shadow-xl  ">
         <div className="w-full flex items-center justify-between">
           <div className="w-full  h-full">
             <Listbox
@@ -151,7 +198,7 @@ const Filter = ({ selected2, setSelected2 }) => {
             >
               <div className="relative shadow-xl ">
                 <Listbox.Button
-                  className={`relative w-full cursor-default rounded-lg  text-left bg-white  ${
+                  className={`relative cursor-default rounded-lg  text-left bg-white  ${
                     fieldError && selected2.length === 0
                       ? "border-red-500"
                       : "border-[#E5E7EC] "
@@ -159,7 +206,7 @@ const Filter = ({ selected2, setSelected2 }) => {
                 >
                   <span className="flex gap-2 items-center">
                     {filterBtn}
-                    {selected2?.length
+                    {/* {selected2?.length
                       ? selected2?.map((s, i) => {
                           return (
                             <span
@@ -182,7 +229,7 @@ const Filter = ({ selected2, setSelected2 }) => {
                             </span>
                           );
                         })
-                      : ""}
+                      : ""} */}
                   </span>
                 </Listbox.Button>
                 <div>
@@ -192,7 +239,7 @@ const Filter = ({ selected2, setSelected2 }) => {
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0"
                   >
-                    <Listbox.Options className="!z-[9999] absolute mt-1 w-1/2 rounded-md bg-white py-1 text-base ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm shadow-xl border ">
+                    <Listbox.Options className="!z-[9999] absolute mt-1 w-[200px] rounded-md bg-white py-1 text-base ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm shadow-xl border right-0">
                       <span className="block truncate py-3 px-4 font-semibold text-[black] text-base border-b-2 border-[black] relative">
                         <span>Select By Category</span>
                         <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
@@ -222,7 +269,7 @@ const Filter = ({ selected2, setSelected2 }) => {
                               </span>
                               {selected}
                               <span className="absolute top-1/2 -translate-y-1/2 right-5 w-5 h-5 flex items-center text-[black]">
-                                {selected ? radioIconsFocus : radioIcons}
+                                {selected ? checkedCheckboxIcon : checkboxIcon}
                               </span>
                             </div>
                           )}
@@ -235,10 +282,10 @@ const Filter = ({ selected2, setSelected2 }) => {
             </Listbox>
           </div>
 
-          <button className="bg-[black] text-white p-4 rounded-2xl">
+          {/* <button className="bg-[black] text-white p-4 rounded-2xl">
             {" "}
             {searchIcons}{" "}
-          </button>
+          </button> */}
         </div>
       </div>
       {/* calendar */}
