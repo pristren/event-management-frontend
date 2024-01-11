@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-
+import Logo from "../../assets/C.jpg";
 const HomeSidebar = ({ isExpand, setIsExpand }) => {
   const expandUserMenuRef = useRef(null);
 
@@ -28,6 +28,10 @@ const HomeSidebar = ({ isExpand, setIsExpand }) => {
         } z-[9999] transition-all`}
         ref={expandUserMenuRef}
       >
+        <div className="flex justify-center flex-col items-center mb-12 md:hidden">
+          <img src={Logo} alt="" className="w-[120px] " />
+          <p className="font-semibold text-lg -mt-4">ConnectU</p>
+        </div>
         <ul className="flex flex-col gap-5">
           <li>
             <Link
@@ -47,7 +51,7 @@ const HomeSidebar = ({ isExpand, setIsExpand }) => {
                   <path d="M946.5 505L560.1 118.8l-25.9-25.9a31.5 31.5 0 0 0-44.4 0L77.5 505a63.9 63.9 0 0 0-18.8 46c.4 35.2 29.7 63.3 64.9 63.3h42.5V940h691.8V614.3h43.4c17.1 0 33.2-6.7 45.3-18.8a63.6 63.6 0 0 0 18.7-45.3c0-17-6.7-33.1-18.8-45.2zM568 868H456V664h112v204zm217.9-325.7V868H632V640c0-22.1-17.9-40-40-40H432c-22.1 0-40 17.9-40 40v228H238.1V542.3h-96l370-369.7 23.1 23.1L882 542.3h-96.1z"></path>
                 </svg>
               </span>
-              <span className="text-[#9E9E9E] hover:text-[#1BB6ED]">Home</span>
+              <span className="text-[#9E9E9E] hover:text-[black]">Home</span>
             </Link>
           </li>
 
@@ -69,7 +73,7 @@ const HomeSidebar = ({ isExpand, setIsExpand }) => {
                   <path d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z"></path>
                 </svg>
               </span>
-              <span className="text-[#9E9E9E] hover:text-[#1BB6ED]">
+              <span className="text-[#9E9E9E] hover:text-[black]">
                 Profile setting
               </span>
             </Link>
@@ -98,7 +102,7 @@ const HomeSidebar = ({ isExpand, setIsExpand }) => {
                   </g>
                 </svg>
               </span>
-              <span className="text-[#9E9E9E] hover:text-[#1BB6ED]">
+              <span className="text-[#9E9E9E] hover:text-[black]">
                 Event creation
               </span>
             </Link>
@@ -123,7 +127,7 @@ const HomeSidebar = ({ isExpand, setIsExpand }) => {
                   <path d="M4 5.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8zm0 2.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5z"></path>
                 </svg>
               </span>
-              <span className="text-[#9E9E9E] hover:text-[#1BB6ED]">
+              <span className="text-[#9E9E9E] hover:text-[black]">
                 Chat and calls
               </span>
             </Link>
@@ -147,7 +151,7 @@ const HomeSidebar = ({ isExpand, setIsExpand }) => {
                   <path d="M960 95.888l-256.224.001V32.113c0-17.68-14.32-32-32-32s-32 14.32-32 32v63.76h-256v-63.76c0-17.68-14.32-32-32-32s-32 14.32-32 32v63.76H64c-35.344 0-64 28.656-64 64v800c0 35.343 28.656 64 64 64h896c35.344 0 64-28.657 64-64v-800c0-35.329-28.656-63.985-64-63.985zm0 863.985H64v-800h255.776v32.24c0 17.679 14.32 32 32 32s32-14.321 32-32v-32.224h256v32.24c0 17.68 14.32 32 32 32s32-14.32 32-32v-32.24H960v799.984zM736 511.888h64c17.664 0 32-14.336 32-32v-64c0-17.664-14.336-32-32-32h-64c-17.664 0-32 14.336-32 32v64c0 17.664 14.336 32 32 32zm0 255.984h64c17.664 0 32-14.32 32-32v-64c0-17.664-14.336-32-32-32h-64c-17.664 0-32 14.336-32 32v64c0 17.696 14.336 32 32 32zm-192-128h-64c-17.664 0-32 14.336-32 32v64c0 17.68 14.336 32 32 32h64c17.664 0 32-14.32 32-32v-64c0-17.648-14.336-32-32-32zm0-255.984h-64c-17.664 0-32 14.336-32 32v64c0 17.664 14.336 32 32 32h64c17.664 0 32-14.336 32-32v-64c0-17.68-14.336-32-32-32zm-256 0h-64c-17.664 0-32 14.336-32 32v64c0 17.664 14.336 32 32 32h64c17.664 0 32-14.336 32-32v-64c0-17.68-14.336-32-32-32zm0 255.984h-64c-17.664 0-32 14.336-32 32v64c0 17.68 14.336 32 32 32h64c17.664 0 32-14.32 32-32v-64c0-17.648-14.336-32-32-32z"></path>
                 </svg>
               </span>
-              <span className="text-[#9E9E9E] hover:text-[#1BB6ED]">
+              <span className="text-[#9E9E9E] hover:text-[black]">
                 My events
               </span>
             </Link>
@@ -171,7 +175,7 @@ const HomeSidebar = ({ isExpand, setIsExpand }) => {
                   <path d="M3 2H19.0049C20.1068 2 21 2.89821 21 3.9908V20.0092C21 21.1087 20.1074 22 19.0049 22H3V2ZM7 4H5V20H7V4ZM9 20H19V4H9V20ZM11 16C11 14.3431 12.3431 13 14 13C15.6569 13 17 14.3431 17 16H11ZM14 12C12.8954 12 12 11.1046 12 10C12 8.89543 12.8954 8 14 8C15.1046 8 16 8.89543 16 10C16 11.1046 15.1046 12 14 12ZM22 6H24V10H22V6ZM22 12H24V16H22V12Z"></path>
                 </svg>
               </span>
-              <span className="text-[#9E9E9E] hover:text-[#1BB6ED]">
+              <span className="text-[#9E9E9E] hover:text-[black]">
                 Invited events
               </span>
             </Link>
@@ -194,7 +198,7 @@ const HomeSidebar = ({ isExpand, setIsExpand }) => {
                   <path d="M3 2H19.0049C20.1068 2 21 2.89821 21 3.9908V20.0092C21 21.1087 20.1074 22 19.0049 22H3V2ZM7 4H5V20H7V4ZM9 20H19V4H9V20ZM11 16C11 14.3431 12.3431 13 14 13C15.6569 13 17 14.3431 17 16H11ZM14 12C12.8954 12 12 11.1046 12 10C12 8.89543 12.8954 8 14 8C15.1046 8 16 8.89543 16 10C16 11.1046 15.1046 12 14 12ZM22 6H24V10H22V6ZM22 12H24V16H22V12Z"></path>
                 </svg>
               </span>
-              <span className="text-[#9E9E9E] hover:text-[#1BB6ED]">
+              <span className="text-[#9E9E9E] hover:text-[black]">
                 Event details
               </span>
             </Link>

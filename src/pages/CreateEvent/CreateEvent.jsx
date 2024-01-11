@@ -227,7 +227,7 @@ const CreateEvent = () => {
           >
             <svg
               stroke="currentColor"
-              fill="#1BB6ED"
+              fill="black"
               strokeWidth="0"
               viewBox="0 0 448 512"
               height="23px"
@@ -237,7 +237,7 @@ const CreateEvent = () => {
               <path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"></path>
             </svg>
           </span>
-          <h1 className="text-[#1BB6ED] font-bold text-2xl">Event creation</h1>
+          <h1 className="text-[black] font-bold text-2xl">Event creation</h1>
           <Profile />
         </div>
 
@@ -248,7 +248,7 @@ const CreateEvent = () => {
               <span className="flex items-center">
                 <svg
                   stroke="currentColor"
-                  fill="#1BB6ED"
+                  fill="black"
                   strokeWidth="0"
                   viewBox="0 0 16 16"
                   height="1em"
@@ -273,7 +273,7 @@ const CreateEvent = () => {
 
             {/* Calender  */}
             <div className="my-10 relative">
-              {/* <span className="bg-[#1BB6ED] p-3 rounded-xl flex items-center justify-center absolute -top-5 left-5">
+              {/* <span className="bg-[black] p-3 rounded-xl flex items-center justify-center absolute -top-5 left-5">
                 <svg
                   stroke="currentColor"
                   fill="#fff"
@@ -295,7 +295,7 @@ const CreateEvent = () => {
                 <Calender setEventDate={setEventDate} />
               </div> */}
               <div className="w-full flex flex-col gap-3 mt-5">
-                <div className="flex items-center justify-center overflow-hidden relative w-full bg-white py-2 border-[1px] border-[#1BB6ED] border-dotted ">
+                <div className="flex items-center justify-center overflow-hidden relative w-full bg-white py-2 border-[1px] border-[black] border-dotted ">
                   <div className="flex gap-3 text-center text-[#A7A7A7] font-Jost text-[16px] md:text-[18px] ">
                     <ImageUploader
                       withIcon={true}
@@ -345,7 +345,7 @@ const CreateEvent = () => {
                   value={inputData.startDate}
                   onChange={(date) => setStartDate(date)}
                   dateFormat="MM/dd/yyyy"
-                  className="w-full py-2 px-4 outline-none border-none text-[15px] text-[#1BB6ED] bg-white font-medium rounded-full placeholder:text-[#6c757d] placeholder:font-medium"
+                  className="w-full py-2 px-4 outline-none border-none text-[15px] text-[black] bg-white font-medium rounded-full placeholder:text-[#6c757d] placeholder:font-medium"
                   placeholderText="Start Date"
                 />
               </div> */}
@@ -356,7 +356,7 @@ const CreateEvent = () => {
                   value={inputData.endDate}
                   onChange={(date) => setEndDate(date)}
                   dateFormat="MM/dd/yyyy"
-                  className="w-full py-2 px-4 outline-none border-none text-[15px] text-[#1BB6ED] bg-white font-medium rounded-full placeholder:text-[#6c757d] placeholder:font-medium"
+                  className="w-full py-2 px-4 outline-none border-none text-[15px] text-[black] bg-white font-medium rounded-full placeholder:text-[#6c757d] placeholder:font-medium"
                   placeholderText="End Date"
                 />
               </div> */}
@@ -372,7 +372,7 @@ const CreateEvent = () => {
                   timeIntervals={15}
                   timeCaption="Time"
                   dateFormat="h:mm aa"
-                  className="w-full py-2 px-4 outline-none border-none text-[15px] text-[#1BB6ED] bg-white font-medium rounded-full placeholder:text-[#6c757d] placeholder:font-medium"
+                  className="w-full py-2 px-4 outline-none border-none text-[15px] text-[black] bg-white font-medium rounded-full placeholder:text-[#6c757d] placeholder:font-medium"
                   placeholderText="Time start"
                 />
               </div>
@@ -387,7 +387,7 @@ const CreateEvent = () => {
                   timeIntervals={15}
                   timeCaption="Time"
                   dateFormat="h:mm aa"
-                  className="w-full py-2 px-4 outline-none border-none text-[15px] text-[#1BB6ED] bg-white font-medium rounded-full placeholder:text-[#6c757d] placeholder:font-medium"
+                  className="w-full py-2 px-4 outline-none border-none text-[15px] text-[black] bg-white font-medium rounded-full placeholder:text-[#6c757d] placeholder:font-medium"
                   placeholderText="Time start"
                 />
               </div>
@@ -397,7 +397,7 @@ const CreateEvent = () => {
               <span className="flex items-center">
                 <svg
                   stroke="currentColor"
-                  fill="#1BB6ED"
+                  fill="black"
                   strokeWidth="0"
                   viewBox="0 0 24 24"
                   height="1em"
@@ -424,7 +424,7 @@ const CreateEvent = () => {
           {/* Middle Content  */}
           <div>
             <div className="flex items-center bg-white rounded-full overflow-hidden px-4 shadow-primary mb-5">
-              <span className="flex items-center text-[#1BB6ED]">
+              <span className="flex items-center text-[black]">
                 {clubIcons}
               </span>
               {/* <span className="text-[#1D1D1D] font-medium whitespace-nowrap"></span> */}
@@ -468,7 +468,7 @@ const CreateEvent = () => {
             </div>
 
             <div className="my-3 flex  items-start gap-2">
-              <button className="bg-[#1BB6ED] text-white px-4 py-2 rounded">
+              <button className="bg-[black] text-white px-4 py-2 rounded">
                 Public
               </button>
               <button
@@ -547,7 +547,7 @@ const CreateEvent = () => {
               <button
                 onClick={createEvent}
                 className={`flex items-center gap-4  py-2 px-7 rounded-full ${
-                  fileUploadLoading ? "bg-[#70c0dde3]" : "bg-[#1BB6ED]"
+                  fileUploadLoading ? "bg-[#70c0dde3]" : "bg-[black]"
                 }`}
                 disabled={fileUploadLoading}
               >

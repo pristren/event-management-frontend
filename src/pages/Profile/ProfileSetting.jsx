@@ -164,7 +164,7 @@ const ProfileSetting = () => {
           >
             <svg
               stroke="currentColor"
-              fill="#1BB6ED"
+              fill="black"
               strokeWidth="0"
               viewBox="0 0 448 512"
               height="23px"
@@ -174,7 +174,7 @@ const ProfileSetting = () => {
               <path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"></path>
             </svg>
           </span>
-          <h1 className="text-[#1BB6ED] font-bold text-2xl">Profile Setting</h1>
+          <h1 className="text-[black] font-bold text-2xl">Profile Setting</h1>
           <Profile />
         </div>
 
@@ -279,7 +279,7 @@ const ProfileSetting = () => {
                   onClick={(e) => setSelectedBtn("Private")}
                   className={`flex gap-3 py-2 min-w-[14rem] px-3 items-center justify-center rounded-3xl text-lg shadow-md text-center ${
                     selectedBtn === "Private"
-                      ? "bg-[#1BB6ED] text-white"
+                      ? "bg-[black] text-white"
                       : "bg-gray-300 text-black"
                   }`}
                 >
@@ -291,7 +291,7 @@ const ProfileSetting = () => {
                   onClick={(e) => setSelectedBtn("Business")}
                   className={`flex gap-3 py-2 min-w-[14rem] px-3 items-center justify-center rounded-3xl text-lg text-slate-950 shadow-md text-center font-semibold ${
                     selectedBtn === "Business"
-                      ? "bg-[#1BB6ED] text-white"
+                      ? "bg-[black] text-white"
                       : "bg-gray-300 text-black"
                   }`}
                 >

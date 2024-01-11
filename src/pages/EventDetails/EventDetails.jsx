@@ -165,7 +165,7 @@ const EventDetails = () => {
           >
             <svg
               stroke="currentColor"
-              fill="#1BB6ED"
+              fill="black"
               strokeWidth="0"
               viewBox="0 0 448 512"
               height="23px"
@@ -175,7 +175,7 @@ const EventDetails = () => {
               <path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"></path>
             </svg>
           </span>
-          <h1 className="text-[#1BB6ED] font-bold text-2xl">Event details</h1>
+          <h1 className="text-[black] font-bold text-2xl">Event details</h1>
           <Profile />
         </div>
         {!loading ? (
@@ -270,21 +270,21 @@ const EventDetails = () => {
                   {user &&
                   events?.joinedPeople?.find((v) => v === user?.email)
                     ?.length ? (
-                    <button className="bg-[#E0F5FD] text-[#1BB6ED] py-2 px-6 rounded-lg font-semibold">
+                    <button className="bg-[#E0F5FD] text-[black] py-2 px-6 rounded-lg font-semibold">
                       Joined
                     </button>
                   ) : user &&
                     events?.joinedPeople?.find((v) => v !== user?.email) ? (
                     <button
                       onClick={() => handleJoin(events?._id)}
-                      className="bg-[#E0F5FD] text-[#1BB6ED] py-2 px-6 rounded-lg font-semibold"
+                      className="bg-[#E0F5FD] text-[black] py-2 px-6 rounded-lg font-semibold"
                     >
                       Join
                     </button>
                   ) : (
                     <button
                       onClick={() => navigate("/login")}
-                      className="bg-[#E0F5FD] text-[#1BB6ED] py-2 px-6 rounded-lg font-semibold"
+                      className="bg-[#E0F5FD] text-[black] py-2 px-6 rounded-lg font-semibold"
                     >
                       Join
                     </button>
@@ -338,13 +338,13 @@ const EventDetails = () => {
                     )}
                   </div>
                   {events?.joinedPeople?.length > 1 && (
-                    <span className="w-[40px] h-[40px] text-[15px] rounded-full bg-[#1BB6ED] text-white flex items-center justify-center">
+                    <span className="w-[40px] h-[40px] text-[15px] rounded-full bg-[black] text-white flex items-center justify-center">
                       {events?.joinedPeople?.length - 1}+
                     </span>
                   )}
 
                   <span
-                    className="text-[15px] text-[#1BB6ED] cursor-pointer"
+                    className="text-[15px] text-[black] cursor-pointer"
                     onClick={handleOpenModal}
                   >
                     See all
