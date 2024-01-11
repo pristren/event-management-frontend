@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 
 const Layout = () => {
   const { user } = useSelector((state) => state.auth);
-  console.log(user);
   const location = useLocation();
   const pathname = location.pathname;
 

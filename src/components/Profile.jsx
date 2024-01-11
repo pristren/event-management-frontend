@@ -5,6 +5,7 @@ import { profileUserIcon } from "./SVGIcons/Icons";
 import { Menu, Transition } from "@headlessui/react";
 import { userLoggedOut } from "../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
+import { UserRound } from "lucide-react";
 // import useAxios from "../../Hooks/useAxios";
 
 const Profile = () => {
@@ -62,7 +63,8 @@ const Profile = () => {
           </Menu>
         ) : (
           <div className="flex bg-[#30BEEC] justify-center rounded-full w-10 h-10  items-center">
-            <span className="text-3xl ">{profileUserIcon}</span>
+            {/* <span className="text-3xl ">{profileUserIcon}</span> */}
+            <UserRound />
           </div>
         )}
       </div>

@@ -3,6 +3,7 @@ import Image from "../../assets/client.jpg";
 import axios from "axios";
 import useAxios from "../../Hooks/useAxios";
 import { useNavigate } from "react-router-dom";
+import { UserRound } from "lucide-react";
 
 const MemberCard = ({ member }) => {
   const navigate = useNavigate();
@@ -30,16 +31,19 @@ const MemberCard = ({ member }) => {
     >
       {!loading ? (
         <div className="flex items-center gap-3">
-          <img
-            src={user?.profile_images?.length ? user?.profile_images[0] : Image}
-            alt=""
-            className="w-[40px] h-[40px] rounded-full object-cover"
-          />
+          {user?.profile_images?.length ? (
+            <img
+              src={user?.profile_images[0]}
+              alt=""
+              className="w-[40px] h-[40px] rounded-full object-cover"
+            />
+          ) : (
+            <div className="bg-[#30BEEC] text-white  rounded-full  w-12 h-12 flex justify-center items-center">
+              <UserRound className="w-8 h-8" />
+            </div>
+          )}
           <div>
-            <h4 className="text-[18px]">
-              {user?.firstName} {user?.lastName}{" "}
-            </h4>
-            <p className="text-[15px]">{user?.email}</p>
+            <h4 className="text-[18px]">{user?.firstName}</h4>
           </div>
         </div>
       ) : (

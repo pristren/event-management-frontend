@@ -77,12 +77,23 @@ const Home = () => {
   }, []);
 
   const [selected2, setSelected2] = useState([]);
+  const { date } = useSelector((state) => state.layout);
+  console.log(date);
 
   const today = new Date();
 
   // Calculate two days from now
   const twoDaysLater = new Date();
-  twoDaysLater.setDate(today.getDate() + 2);
+  twoDaysLater.setDate(
+    date.find((d) => d.name === "This Week") !== undefined
+      ? today.getDate() + 7
+      : date.find((d) => d.name === "Tomorrow") !== undefined
+      ? today.getDate() + 2
+      : date.find((d) => d.name === "Today") !== undefined
+      ? today.getDate() + 1
+      : today.getDate() + 30
+  );
+  // console.log(twoDaysLater);
 
   // Filter events within today and the next two days
   const upcomingEvents = events.filter((event) => {
@@ -188,32 +199,6 @@ const Home = () => {
                                   </div>
                                   {popover?.popover &&
                                     popover.id === event._id && (
-                                      // <div className="grid grid-cols-2 absolute z-10">
-                                      //   <div
-                                      //     className="!bg-white w-72 !z-[999] p-6 text-lg -translate-x-[40%] rounded-lg shadow-2xl shadow-blue-300 text-center mt-2"
-                                      //     onClick={() =>
-                                      //       navigate(
-                                      //         `/event-details/${event?._id}`
-                                      //       )
-                                      //     }
-                                      //   >
-                                      //     <img
-                                      //       src={event?.event_images[0]?.image}
-                                      //       className="w-full"
-                                      //     />
-                                      //     <h2>Event Details</h2>
-                                      //     <p>Title: {event?.event_title}</p>
-                                      //     <p className="text-[#828282] text-[14px] font-medium">
-                                      //       {moment(events?.event_date).format(
-                                      //         "MMMM D, YYYY"
-                                      //       )}
-                                      //       ,{" "}
-                                      //       {moment(
-                                      //         events?.event_time?.time_start
-                                      //       ).format("hh:mm a")}
-                                      //     </p>
-                                      //   </div>
-                                      // </div>
                                       <div className="grid grid-cols-2 absolute z-10">
                                         <div
                                           className="!bg-white w-80 !z-[999] py-6 px-4 text-lg -translate-x-[40%] rounded-lg shadow-2xl shadow-blue-300 h-36 text-center mt-2 flex items-center gap-2"
@@ -235,13 +220,25 @@ const Home = () => {
                                           <div className="w-[60%]">
                                             <p>{event?.event_title}</p>
                                             <p className="text-[#828282] text-[12px] font-medium">
-                                              {moment(event?.event_date).format(
-                                                "MMMM D, YYYY"
-                                              )}
+                                              {moment(
+                                                event?.event_date?.date_start
+                                              ).format("MMMM D, YYYY")}
                                               ,{" "}
                                               {moment(
                                                 event?.event_time?.time_start
+                                              ).format("hh:mm a")}{" "}
+                                              -{" "}
+                                              {moment(
+                                                event?.event_date?.date_end
+                                              ).format("MMMM D, YYYY")}
+                                              ,{" "}
+                                              {moment(
+                                                event?.event_time?.time_end
                                               ).format("hh:mm a")}
+                                            </p>
+                                            <p className="text-[#2e2e2e] text-[12px] font-medium">
+                                              Joined People:{" "}
+                                              {event?.joinedPeople?.length}
                                             </p>
                                           </div>
                                         </div>
@@ -303,13 +300,25 @@ const Home = () => {
                                         <div className="w-[60%]">
                                           <p>{event?.event_title}</p>
                                           <p className="text-[#828282] text-[12px] font-medium">
-                                            {moment(event?.event_date).format(
-                                              "MMMM D, YYYY"
-                                            )}
+                                            {moment(
+                                              event?.event_date?.date_start
+                                            ).format("MMMM D, YYYY")}
                                             ,{" "}
                                             {moment(
                                               event?.event_time?.time_start
+                                            ).format("hh:mm a")}{" "}
+                                            -{" "}
+                                            {moment(
+                                              event?.event_date?.date_end
+                                            ).format("MMMM D, YYYY")}
+                                            ,{" "}
+                                            {moment(
+                                              event?.event_time?.time_end
                                             ).format("hh:mm a")}
+                                          </p>
+                                          <p className="text-[#2e2e2e] text-[12px] font-medium">
+                                            Joined People:{" "}
+                                            {event?.joinedPeople?.length}
                                           </p>
                                         </div>
                                       </div>
@@ -338,60 +347,6 @@ const Home = () => {
                       disableDefaultUI={true}
                       mapId={"4504f8b37365c3d0"}
                     >
-                      {/* {upcomingEventsInvited?.map((event, i) => {
-                        return (
-                          <AdvancedMarker
-                            key={i}
-                            className="relative"
-                            position={{
-                              lat: Number(event.mapLocation?.lat),
-                              lng: Number(event.mapLocation?.lng),
-                            }}
-                            onClick={() =>
-                              setPopOver({
-                                popover: !popover?.popover,
-                                id: event?._id,
-                              })
-                            }
-                          >
-                            <div className="bg-white p-2 rounded-lg rotate-45 shadow-blue-300 shadow-2xl text-center">
-                              <img
-                                width={50}
-                                height={50}
-                                src="https://img.icons8.com/bubbles/50/today.png"
-                                alt=""
-                                className="-rotate-45"
-                              />
-                            </div>
-                            {popover?.popover && popover.id === event._id && (
-                              <div className="grid grid-cols-2 absolute z-10">
-                                <div
-                                  className="!bg-white w-72 !z-[999] p-6 text-lg -translate-x-[40%] rounded-lg shadow-2xl shadow-blue-300 text-center mt-2"
-                                  onClick={() =>
-                                    navigate(`/event-details/${event?._id}`)
-                                  }
-                                >
-                                  <img
-                                    src={event?.event_images[0]?.image}
-                                    className="w-full"
-                                  />
-                                  <h2>Event Details</h2>
-                                  <p>Title: {event?.event_title}</p>
-                                  <p className="text-[#828282] text-[14px] font-medium">
-                                    {moment(events?.event_date).format(
-                                      "MMMM D, YYYY"
-                                    )}
-                                    ,{" "}
-                                    {moment(
-                                      events?.event_time?.time_start
-                                    ).format("hh:mm a")}
-                                  </p>
-                                </div>
-                              </div>
-                            )}
-                          </AdvancedMarker>
-                        );
-                      })} */}
                       {selected2.length
                         ? upcomingEventsInvited
                             .filter((event) => {
@@ -447,13 +402,25 @@ const Home = () => {
                                           <div className="w-[60%]">
                                             <p>{event?.event_title}</p>
                                             <p className="text-[#828282] text-[12px] font-medium">
-                                              {moment(event?.event_date).format(
-                                                "MMMM D, YYYY"
-                                              )}
+                                              {moment(
+                                                event?.event_date?.date_start
+                                              ).format("MMMM D, YYYY")}
                                               ,{" "}
                                               {moment(
                                                 event?.event_time?.time_start
+                                              ).format("hh:mm a")}{" "}
+                                              -{" "}
+                                              {moment(
+                                                event?.event_date?.date_end
+                                              ).format("MMMM D, YYYY")}
+                                              ,{" "}
+                                              {moment(
+                                                event?.event_time?.time_end
                                               ).format("hh:mm a")}
+                                            </p>
+                                            <p className="text-[#2e2e2e] text-[12px] font-medium">
+                                              Joined People:{" "}
+                                              {event?.joinedPeople?.length}
                                             </p>
                                           </div>
                                         </div>
@@ -508,13 +475,25 @@ const Home = () => {
                                         <div className="w-[60%]">
                                           <p>{event?.event_title}</p>
                                           <p className="text-[#828282] text-[12px] font-medium">
-                                            {moment(event?.event_date).format(
-                                              "MMMM D, YYYY"
-                                            )}
+                                            {moment(
+                                              event?.event_date?.date_start
+                                            ).format("MMMM D, YYYY")}
                                             ,{" "}
                                             {moment(
                                               event?.event_time?.time_start
+                                            ).format("hh:mm a")}{" "}
+                                            -{" "}
+                                            {moment(
+                                              event?.event_date?.date_end
+                                            ).format("MMMM D, YYYY")}
+                                            ,{" "}
+                                            {moment(
+                                              event?.event_time?.time_end
                                             ).format("hh:mm a")}
+                                          </p>
+                                          <p className="text-[#2e2e2e] text-[12px] font-medium">
+                                            Joined People:{" "}
+                                            {event?.joinedPeople?.length}
                                           </p>
                                         </div>
                                       </div>
@@ -530,7 +509,12 @@ const Home = () => {
             )}
         </div>
       </div>
-      <Filter selected2={selected2} setSelected2={setSelected2} />
+      <Filter
+        selected2={selected2}
+        setSelected2={setSelected2}
+        // dateSelect={dateSelect}
+        // setDateSelect={setDateSelect}
+      />
     </div>
   );
 };

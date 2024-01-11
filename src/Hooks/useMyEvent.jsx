@@ -61,7 +61,9 @@ const useMyEvent = () => {
     setIsLoading(true);
     if (user?._id) {
       Axios.get(`/my-events/${user?._id}`)
-        .then((res) => setMyEvent(res.data))
+        .then((res) => {
+          setMyEvent(res.data);
+        })
         .catch((err) => setIsError(err))
         .finally(() => {
           setIsLoading(false);

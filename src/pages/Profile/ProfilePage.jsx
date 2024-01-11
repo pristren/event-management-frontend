@@ -4,6 +4,7 @@ import Profile from "../../components/Profile";
 import { profileUserIcon } from "../../components/SVGIcons/Icons";
 import { useParams } from "react-router-dom";
 import useAxios from "../../Hooks/useAxios";
+import p from "../../assets/p.webp";
 
 export default function ProfilePage() {
   const { isExpand, setIsExpand } = useContext(MyProvider);
@@ -22,7 +23,6 @@ export default function ProfilePage() {
     };
     user();
   }, []);
-  console.log(user);
   return (
     <div>
       <div className="flex items-center justify-between pt-4 pb-5 sm:pb-10 px-4">
@@ -51,22 +51,20 @@ export default function ProfilePage() {
           <div className="flex flex-col items-center gap-6 p-4 md:p-6 lg:p-10">
             <div className="h-24 w-24 ">
               <figure className="bg-[#30BEEC] text-white rounded-full w-24 h-24 flex justify-center items-center">
-                {user?.profile_images?.length ? (
+                {user?.profile_images?.length && (
                   <img
                     src={user?.profile_images[0]}
                     className="w-full h-full rounded-full"
                     alt=""
                   />
-                ) : (
-                  <span className="text-6xl">{profileUserIcon}</span>
                 )}
               </figure>
             </div>
             <div className="text-center">
-              <h1 className="font-bold text-2xl">
-                {user?.firstName} {user?.lastName}
-              </h1>
-              <p className="text-gray-500 dark:text-gray-400">{user?.email}</p>
+              <h1 className="font-bold text-2xl">{user?.firstName}</h1>
+              <p className="text-gray-500 dark:text-gray-400">
+                Bio: {user?.short_bio}
+              </p>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-8 w-full max-w-2xl ">
               {user?.profile_images?.map((l, i) => {
@@ -87,7 +85,12 @@ export default function ProfilePage() {
         </div>
       ) : (
         <div>
-          <h2 className="text-center">
+          <div className="w-full flex justify-center">
+            <figure className="bg-[#30BEEC] text-white rounded-full w-24 h-24 p-4  flex justify-center items-center">
+              <img src={p} className="w-full h-full rounded-full" alt="" />
+            </figure>
+          </div>
+          <h2 className="text-center mt-4">
             This user account is private. You can not see the details.
           </h2>
         </div>

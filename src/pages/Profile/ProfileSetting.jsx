@@ -5,36 +5,37 @@ import MyProvider from "../../Provider/Provider";
 import { useDispatch, useSelector } from "react-redux";
 import {
   businessIcon,
-  lockIcon,
+  // lockIcon,
   privateUserIcon,
-  profileUserIcon,
+  // profileUserIcon,
   rightArrow,
   settingIcon,
   uploadIcons,
 } from "../../components/SVGIcons/Icons";
-import axios from "axios";
+// import axios from "axios";
 import useAxios from "../../Hooks/useAxios";
 import { userLoggedIn } from "../../features/auth/authSlice";
 import ImageUploader from "react-images-upload";
 import { toast } from "react-hot-toast";
-import useMyEvent from "../../Hooks/useMyEvent";
+// import useMyEvent from "../../Hooks/useMyEvent";
+import { UserRound } from "lucide-react";
 
 const ProfileSetting = () => {
   const { Axios } = useAxios();
-  const [number, setNumber] = useState();
+  // const [number, setNumber] = useState();
   const [selectedBtn, setSelectedBtn] = useState("");
   const [upload, setUpload] = useState(false);
   const state = useSelector((state) => state.auth);
   const [inputData, setInputData] = useState({});
-  const [verifyPin, setVerifyPin] = useState({
-    one: "",
-    two: "",
-    three: "",
-    four: "",
-    five: "",
-  });
+  // const [verifyPin, setVerifyPin] = useState({
+  //   one: "",
+  //   two: "",
+  //   three: "",
+  //   four: "",
+  //   five: "",
+  // });
   const { isExpand, setIsExpand } = useContext(MyProvider);
-  const { phone, setPhone, sendOtp } = useMyEvent();
+  // const { phone, setPhone, sendOtp } = useMyEvent();
 
   useEffect(() => {
     setInputData(state?.user);
@@ -46,36 +47,47 @@ const ProfileSetting = () => {
   const handleDivClick = () => {
     fileInputRef.current.click();
   };
-  const [selectedFile, setSelectedFile] = useState([]);
   const [uploadImages, setUploadImages] = useState([]);
+  const [profile_images, setProfileImages] = useState("");
   const API_KEY = "c8818fe821c0aee81ebf0b77344f0e2b";
   useEffect(() => {
     setUploadImages(state?.user?.profile_images);
+    const profile = localStorage.getItem("profile_image");
+    if (!profile) {
+      setProfileImages(state?.user?.profile_images[0]);
+    }
     if (state?.user?.profile_images?.length) {
       setUpload(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    const profile = localStorage.getItem("profile_image");
+    if (profile) {
+      setProfileImages(JSON.parse(profile));
     }
   }, []);
 
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(false);
-  const handleUploadFileChange = async (event) => {
-    // Handle the selected file(s) here
-    setLoading(true);
-    const formData = new FormData();
-    formData.append("image", event.target.files[0]);
-    // const file = event.target.files[0];
+  // const handleUploadFileChange = async (event) => {
+  //   // Handle the selected file(s) here
+  //   setLoading(true);
+  //   const formData = new FormData();
+  //   formData.append("image", event.target.files[0]);
+  //   // const file = event.target.files[0];
 
-    const response = await axios.post(
-      `https://api.imgbb.com/1/upload?key=${API_KEY}`,
-      formData
-    );
+  //   const response = await axios.post(
+  //     `https://api.imgbb.com/1/upload?key=${API_KEY}`,
+  //     formData
+  //   );
 
-    setUploadImages([...uploadImages, response.data.data.url]);
-    // const file = event.target.files[0];
-    setLoading(false);
-    // setSelectedFile([...selectedFile, file]);
-  };
+  //   setUploadImages([...uploadImages, response.data.data.url]);
+  //   // const file = event.target.files[0];
+  //   setLoading(false);
+  //   // setSelectedFile([...selectedFile, file]);
+  // };
 
   const handleInputChange = (event) => {
     // event.persist();
@@ -153,6 +165,10 @@ const ProfileSetting = () => {
       uploadedImagesArray = [];
     }
   };
+  const handleImgChange = (img) => {
+    setProfileImages(img);
+    localStorage.setItem("profile_image", JSON.stringify(img));
+  };
 
   return (
     <section className="flex  ">
@@ -189,14 +205,15 @@ const ProfileSetting = () => {
               </div>
 
               <div className="mt-10 flex flex-col items-center mb-3">
-                <figure className="bg-[#30BEEC] text-white  rounded-full w-24 h-24 flex justify-center items-center">
-                  {uploadImages.length ? (
+                <figure className="bg-[#30BEEC] text-white  rounded-full  w-24 h-24 flex justify-center items-center">
+                  {uploadImages?.length ? (
                     <img
-                      src={uploadImages[0]}
+                      src={profile_images ? profile_images : uploadImages[0]}
                       className="w-24 h-24 rounded-full"
                     />
                   ) : (
-                    <span className="text-6xl">{profileUserIcon}</span>
+                    // <span className="text-6xl">{profileUserIcon}</span>
+                    <UserRound className="w-16 h-16 " />
                   )}
                 </figure>
 
@@ -288,7 +305,7 @@ const ProfileSetting = () => {
                 </button>
 
                 <button
-                  onClick={(e) => setSelectedBtn("Business")}
+                  onClick={(e) => setSelectedBtn("Public")}
                   className={`flex gap-3 py-2 min-w-[14rem] px-3 items-center justify-center rounded-3xl text-lg text-slate-950 shadow-md text-center font-semibold ${
                     selectedBtn === "Business"
                       ? "bg-[black] text-white"
@@ -296,7 +313,7 @@ const ProfileSetting = () => {
                   }`}
                 >
                   <span>{businessIcon}</span>
-                  <span>Business</span>
+                  <span>Public</span>
                 </button>
               </div>
 
@@ -336,7 +353,7 @@ const ProfileSetting = () => {
 
               <div className="mt-7">
                 <div className="flex flex-col gap-6">
-                  <div className="grid grid-cols-2 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
+                  <div className="grid grid-cols-2 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-5">
                     {uploadImages
                       ?.filter(
                         (obj, index, array) =>
@@ -346,6 +363,7 @@ const ProfileSetting = () => {
                         <VeryCard
                           key={i}
                           img={img}
+                          handleImgChange={handleImgChange}
                           handleImgDelete={handleImgDelete}
                         />
                       ))}

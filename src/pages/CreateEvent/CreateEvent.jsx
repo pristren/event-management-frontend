@@ -10,6 +10,16 @@ import { useSelector } from "react-redux";
 import CreateEventModal from "./CreateEventModal";
 import ImageUploader from "react-images-upload";
 import CustomDatePicker from "@/components/DatePicker";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { CalendarIcon } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
 
 const clubIcons = (
   <svg
@@ -210,6 +220,10 @@ const CreateEvent = () => {
     }
   };
 
+  const hanldeEndDate = () => {
+    setEndDate();
+  };
+
   return (
     <div className="flex ">
       {openModal && (
@@ -323,50 +337,114 @@ const CreateEvent = () => {
                 value={inputData?.category}
               >
                 <option value="">Chose a category</option>
-                <option value="Sports">Sports</option>
-                <option value="BirthDay">BirthDay</option>
-                <option value="Study">Study</option>
+                <option value="Game">Game</option>
+                <option value="Tournament">Tournament</option>
+                <option value="Free Play">Free Play</option>
+                <option value="3vs3">3vs3</option>
               </select>
             </div>
             <div className="flex gap-5 mt-5">
-              <CustomDatePicker
+              {/* <CustomDatePicker
                 date={startDate}
                 setDate={setStartDate}
                 placeholder={"Start Date"}
-              />
-              <CustomDatePicker
+              /> */}
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant={"outline"}
+                    className={cn(
+                      "w-[280px] justify-start text-left font-normal",
+                      !startDate
+                        ? "text-muted-foreground bg-white hover:bg-gray-50 border active:bg-gray-100 focus-visible:bg-gray-100 focus:bg-white"
+                        : "bg-white hover:bg-gray-50 border active:bg-gray-100 focus-visible:bg-gray-100 focus:bg-white"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {startDate ? (
+                      format(startDate, "PPP")
+                    ) : (
+                      <span>{"Start Date"}</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                  <Calendar
+                    mode="single"
+                    selected={startDate}
+                    onSelect={(date) => {
+                      if (endDate) {
+                        if (date <= endDate) {
+                          setStartDate(date);
+                        } else {
+                          toast.error("Start date must be less than end date!");
+                        }
+                      } else {
+                        setStartDate(date);
+                      }
+                    }}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+              {/* <CustomDatePicker
                 date={endDate}
                 setDate={setEndDate}
                 placeholder={"End Date"}
-              />
-              {/* <div className="w-full flex gap-3 items-center justify-between bg-white rounded-full shadow-primary">
-                <DatePicker
-                  selected={startDate}
-                  value={inputData.startDate}
-                  onChange={(date) => setStartDate(date)}
-                  dateFormat="MM/dd/yyyy"
-                  className="w-full py-2 px-4 outline-none border-none text-[15px] text-[black] bg-white font-medium rounded-full placeholder:text-[#6c757d] placeholder:font-medium"
-                  placeholderText="Start Date"
-                />
-              </div> */}
-
-              {/* <div className="w-full flex gap-3 items-center justify-between bg-white rounded-full shadow-primary">
-                <DatePicker
-                  selected={endDate}
-                  value={inputData.endDate}
-                  onChange={(date) => setEndDate(date)}
-                  dateFormat="MM/dd/yyyy"
-                  className="w-full py-2 px-4 outline-none border-none text-[15px] text-[black] bg-white font-medium rounded-full placeholder:text-[#6c757d] placeholder:font-medium"
-                  placeholderText="End Date"
-                />
-              </div> */}
+              /> */}
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant={"outline"}
+                    className={cn(
+                      "w-[280px] justify-start text-left font-normal",
+                      !endDate
+                        ? "text-muted-foreground bg-white hover:bg-gray-50 border active:bg-gray-100 focus-visible:bg-gray-100 focus:bg-white"
+                        : "bg-white hover:bg-gray-50 border active:bg-gray-100 focus-visible:bg-gray-100 focus:bg-white"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {endDate ? (
+                      format(endDate, "PPP")
+                    ) : (
+                      <span>{"End Date"}</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                  <Calendar
+                    mode="single"
+                    selected={endDate}
+                    onSelect={(date) => {
+                      if (date >= startDate) {
+                        setEndDate(date);
+                      } else {
+                        toast.error(
+                          "End date must be greater than start date!"
+                        );
+                      }
+                    }}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
             <div className="flex gap-5 mt-5">
               <div className="w-full flex gap-3 items-center justify-between bg-white rounded-full shadow-primary">
                 <DatePicker
                   selected={startTime}
                   value={startTime}
-                  onChange={(date) => setStartTime(date)}
+                  onChange={(date) => {
+                    if (endTime) {
+                      if (date <= endTime) {
+                        setStartTime(date);
+                      } else {
+                        toast.error("start time must be less than end time!");
+                      }
+                    } else {
+                      setStartTime(date);
+                    }
+                  }}
                   showTimeSelect
                   showTimeSelectOnly
                   timeIntervals={15}
@@ -381,7 +459,19 @@ const CreateEvent = () => {
                 <DatePicker
                   selected={endTime}
                   value={endTime}
-                  onChange={(date) => setEndTime(date)}
+                  onChange={(date) => {
+                    if (startTime) {
+                      if (date > startTime) {
+                        setEndTime(date);
+                      } else {
+                        toast.error(
+                          "end time must be greater than start time!"
+                        );
+                      }
+                    } else {
+                      setEndTime(date);
+                    }
+                  }}
                   showTimeSelect
                   showTimeSelectOnly
                   timeIntervals={15}
@@ -547,7 +637,7 @@ const CreateEvent = () => {
               <button
                 onClick={createEvent}
                 className={`flex items-center gap-4  py-2 px-7 rounded-full ${
-                  fileUploadLoading ? "bg-[#70c0dde3]" : "bg-[black]"
+                  fileUploadLoading ? "bg-[gray]" : "bg-[black]"
                 }`}
                 disabled={fileUploadLoading}
               >

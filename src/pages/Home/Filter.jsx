@@ -1,5 +1,10 @@
+import React, { Fragment, useEffect, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
+import { CheckIcon } from "@heroicons/react/20/solid";
+
+import { CalendarDays } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { dateAction } from "@/features/layout/layoutSlice";
 
 const funnelIcons = (
   <svg
@@ -85,13 +90,27 @@ const searchIcons = (
 
 const type = [
   {
-    name: "Sports",
+    name: "Game",
   },
   {
-    name: "BirstDay",
+    name: "Tournament",
   },
   {
-    name: "Study",
+    name: "Free Play",
+  },
+  {
+    name: "3vs3",
+  },
+];
+const dateCategory = [
+  {
+    name: "Today",
+  },
+  {
+    name: "Tomorrow",
+  },
+  {
+    name: "This Week",
   },
 ];
 
@@ -109,90 +128,176 @@ const Filter = ({ selected2, setSelected2 }) => {
       </button>
     </div>
   );
+  const [dateSelect, setDateSelect] = useState([
+    dateCategory[0],
+    dateCategory[1],
+  ]);
+  const dispatch = useDispatch();
+  // console.log(dateSelect);
+  useEffect(() => {
+    dispatch(dateAction(dateSelect));
+  }, [dateSelect?.length]);
+
   return (
-    <div className="absolute top-[200px] right-5 max-w-[450px] lg:max-w-[650px] w-full bg-white rounded-2xl flex border-[2px] border-white shadow-xl">
-      <div className="w-full flex items-center justify-between">
-        <div className="w-full">
-          <Listbox value={selected2} onChange={setSelected2} multiple>
-            <div className="relative shadow-xl ">
-              <Listbox.Button
-                className={`relative w-full cursor-default rounded-lg bg-white text-left ${
-                  fieldError && selected2.length === 0
-                    ? "border-red-500"
-                    : "border-[#E5E7EC] "
-                } focus:outline-none flex gap-2`}
-              >
-                <div className="flex gap-2 items-center">
-                  {filterBtn}
-                  {selected2?.length
-                    ? selected2?.map((s, i) => {
-                        return (
-                          <span
-                            key={i}
-                            className="inline-flex truncate bg-[black] text-white px-3 py-2 rounded-2xl items-center gap-1"
-                          >
-                            <span> {s.name}</span>
+    <div className="realtive">
+      <div className="absolute top-[200px] right-1 lg:right-5 max-w-[550px] lg:max-w-[650px] w-full bg-white rounded-2xl flex border-[2px] border-white shadow-xl  ">
+        <div className="w-full flex items-center justify-between">
+          <div className="w-full  h-full">
+            <Listbox
+              value={selected2}
+              onChange={setSelected2}
+              multiple
+              className=""
+            >
+              <div className="relative shadow-xl ">
+                <Listbox.Button
+                  className={`relative w-full cursor-default rounded-lg  text-left bg-white  ${
+                    fieldError && selected2.length === 0
+                      ? "border-red-500"
+                      : "border-[#E5E7EC] "
+                  } focus:outline-none flex gap-2`}
+                >
+                  <span className="flex gap-2 items-center">
+                    {filterBtn}
+                    {selected2?.length
+                      ? selected2?.map((s, i) => {
+                          return (
+                            <span
+                              key={i}
+                              className="inline-flex truncate bg-[#1BB6ED] text-white px-3 py-2 rounded-2xl items-center gap-1 text-sm"
+                            >
+                              <span> {s.name}</span>
 
-                            <span className="w-5 h-5"> {closeIcons} </span>
-                            {/* {selected2.length > i + 1 ? "," : ""} */}
-                          </span>
-                        );
-                      })
-                    : ""}
-                </div>
-              </Listbox.Button>
-              <Transition
-                as={Fragment}
-                leave="transition ease-in duration-200"
-                leaveFrom="opacity-100"
-                leaveTo="opacity-0"
-              >
-                <Listbox.Options className="!z-[9999] absolute mt-1 w-1/2 rounded-md bg-white py-1 text-base ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm shadow-xl border ">
-                  <span className="block truncate py-3 px-4 font-semibold text-[black] text-base border-b-2 border-[black] relative">
-                    <span>Select Filter Option</span>
-                    <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                      <span className="h-5 w-5 text-[black]">
-                        {upArrowIcon}
-                      </span>
-                    </span>
+                              <span
+                                onClick={() => {
+                                  const res = selected2.filter(
+                                    (sl) => sl.name !== s.name
+                                  );
+                                  setSelected2(res);
+                                }}
+                                className="w-5 h-5"
+                              >
+                                {closeIcons}
+                              </span>
+                            </span>
+                          );
+                        })
+                      : ""}
                   </span>
-                  {type.map((tp, tpIdx) => (
-                    <Listbox.Option
-                      key={tpIdx}
-                      className={({ active }) =>
-                        `relative font-semibold select-none py-4 pl-5 pr-4 cursor-pointer ${
-                          active ? "text-[black]" : "text-gray-900"
-                        }`
-                      }
-                      value={tp}
-                    >
-                      {({ selected }) => (
-                        <div className="flex justify-between">
-                          <span
-                            className={`block truncate ${
-                              selected ? "font-semibold" : "font-normal"
-                            }`}
-                          >
-                            {tp.name}
+                </Listbox.Button>
+                <div>
+                  <Transition
+                    as={Fragment}
+                    leave="transition ease-in duration-200"
+                    leaveFrom="opacity-100"
+                    leaveTo="opacity-0"
+                  >
+                    <Listbox.Options className="!z-[9999] absolute mt-1 w-1/2 rounded-md bg-white py-1 text-base ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm shadow-xl border ">
+                      <span className="block truncate py-3 px-4 font-semibold text-[#1BB6ED] text-base border-b-2 border-[#1BB6ED] relative">
+                        <span>Select By Category</span>
+                        <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                          <span className="h-5 w-5 text-[#1BB6ED]">
+                            {upArrowIcon}
                           </span>
-                          {selected}
-                          <span className="absolute top-1/2 -translate-y-1/2 right-5 w-5 h-5 flex items-center text-[black]">
-                            {selected ? radioIconsFocus : radioIcons}
-                          </span>
-                        </div>
-                      )}
-                    </Listbox.Option>
-                  ))}
-                </Listbox.Options>
-              </Transition>
-            </div>
-          </Listbox>
-        </div>
+                        </span>
+                      </span>
+                      {type.map((tp, tpIdx) => (
+                        <Listbox.Option
+                          key={tpIdx}
+                          className={({ active }) =>
+                            `relative font-semibold select-none py-4 pl-5 pr-4 cursor-pointer ${
+                              active ? "text-[#1BB6ED]" : "text-gray-900"
+                            } !z-[999]`
+                          }
+                          value={tp}
+                        >
+                          {({ selected }) => (
+                            <div className="flex justify-between">
+                              <span
+                                className={`block   truncate ${
+                                  selected ? "font-semibold" : "font-normal"
+                                }`}
+                              >
+                                {tp.name}
+                              </span>
+                              {selected}
+                              <span className="absolute top-1/2 -translate-y-1/2 right-5 w-5 h-5 flex items-center text-[#1BB6ED]">
+                                {selected ? radioIconsFocus : radioIcons}
+                              </span>
+                            </div>
+                          )}
+                        </Listbox.Option>
+                      ))}
+                    </Listbox.Options>
+                  </Transition>
+                </div>
+              </div>
+            </Listbox>
+          </div>
 
-        <button className="bg-[black] text-white p-4 rounded-2xl">
-          {" "}
-          {searchIcons}{" "}
-        </button>
+          <button className="bg-[#1bb6ed] text-white p-4 rounded-2xl">
+            {" "}
+            {searchIcons}{" "}
+          </button>
+        </div>
+      </div>
+      {/* calendar */}
+      <div className="absolute top-[120px] lg:top-[200px] left-2 lg:left-72 rounded-2xl flex  ">
+        <Listbox value={dateSelect} onChange={setDateSelect} multiple>
+          <div className="relative mt-1">
+            <Listbox.Button
+              className={`relative w-full cursor-default rounded-lg bg-white text-left border-[1px] ${
+                fieldError && dateSelect.length === 0
+                  ? "border-red-500"
+                  : "border-[#E5E7EC] "
+              } focus:outline-none flex gap-2 `}
+            >
+              <span className="cursor-pointer text-white p-4 rounded-lg bg-[#1BB6ED]">
+                <CalendarDays />
+              </span>
+            </Listbox.Button>
+            <Transition
+              as={Fragment}
+              leave="transition ease-in duration-100"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <Listbox.Options className="z-50 absolute mt-1 max-h-60 w-48 overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                {dateCategory.map((tp, tpIdx) => (
+                  <Listbox.Option
+                    key={tpIdx}
+                    className={({ active }) =>
+                      `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                        active
+                          ? "bg-[#1bb5ed23] text-gray-900"
+                          : "text-gray-900"
+                      }`
+                    }
+                    value={tp}
+                  >
+                    {({ selected }) => (
+                      <>
+                        <span
+                          className={`block truncate ${
+                            selected ? "font-semibold" : "font-normal"
+                          }`}
+                        >
+                          {tp.name}
+                        </span>
+                        {selected}
+                        {selected ? (
+                          <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-[#1BB6ED]">
+                            <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                          </span>
+                        ) : null}
+                      </>
+                    )}
+                  </Listbox.Option>
+                ))}
+              </Listbox.Options>
+            </Transition>
+          </div>
+        </Listbox>
       </div>
     </div>
   );
