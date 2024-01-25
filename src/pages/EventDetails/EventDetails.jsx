@@ -7,7 +7,7 @@ import useAxios from "../../Hooks/useAxios";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import moment from "moment";
-import { Carousel } from "react-responsive-carousel";
+// import { Carousel } from "react-responsive-carousel";
 import { useSelector } from "react-redux";
 import { APIProvider, AdvancedMarker, Map } from "@vis.gl/react-google-maps";
 import AddImageModal from "./AddImageModal";
@@ -24,6 +24,17 @@ import {
 import CreateEventModal from "../CreateEvent/CreateEventModal";
 import ShareModal from "./ShareModal";
 import { UserRound } from "lucide-react";
+import mapIcon from "../../assets/map.png";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { Card, CardContent } from "@/components/ui/card";
+import Autoplay from "embla-carousel-autoplay";
+
 const EventDetails = () => {
   const { user } = useSelector((state) => state?.auth);
 
@@ -181,7 +192,7 @@ const EventDetails = () => {
         </div>
         {!loading ? (
           <div className="p-6">
-            <Carousel
+            {/* <Carousel
               showArrows={false}
               showThumbs={false}
               autoPlay={true}
@@ -189,14 +200,41 @@ const EventDetails = () => {
               showStatus={false}
             >
               {events?.event_images?.map((img, i) => (
-                <div key={i} className="w-full h-[300px]">
-                  <img
-                    src={img?.image}
-                    alt=""
-                    className="w-full h-full object-cover"
-                  />
+                <div key={i} className="w-full h-[450px]">
+                  <img src={img?.image} alt="" className="" />
                 </div>
               ))}
+            </Carousel> */}
+
+            <Carousel
+              opts={{
+                align: "start",
+              }}
+              plugins={[
+                Autoplay({
+                  delay: 3000,
+                }),
+              ]}
+              className="w-full mx-auto"
+            >
+              <CarouselContent>
+                {events?.event_images?.map((img, i) => (
+                  <CarouselItem
+                    key={i}
+                    className="md:basis-1/2 lg:basis-1/3 mx-auto"
+                  >
+                    <div className="p-1">
+                      <Card className="shadow-none ">
+                        <CardContent className="flex aspect-square items-center justify-center p-3">
+                          <img src={img?.image} alt="" className=" h-full " />
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              {/* <CarouselPrevious />
+              <CarouselNext /> */}
             </Carousel>
 
             <div>
@@ -423,7 +461,7 @@ const EventDetails = () => {
                               <img
                                 width={50}
                                 height={50}
-                                src="https://img.icons8.com/bubbles/50/today.png"
+                                src={mapIcon}
                                 alt=""
                                 className="-rotate-45"
                               />
@@ -431,10 +469,10 @@ const EventDetails = () => {
                             {popover && (
                               <div className="grid grid-cols-2 absolute z-10">
                                 <div className="!bg-white w-80 !z-[999] py-6 px-4 text-lg -translate-x-[40%] rounded-lg shadow-2xl shadow-blue-300 h-36 text-center mt-2 flex items-center gap-2">
-                                  <div className="w-[40%] h-full rounded-xl">
+                                  <div className="w-20 h-20 rounded-full ring-2 ring-black p-1">
                                     <img
                                       src={events?.event_images[0]?.image}
-                                      className="w-full h-full rounded-xl"
+                                      className="w-full h-full rounded-full object-cover"
                                     />
                                   </div>
 

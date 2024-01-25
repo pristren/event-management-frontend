@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import useAxios from "../../Hooks/useAxios";
 import { APIProvider, AdvancedMarker, Map } from "@vis.gl/react-google-maps";
 import moment from "moment";
+import mapIcon from "../../assets/map.png";
 
 const Home = () => {
   const { Axios } = useAxios();
@@ -78,7 +79,7 @@ const Home = () => {
 
   const [selected2, setSelected2] = useState([]);
   const { date } = useSelector((state) => state.layout);
-  console.log(date);
+  // console.log(date);
 
   const today = new Date();
 
@@ -192,7 +193,7 @@ const Home = () => {
                                     <img
                                       width={50}
                                       height={50}
-                                      src="https://img.icons8.com/bubbles/50/today.png"
+                                      src={mapIcon}
                                       alt=""
                                       className="-rotate-45"
                                     />
@@ -208,12 +209,12 @@ const Home = () => {
                                             )
                                           }
                                         >
-                                          <div className="w-[40%] h-full rounded-xl">
+                                          <div className="h-20 w-20 ring-2 ring-black rounded-full p-1">
                                             <img
                                               src={
                                                 event?.event_images[0]?.image
                                               }
-                                              className="w-full h-full rounded-xl"
+                                              className="w-full h-full rounded-full   object-cover "
                                             />
                                           </div>
 
@@ -268,7 +269,7 @@ const Home = () => {
                                   <img
                                     width={50}
                                     height={50}
-                                    src="https://img.icons8.com/bubbles/50/today.png"
+                                    src={mapIcon}
                                     alt=""
                                     className="-rotate-45"
                                   />
@@ -284,13 +285,13 @@ const Home = () => {
                                           )
                                         }
                                       >
-                                        <div className="w-[40%] h-full rounded-xl border flex items-center justify-center">
+                                        <div className="h-20 w-20 ring-2 ring-black rounded-full p-1">
                                           {event?.event_images[0]?.image ? (
                                             <img
                                               src={
                                                 event?.event_images[0]?.image
                                               }
-                                              className="w-full h-full rounded-xl"
+                                              className="w-full h-full rounded-full  object-cover "
                                             />
                                           ) : (
                                             <p>no images</p>
@@ -374,7 +375,7 @@ const Home = () => {
                                     <img
                                       width={50}
                                       height={50}
-                                      src="https://img.icons8.com/bubbles/50/today.png"
+                                      src={mapIcon}
                                       alt=""
                                       className="-rotate-45"
                                     />
@@ -390,12 +391,12 @@ const Home = () => {
                                             )
                                           }
                                         >
-                                          <div className="w-[40%] h-full rounded-xl">
+                                          <div className="h-20 w-20 ring-2 ring-black rounded-full p-1">
                                             <img
                                               src={
                                                 event?.event_images[0]?.image
                                               }
-                                              className="w-full h-full rounded-xl"
+                                              className="w-full h-full rounded-full object-cover "
                                             />
                                           </div>
 
@@ -449,7 +450,7 @@ const Home = () => {
                                   <img
                                     width={50}
                                     height={50}
-                                    src="https://img.icons8.com/bubbles/50/today.png"
+                                    src={mapIcon}
                                     alt=""
                                     className="-rotate-45"
                                   />
@@ -465,10 +466,10 @@ const Home = () => {
                                           )
                                         }
                                       >
-                                        <div className="w-[40%] h-full rounded-xl">
+                                        <div className="h-20 w-20 ring-2 ring-black rounded-full p-1">
                                           <img
                                             src={event?.event_images[0]?.image}
-                                            className="w-full h-full rounded-xl"
+                                            className="w-full h-full rounded-full  object-cover "
                                           />
                                         </div>
 
