@@ -221,12 +221,16 @@ const EventDetails = () => {
                 {events?.event_images?.map((img, i) => (
                   <CarouselItem
                     key={i}
-                    className="md:basis-1/2 lg:basis-1/3 mx-auto"
+                    className="md:basis-1/2 lg:basis-1/3 mx-auto h-max"
                   >
                     <div className="p-1">
                       <Card className="shadow-none ">
                         <CardContent className="flex aspect-square items-center justify-center p-3">
-                          <img src={img?.image} alt="" className=" h-full " />
+                          <img
+                            src={img?.image}
+                            alt=""
+                            className=" h-max w-max "
+                          />
                         </CardContent>
                       </Card>
                     </div>

@@ -141,7 +141,7 @@ l71 -111 87 134 c47 73 112 174 144 223 119 186 361 560 554 859 110 170 214
             onClick={(e) => {
               user ? setSelectedBtn("Contract") : navigate("/login");
             }}
-            className={`w-full h-[99%] py-3 px-8 rounded ${
+            className={`w-full h-[99%] py-2 md:py-3 px-4 text-sm md:text-base md:px-8 rounded ${
               selectedBtn === "Contract" && "bg-[black] text-white"
             } text-[black]`}
           >
@@ -149,7 +149,7 @@ l71 -111 87 134 c47 73 112 174 144 223 119 186 361 560 554 859 110 170 214
           </button>
           <button
             onClick={(e) => setSelectedBtn("Public")}
-            className={`w-full h-[99%] py-3 px-8 rounded ${
+            className={`w-full h-[99%] py-2 md:py-3 px-4 text-sm md:text-base md:px-8 rounded ${
               selectedBtn === "Public" && "bg-[black] text-white"
             } text-[black]`}
           >
@@ -157,7 +157,7 @@ l71 -111 87 134 c47 73 112 174 144 223 119 186 361 560 554 859 110 170 214
           </button>
         </div>
         <div className="flex items-center gap-3">
-          <span className="cursor-pointer">
+          <span className="cursor-pointer hidden md:block">
             <svg
               stroke="currentColor"
               fill="#fff"
@@ -173,7 +173,7 @@ l71 -111 87 134 c47 73 112 174 144 223 119 186 361 560 554 859 110 170 214
           {user ? (
             <button
               onClick={logoutHandle}
-              className="flex items-center gap-2 py-2 px-3 bg-white rounded-lg"
+              className="flex items-center gap-[2px] md:gap-2 py-1.5 md:py-2 text-sm md:text-base px-2 md:px-3 bg-white rounded-lg"
               style={{
                 boxShadow:
                   "rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px",
@@ -185,7 +185,7 @@ l71 -111 87 134 c47 73 112 174 144 223 119 186 361 560 554 859 110 170 214
           ) : (
             <Link
               to="/login"
-              className="flex items-center gap-2 py-2 px-3 bg-white rounded-lg"
+              className="flex items-center gap-[2px] md:gap-2 py-1.5 md:py-2 text-sm md:text-base px-2 md:px-3 bg-white rounded-lg"
               style={{
                 boxShadow:
                   "rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px",
