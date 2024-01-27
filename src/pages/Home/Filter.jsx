@@ -187,7 +187,7 @@ const Filter = ({ selected2, setSelected2 }) => {
 
   return (
     <div className="realtive">
-      <div className="absolute top-[200px] right-1 lg:right-5  w-min bg-white rounded-2xl flex border-[2px] border-white shadow-xl  ">
+      <div className="absolute top-[120px] md:top-[200px] right-2 md:right-1 lg:right-5  w-min bg-white rounded-2xl flex border-[2px] border-white shadow-xl  ">
         <div className="w-full flex items-center justify-between">
           <div className="w-full  h-full">
             <Listbox
