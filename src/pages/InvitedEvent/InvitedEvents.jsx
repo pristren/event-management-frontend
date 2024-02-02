@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import Profile from "../../components/Profile";
-import InvitedEventCart from "./InvitedEventCart";
+import InvitedEventCard from "./InvitedEventCard";
 import MyProvider from "../../Provider/Provider";
 import useMyEvent from "../../Hooks/useMyEvent";
 import useAxios from "../../Hooks/useAxios";
@@ -61,7 +61,13 @@ const InvitedEvents = () => {
           {!loading ? (
             invitedEvent &&
             invitedEvent.map((event, i) => {
-              return <InvitedEventCart event={event} key={i} />;
+              return (
+                <InvitedEventCard
+                  event={event}
+                  key={i}
+                  setInvitedEvent={setInvitedEvent}
+                />
+              );
             })
           ) : (
             <p className="px-4">Loading...</p>

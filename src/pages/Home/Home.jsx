@@ -189,15 +189,15 @@ const Home = () => {
                                     })
                                   }
                                 >
-                                  <div className="bg-white p-2 rounded-lg rotate-45 shadow-blue-300 shadow-2xl text-center">
-                                    <img
-                                      width={50}
-                                      height={50}
-                                      src={mapIcon}
-                                      alt=""
-                                      className="-rotate-45"
-                                    />
-                                  </div>
+                                  {/* <div className="bg-white p-2 rounded-lg rotate-45 shadow-blue-300 shadow-2xl text-center"> */}
+                                  <img
+                                    width={50}
+                                    height={50}
+                                    src={mapIcon}
+                                    alt=""
+                                    className=""
+                                  />
+                                  {/* </div> */}
                                   {popover?.popover &&
                                     popover.id === event._id && (
                                       <div className="grid grid-cols-2 absolute z-10">
@@ -265,15 +265,15 @@ const Home = () => {
                                   })
                                 }
                               >
-                                <div className="bg-white p-2 rounded-lg rotate-45 shadow-blue-300 shadow-2xl text-center">
-                                  <img
-                                    width={50}
-                                    height={50}
-                                    src={mapIcon}
-                                    alt=""
-                                    className="-rotate-45"
-                                  />
-                                </div>
+                                {/* <div className="bg-white p-2 rounded-lg rotate-45 shadow-blue-300 shadow-2xl text-center"> */}
+                                <img
+                                  width={50}
+                                  height={50}
+                                  src={mapIcon}
+                                  alt=""
+                                  // className="-rotate-45"
+                                />
+                                {/* </div> */}
                                 {popover?.popover &&
                                   popover.id === event._id && (
                                     <div className="grid grid-cols-2 absolute z-10">
@@ -371,15 +371,15 @@ const Home = () => {
                                     })
                                   }
                                 >
-                                  <div className="bg-white p-2 rounded-lg rotate-45 shadow-blue-300 shadow-2xl text-center">
-                                    <img
-                                      width={50}
-                                      height={50}
-                                      src={mapIcon}
-                                      alt=""
-                                      className="-rotate-45"
-                                    />
-                                  </div>
+                                  {/* <div className="bg-white p-2 rounded-lg rotate-45 shadow-blue-300 shadow-2xl text-center"> */}
+                                  <img
+                                    width={50}
+                                    height={50}
+                                    src={mapIcon}
+                                    alt=""
+                                    // className="-rotate-45"
+                                  />
+                                  {/* </div> */}
                                   {popover?.popover &&
                                     popover.id === event._id && (
                                       <div className="grid grid-cols-2 absolute z-10">
@@ -446,15 +446,15 @@ const Home = () => {
                                   })
                                 }
                               >
-                                <div className="bg-white p-2 rounded-lg rotate-45 shadow-blue-300 shadow-2xl text-center">
-                                  <img
-                                    width={50}
-                                    height={50}
-                                    src={mapIcon}
-                                    alt=""
-                                    className="-rotate-45"
-                                  />
-                                </div>
+                                {/* <div className="bg-white p-2 rounded-lg rotate-45 shadow-blue-300 shadow-2xl text-center"> */}
+                                <img
+                                  width={50}
+                                  height={50}
+                                  src={mapIcon}
+                                  alt=""
+                                  // className="-rotate-45"
+                                />
+                                {/* </div> */}
                                 {popover?.popover &&
                                   popover.id === event._id && (
                                     <div className="grid grid-cols-2 absolute z-10">

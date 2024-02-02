@@ -191,7 +191,7 @@ const ProfileSetting = () => {
             </svg>
           </span>
           <h1 className="text-[black] font-bold text-2xl">Profile Setting</h1>
-          <Profile />
+          <Profile profile_images={profile_images} />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">

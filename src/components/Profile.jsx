@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { UserRound } from "lucide-react";
 // import useAxios from "../../Hooks/useAxios";
 
-const Profile = () => {
+const Profile = ({ profile_images }) => {
   const state = useSelector((state) => state.auth);
 
   const { user } = state || {};
@@ -24,7 +24,7 @@ const Profile = () => {
             <div>
               <Menu.Button className="inline-flex  justify-center bg-black/20 text-sm font-medium text-white focus:outline-none  bg-[black]  rounded-full w-10 h-10  items-center">
                 <img
-                  src={user?.profile_images[0]}
+                  src={profile_images || user?.profile_images[0]}
                   className="w-full h-full rounded-full"
                   alt=""
                 />
