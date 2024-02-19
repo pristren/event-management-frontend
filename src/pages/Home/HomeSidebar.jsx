@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import Logo from "../../assets/C.jpg";
+import Logo from "../../assets/logo-white-bg.png";
 const HomeSidebar = ({ isExpand, setIsExpand }) => {
   const expandUserMenuRef = useRef(null);
 
@@ -30,7 +30,7 @@ const HomeSidebar = ({ isExpand, setIsExpand }) => {
       >
         <div className="flex justify-center flex-col items-center mb-12 md:hidden">
           <img src={Logo} alt="" className="w-[120px] " />
-          <p className="font-semibold text-lg -mt-4">ConnectU</p>
+          {/* <p className="font-semibold text-lg -mt-4">Pin</p> */}
         </div>
         <ul className="flex flex-col gap-5">
           <li>

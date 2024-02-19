@@ -5,6 +5,7 @@ import Logo from "../../assets/C.svg";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { userLoggedOut } from "../../features/auth/authSlice";
+import logoWhiteBg from "../../assets/logo-black-bg.png";
 
 const loginIcon = (
   <svg
@@ -94,7 +95,7 @@ const HomeNavbar = ({
             alt="Daily frame logo"
           /> */}
           <div className="md:flex justify-center flex-col items-center hidden -mt-2 ml-2">
-            <svg
+            {/* <svg
               version="1.0"
               xmlns="http://www.w3.org/2000/svg"
               width="50"
@@ -126,8 +127,15 @@ l71 -111 87 134 c47 73 112 174 144 223 119 186 361 560 554 859 110 170 214
 -119 -5 -163 -10z"
                 />
               </g>
-            </svg>
-            <p className="font-semibold text-lg -mt-2 text-white">ConnectU</p>
+            </svg> */}
+            <img
+              src={logoWhiteBg}
+              className=" hidden md:block"
+              alt="Pin logo"
+              width={100}
+              // height={50}
+            />
+            {/* <p className="font-semibold text-lg -mt-2 text-white">Pin</p> */}
           </div>
         </div>
         <div
