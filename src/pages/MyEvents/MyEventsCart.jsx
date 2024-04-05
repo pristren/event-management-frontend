@@ -4,6 +4,20 @@ import { Link, useNavigate } from "react-router-dom";
 
 const MyEventsCart = ({ event, handleDelete }) => {
   const navigate = useNavigate();
+  let eventTimeStart;
+
+  if (event?.event_time?.time_start?.length < 6) {
+    eventTimeStart = event?.event_time?.time_start;
+  } else {
+    eventTimeStart = moment(event?.event_time?.time_start).format("hh:mm a");
+  }
+
+  let eventEndTime;
+  if (event?.event_time?.time_end?.length < 6) {
+    eventEndTime = event?.event_time?.time_end;
+  } else {
+    eventEndTime = moment(event?.event_time?.time_end).format("hh:mm a");
+  }
   return (
     <div>
       <div className="rounded-xl border border-[#D3D3D3] shadow-primary overflow-hidden">
@@ -36,9 +50,9 @@ const MyEventsCart = ({ event, handleDelete }) => {
               | 
               {moment(event?.event_date).format("MMMM D, YYYY")},{" "} */}
               {moment(event?.event_date?.date_start).format("MMMM D, YYYY")},{" "}
-              {moment(event?.event_time?.time_start).format("hh:mm a")} -{" "}
+              {eventTimeStart}
               {moment(event?.event_date?.date_end).format("MMMM D, YYYY")},{" "}
-              {moment(event?.event_time?.time_end).format("hh:mm a")}
+              {eventEndTime}
             </p>
 
             <p className="text-sm font-medium text-[#333]">

@@ -100,12 +100,12 @@ const Login = () => {
     }
   };
 
-  const localUser = JSON.parse(localStorage.getItem("user"));
-  useEffect(() => {
-    if (localUser?.token) {
-      navigate("/");
-    }
-  }, []);
+  // const localUser = JSON.parse(localStorage.getItem("user"));
+  // useEffect(() => {
+  //   if (localUser?.token) {
+  //     navigate("/");
+  //   }
+  // }, []);
 
   return (
     <div className="max-w-7xl mx-auto">

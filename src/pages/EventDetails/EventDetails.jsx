@@ -7,20 +7,12 @@ import useAxios from "../../Hooks/useAxios";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import moment from "moment";
-// import { Carousel } from "react-responsive-carousel";
+import logo from "../../assets/logo-white-bg-removebg-preview.png";
 import { useSelector } from "react-redux";
 import { APIProvider, AdvancedMarker, Map } from "@vis.gl/react-google-maps";
 import AddImageModal from "./AddImageModal";
 import like from "../../assets/like.svg";
-import {
-  businessIcon,
-  lockIcon,
-  privateUserIcon,
-  profileUserIcon,
-  rightArrow,
-  settingIcon,
-  uploadIcons,
-} from "../../components/SVGIcons/Icons";
+
 import CreateEventModal from "../CreateEvent/CreateEventModal";
 import ShareModal from "./ShareModal";
 import { UserRound } from "lucide-react";
@@ -146,12 +138,23 @@ const EventDetails = () => {
     setOpenModal3(true);
   }
   const handleLike = async (id) => {
-    const res = await Axios.put(`/addLike/${id}`, {
-      alreadyLiked: user?._id,
-    });
-    const data = await res.data?.data;
-    setEvents(data);
+    // Check if the user has already liked the event
+    const alreadyLiked = events?.alreadyLiked?.includes(user?._id);
+
+    if (alreadyLiked) {
+      // If already liked, unlike the event
+      await Axios.put(`/removeLike/${id}`, { alreadyLiked: user?._id });
+    } else {
+      // If not already liked, like the event
+      await Axios.put(`/addLike/${id}`, { alreadyLiked: user?._id });
+    }
+
+    // After updating the like status, update the events data
+    const res = await Axios.get(`/event-details/${id}`);
+    const updatedEventData = res.data.data;
+    setEvents(updatedEventData);
   };
+
   return (
     <section className="flex">
       {openModal && (
@@ -187,25 +190,13 @@ const EventDetails = () => {
               <path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"></path>
             </svg>
           </span>
-          <h1 className="text-[black] font-bold text-2xl">Event details</h1>
+          <h1 className="text-[black] font-bold text-xl md:text-2xl">
+            Event details
+          </h1>
           <Profile />
         </div>
         {!loading ? (
           <div className="p-6">
-            {/* <Carousel
-              showArrows={false}
-              showThumbs={false}
-              autoPlay={true}
-              swipeable={true}
-              showStatus={false}
-            >
-              {events?.event_images?.map((img, i) => (
-                <div key={i} className="w-full h-[450px]">
-                  <img src={img?.image} alt="" className="" />
-                </div>
-              ))}
-            </Carousel> */}
-
             <Carousel
               opts={{
                 align: "start",
@@ -224,12 +215,12 @@ const EventDetails = () => {
                     className="md:basis-1/2 lg:basis-1/3 mx-auto h-max"
                   >
                     <div className="p-1">
-                      <Card className="shadow-none ">
+                      <Card className="shadow-none border-none">
                         <CardContent className="flex aspect-square items-center justify-center p-3">
                           <img
                             src={img?.image}
                             alt=""
-                            className=" h-max w-max "
+                            className=" h-full w-max object-contain "
                           />
                         </CardContent>
                       </Card>
@@ -242,8 +233,63 @@ const EventDetails = () => {
             </Carousel>
 
             <div>
-              <p className="my-3 text-sm text-gray-700">
+              <p className="my-3 text-sm text-gray-700 flex justify-between items-center">
                 {events?.like} Likes{" "}
+                <div className="flex justify-center items-center gap-3">
+                  {user && events?.anOtherParticipants && (
+                    <button
+                      className="bg-green-200 text-greeen-700 py-2 px-3 rounded-lg font-semibold flex items-center gap-2"
+                      onClick={handleOpenModal2}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-image"
+                      >
+                        <rect
+                          width="18"
+                          height="18"
+                          x="3"
+                          y="3"
+                          rx="2"
+                          ry="2"
+                        />
+                        <circle cx="9" cy="9" r="2" />
+                        <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+                      </svg>{" "}
+                      <span>Add</span>
+                    </button>
+                  )}
+                  {user &&
+                  events?.alreadyLiked?.find((v) => v === user?._id)?.length ? (
+                    <button
+                      className="cursor-pointer"
+                      onClick={() => handleLike(events?._id)}
+                    >
+                      <img src={like} />
+                    </button>
+                  ) : user &&
+                    events?.alreadyLiked?.find((v) => v !== user?._id) ? (
+                    <button onClick={() => handleLike(events?._id)}>
+                      <img src={like} />
+                    </button>
+                  ) : user && events?.alreadyLiked?.length === 0 ? (
+                    <button onClick={() => handleLike(events?._id)}>
+                      <img src={like} />
+                    </button>
+                  ) : (
+                    <button onClick={() => navigate("/login")}>
+                      <img src={like} />
+                    </button>
+                  )}
+                </div>
               </p>
               <div className="flex justify-between mt-2">
                 <h1 className="text-[24px] font-bold mb-1">
@@ -274,33 +320,7 @@ const EventDetails = () => {
                       <path d="M383.822 344.427c-16.045 0-31.024 5.326-41.721 15.979l-152.957-88.42c1.071-5.328 2.142-9.593 2.142-14.919 0-5.328-1.071-9.593-2.142-14.919l150.826-87.35c11.762 10.653 26.741 17.041 43.852 17.041 35.295 0 64.178-28.766 64.178-63.92C448 72.767 419.117 44 383.822 44c-35.297 0-64.179 28.767-64.179 63.92 0 5.327 1.065 9.593 2.142 14.919l-150.821 87.35c-11.767-10.654-26.741-17.041-43.856-17.041-35.296 0-63.108 28.766-63.108 63.92 0 35.153 28.877 63.92 64.178 63.92 17.115 0 32.089-6.389 43.856-17.042l151.891 88.421c-1.076 4.255-2.141 8.521-2.141 13.847 0 34.094 27.806 61.787 62.037 61.787 34.229 0 62.036-27.693 62.036-61.787.001-34.094-27.805-61.787-62.035-61.787z"></path>
                     </svg>
                   </span>
-                  {user &&
-                  events?.alreadyLiked?.find((v) => v === user?._id)?.length ? (
-                    <button className="cursor-default">
-                      <img src={like} />
-                    </button>
-                  ) : user &&
-                    events?.alreadyLiked?.find((v) => v !== user?._id) ? (
-                    <button onClick={() => handleLike(events?._id)}>
-                      <img src={like} />
-                    </button>
-                  ) : user && events?.alreadyLiked?.length === 0 ? (
-                    <button onClick={() => handleLike(events?._id)}>
-                      <img src={like} />
-                    </button>
-                  ) : (
-                    <button onClick={() => navigate("/login")}>
-                      <img src={like} />
-                    </button>
-                  )}
-                  {user && events?.anOtherParticipants && (
-                    <button
-                      className="bg-green-200 text-greeen-700 py-2 px-6 rounded-lg font-semibold"
-                      onClick={handleOpenModal2}
-                    >
-                      Add Images
-                    </button>
-                  )}
+
                   {/* {user && (
                     <button
                       className="border p-4"
@@ -334,7 +354,7 @@ const EventDetails = () => {
                   )}
                 </div>
               </div>
-              <p className="text-black font-semibold mb-1">
+              <p className="text-black font-semibold mb-1 mt-8">
                 #{events?.category}
               </p>
               <p className="text-[#828282] text-[14px] font-medium">
@@ -428,7 +448,7 @@ const EventDetails = () => {
                   </small>
                 </div>
               </div>
-              <div className="mt-4 bg-white p-4 rounded-xl shadow-primary">
+              <div className="mt-4 bg-white rounded-xl shadow-primary">
                 {defaultProps?.center.lat !== undefined &&
                   defaultProps?.center.lng !== undefined && (
                     <div
@@ -465,7 +485,7 @@ const EventDetails = () => {
                               <img
                                 width={50}
                                 height={50}
-                                src={mapIcon}
+                                src={logo}
                                 alt=""
                                 className="-rotate-45"
                               />

@@ -121,12 +121,12 @@ const SignUp = () => {
     }
   };
 
-  const localUser = JSON.parse(localStorage.getItem("user"));
-  useEffect(() => {
-    if (localUser?.token) {
-      navigate("/");
-    }
-  }, []);
+  // const localUser = JSON.parse(localStorage.getItem("user"));
+  // useEffect(() => {
+  //   if (localUser?.token) {
+  //     navigate("/");
+  //   }
+  // }, []);
 
   return (
     <>

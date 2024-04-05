@@ -8,6 +8,7 @@ import useAxios from "../../Hooks/useAxios";
 import { APIProvider, AdvancedMarker, Map } from "@vis.gl/react-google-maps";
 import moment from "moment";
 import mapIcon from "../../assets/map.png";
+import logo from "../../assets/logo-white-bg-removebg-preview.png";
 
 const Home = () => {
   const { Axios } = useAxios();
@@ -87,11 +88,11 @@ const Home = () => {
   const twoDaysLater = new Date();
   twoDaysLater.setDate(
     date.find((d) => d.name === "This Week") !== undefined
-      ? today.getDate() + 7
+      ? today.getDate() + 6
       : date.find((d) => d.name === "Tomorrow") !== undefined
-      ? today.getDate() + 2
-      : date.find((d) => d.name === "Today") !== undefined
       ? today.getDate() + 1
+      : date.find((d) => d.name === "Today") !== undefined
+      ? today.getDate()
       : today.getDate() + 30
   );
   // console.log(twoDaysLater);
@@ -267,9 +268,9 @@ const Home = () => {
                               >
                                 {/* <div className="bg-white p-2 rounded-lg rotate-45 shadow-blue-300 shadow-2xl text-center"> */}
                                 <img
-                                  width={50}
-                                  height={50}
-                                  src={mapIcon}
+                                  width={70}
+                                  height={70}
+                                  src={logo}
                                   alt=""
                                   // className="-rotate-45"
                                 />

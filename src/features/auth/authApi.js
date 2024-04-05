@@ -29,7 +29,7 @@ export const authApi = apiSlice.injectEndpoints({
             "authUser",
             JSON.stringify({
               accessToken: result.data.data.accessToken,
-              user: result.data.data.user,
+              // user: result.data.data.user,
             })
           );
           dispatch(
@@ -57,7 +57,7 @@ export const authApi = apiSlice.injectEndpoints({
             "authUser",
             JSON.stringify({
               accessToken: result.data.data.accessToken,
-              user: result.data.data.user,
+              // user: result.data.data.user,
             })
           );
           dispatch(

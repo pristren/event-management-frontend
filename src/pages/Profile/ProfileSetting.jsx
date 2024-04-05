@@ -26,6 +26,7 @@ const ProfileSetting = () => {
   const [selectedBtn, setSelectedBtn] = useState("");
   const [upload, setUpload] = useState(false);
   const state = useSelector((state) => state.auth);
+  console.log(state);
   const [inputData, setInputData] = useState({});
   // const [verifyPin, setVerifyPin] = useState({
   //   one: "",
@@ -71,23 +72,6 @@ const ProfileSetting = () => {
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(false);
-  // const handleUploadFileChange = async (event) => {
-  //   // Handle the selected file(s) here
-  //   setLoading(true);
-  //   const formData = new FormData();
-  //   formData.append("image", event.target.files[0]);
-  //   // const file = event.target.files[0];
-
-  //   const response = await axios.post(
-  //     `https://api.imgbb.com/1/upload?key=${API_KEY}`,
-  //     formData
-  //   );
-
-  //   setUploadImages([...uploadImages, response.data.data.url]);
-  //   // const file = event.target.files[0];
-  //   setLoading(false);
-  //   // setSelectedFile([...selectedFile, file]);
-  // };
 
   const handleInputChange = (event) => {
     // event.persist();
@@ -118,7 +102,7 @@ const ProfileSetting = () => {
           "authUser",
           JSON.stringify({
             accessToken: state.accessToken,
-            user: res.data,
+            // user: res.data,
           })
         );
         dispatch(
@@ -307,7 +291,7 @@ const ProfileSetting = () => {
                 <button
                   onClick={(e) => setSelectedBtn("Public")}
                   className={`flex gap-3 py-2 min-w-[14rem] px-3 items-center justify-center rounded-3xl text-lg text-slate-950 shadow-md text-center font-semibold ${
-                    selectedBtn === "Business"
+                    selectedBtn === "Public"
                       ? "bg-[black] text-white"
                       : "bg-gray-300 text-black"
                   }`}
