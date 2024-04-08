@@ -147,13 +147,13 @@ l71 -111 87 134 c47 73 112 174 144 223 119 186 361 560 554 859 110 170 214
         >
           <button
             onClick={(e) => {
-              user ? setSelectedBtn("Contract") : navigate("/login");
+              user ? setSelectedBtn("Invited") : navigate("/login");
             }}
             className={`w-full h-[99%] py-2 md:py-3 px-4 text-sm md:text-base md:px-8 rounded ${
-              selectedBtn === "Contract" && "bg-[black] text-white"
+              selectedBtn === "Invited" && "bg-[black] text-white"
             } text-[black]`}
           >
-            Contract
+            Invited
           </button>
           <button
             onClick={(e) => setSelectedBtn("Public")}

@@ -163,7 +163,8 @@ const dateCategory = [
 
 const Filter = ({ selected2, setSelected2 }) => {
   const [fieldError, setFieldError] = useState(false);
-
+  const state = useSelector((state) => state.auth);
+  const { user } = state || {};
   const filterBtn = (
     <div className="block truncate text-gray-400">
       <button
@@ -289,7 +290,11 @@ const Filter = ({ selected2, setSelected2 }) => {
         </div>
       </div>
       {/* calendar */}
-      <div className="absolute top-[120px] lg:top-[200px] left-2 lg:left-72 rounded-2xl flex  ">
+      <div
+        className={`absolute top-[120px] lg:top-[200px] left-2 ${
+          user ? "lg:left-72" : "lg:left-5"
+        } rounded-2xl flex`}
+      >
         <Listbox value={dateSelect} onChange={setDateSelect} multiple>
           <div className="relative mt-1">
             <Listbox.Button

@@ -1,7 +1,6 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment } from "react";
 // import useAxios from "../Hooks/useAxios";
 import { useDispatch, useSelector } from "react-redux";
-import { profileUserIcon } from "./SVGIcons/Icons";
 import { Menu, Transition } from "@headlessui/react";
 import { userLoggedOut } from "../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +9,7 @@ import { UserRound } from "lucide-react";
 
 const Profile = ({ profile_images }) => {
   const state = useSelector((state) => state.auth);
-
+  
   const { user } = state || {};
   // console.log(user);
   const dispatch = useDispatch();
@@ -64,27 +63,10 @@ const Profile = ({ profile_images }) => {
         ) : (
           <div className="flex bg-[black] justify-center rounded-full w-10 h-10  items-center">
             {/* <span className="text-3xl ">{profileUserIcon}</span> */}
-            <UserRound />
+            <UserRound className="text-white"/>
           </div>
         )}
       </div>
-      {/* {user?.profile_images?.length ? (
-        <Menu>
-          <Menu.Button
-            className={
-              "bg-[black] text-white rounded-full w-10 h-10 flex justify-center items-center"
-            }
-          >
-            <img
-              src={user?.profile_images[0]}
-              className="w-full h-full rounded-full"
-              alt=""
-            />
-          </Menu.Button>
-        </Menu>
-      ) : (
-        <span className="text-6xl">{profileUserIcon}</span>
-      )} */}
     </div>
   );
 };
