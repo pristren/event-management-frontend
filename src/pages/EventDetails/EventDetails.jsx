@@ -15,7 +15,7 @@ import like from "../../assets/like.svg";
 
 import CreateEventModal from "../CreateEvent/CreateEventModal";
 import ShareModal from "./ShareModal";
-import { UserRound } from "lucide-react";
+import { ThumbsUp, UserRound } from "lucide-react";
 import mapIcon from "../../assets/map.png";
 import {
   Carousel,
@@ -34,6 +34,7 @@ const EventDetails = () => {
 
   const { Axios } = useAxios();
   const [openModal, setOpenModal] = useState(false);
+  const [like, setLike] = useState(false);
   const [events, setEvents] = useState({});
   const [userLocation, setUserLocation] = useState({});
   const navigate = useNavigate();
@@ -92,8 +93,20 @@ const EventDetails = () => {
   //   }
   // }, []);
   const [popover, setPopOver] = useState(false);
+
   const handleJoin = async (id) => {
     await Axios.put(`/join/${id}`, { email: user?.email }).then((res) => {
+      if (res.status === 200) {
+        Axios.get(`/event-details/${id}`)
+          .then((res) => setEvents(res.data.data))
+          .catch((err) => console.log(err));
+      }
+    });
+  };
+
+  const handleLeave = async (id) => {
+    await Axios.put(`/unjoin/${id}`, { email: user?.email }).then((res) => {
+      console.log(res);
       if (res.status === 200) {
         Axios.get(`/event-details/${id}`)
           .then((res) => setEvents(res.data.data))
@@ -138,6 +151,8 @@ const EventDetails = () => {
     setOpenModal3(true);
   }
   const handleLike = async (id) => {
+    setLike(!like);
+
     // Check if the user has already liked the event
     const alreadyLiked = events?.alreadyLiked?.includes(user?._id);
 
@@ -273,20 +288,36 @@ const EventDetails = () => {
                       className="cursor-pointer"
                       onClick={() => handleLike(events?._id)}
                     >
-                      <img src={like} />
+                      <ThumbsUp
+                        className={`w-7 h-7 rounded-md ${
+                          !like ? "bg-blue-500 p-[3px]  text-white" : ""
+                        }`}
+                      />
                     </button>
                   ) : user &&
                     events?.alreadyLiked?.find((v) => v !== user?._id) ? (
                     <button onClick={() => handleLike(events?._id)}>
-                      <img src={like} />
+                      <ThumbsUp
+                        className={`rounded-md w-7 h-7 ${
+                          !like ? "bg-blue-500 p-[3px]  text-white" : ""
+                        }`}
+                      />
                     </button>
                   ) : user && events?.alreadyLiked?.length === 0 ? (
                     <button onClick={() => handleLike(events?._id)}>
-                      <img src={like} />
+                      <ThumbsUp
+                        className={`rounded-md w-7 h-7 ${
+                          !like ? "bg-blue-500 p-[3px]  text-white" : ""
+                        }`}
+                      />
                     </button>
                   ) : (
                     <button onClick={() => navigate("/login")}>
-                      <img src={like} />
+                      <ThumbsUp
+                        className={`rounded-md w-7 h-7 ${
+                          !like ? "bg-blue-500 p-[3px]  text-white" : ""
+                        }`}
+                      />
                     </button>
                   )}
                 </div>
@@ -321,15 +352,34 @@ const EventDetails = () => {
                     </svg>
                   </span>
 
-                  {/* {user && (
-                    <button
-                      className="border p-4"
-                      onClick={() => handleLike(events?._id)}
-                    >
-                      Like
+                  <div className={`${user &&
+                    events?.joinedPeople?.find((v) => v === user?.email) ? "hidden" : "flex"}`}>
+                  {user &&
+                  events?.joinRejected?.find((v) => v === user?.email)
+                    ?.length ? (
+                    <button className="bg-[#E0F5FD] text-[black] py-2 px-6 rounded-lg font-semibold">
+                      Rejected
                     </button>
-                  )} */}
+                  ) : user &&
+                    events?.joinRejected?.find((v) => v !== user?.email) ? (
+                    <button
+                      onClick={() => handleLeave(events?._id)}
+                      className="bg-[#E0F5FD] text-[black] py-2 px-6 rounded-lg font-semibold"
+                    >
+                      Reject
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => navigate("/login")}
+                      className="bg-[#E0F5FD] text-[black] py-2 px-6 rounded-lg font-semibold"
+                    >
+                      Reject
+                    </button>
+                  )}
+                  </div>
 
+                  <div className={`${user &&
+                    events?.joinRejected?.find((v) => v === user?.email) ? "hidden" : "flex"}`}>
                   {user &&
                   events?.joinedPeople?.find((v) => v === user?.email)
                     ?.length ? (
@@ -352,6 +402,7 @@ const EventDetails = () => {
                       Join
                     </button>
                   )}
+                  </div>
                 </div>
               </div>
               <p className="text-black font-semibold mb-1 mt-8">

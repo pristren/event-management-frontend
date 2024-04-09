@@ -1133,7 +1133,7 @@ const CreateEvent = () => {
                   timeCaption="Time"
                   dateFormat="h:mm aa"
                   className="w-full py-2 px-4 outline-none border-none text-[15px] text-[black] bg-white font-medium rounded-full placeholder:text-[#6c757d] placeholder:font-medium"
-                  placeholderText="Time start"
+                  placeholderText="Time End"
                 />
               </div>
             </div>

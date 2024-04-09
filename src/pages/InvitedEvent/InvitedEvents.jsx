@@ -14,24 +14,41 @@ const InvitedEvents = () => {
   const { user } = useSelector((state) => state.auth);
   // console.log(user);
 
-  const [invitedEvent, setInvitedEvent] = useState([]);
+  const [invitedEvents, setInvitedEvents] = useState([]);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     setLoading(true);
-    const allEvents = async () => {
-      const res = await Axios.get("/all-events");
-      const data = await res.data;
-      setInvitedEvent(
-        data?.data?.filter(
-          (event) =>
-            event?.joinedPeople?.find((v) => v === user?.email) &&
-            event?.userId !== user._id
-        )
-      );
-      setLoading(false);
-    };
-    allEvents();
-  }, []);
+    if (user?.phone) {
+      Axios.get(`/invited-event/${user?.phone}`)
+        .then((res) => {
+          setInvitedEvents(res.data?.data, "invited events");
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  }, [user?.phone]);
+  // useEffect(() => {
+  //   setLoading(true);
+  //   const allEvents = async () => {
+  //     const res = await Axios.get("/all-events");
+  //     const data = await res.data;
+  //     console.log(data?.data);
+  //     setInvitedEvent(
+  //       data?.data?.filter(
+  //         (event) =>
+  //           event?.joinedPeople?.find((v) => v === user?.email) &&
+  //           event?.userId !== user._id
+  //       )
+  //     );
+  //     setLoading(false);
+  //   };
+  //   allEvents();
+  // }, []);
 
   return (
     <section className="flex">
@@ -59,13 +76,13 @@ const InvitedEvents = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 px-5">
           {!loading ? (
-            invitedEvent &&
-            invitedEvent.map((event, i) => {
+            invitedEvents &&
+            invitedEvents.map((event, i) => {
               return (
                 <InvitedEventCard
                   event={event}
                   key={i}
-                  setInvitedEvent={setInvitedEvent}
+                  setInvitedEvent={setInvitedEvents}
                 />
               );
             })
