@@ -70,7 +70,7 @@ const HomeNavbar = ({
   };
 
   return (
-    <div className="bg-[black] py-8 px-4">
+    <div className="bg-[black] py-4 px-4">
       <div className="flex items-center justify-between">
         <div>
           <span

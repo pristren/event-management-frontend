@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import useAxios from "@/Hooks/useAxios";
 
 const InvitedEventCard = ({ event, setInvitedEvent }) => {
-  console.log(event);
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
   const { Axios } = useAxios();
@@ -14,39 +13,33 @@ const InvitedEventCard = ({ event, setInvitedEvent }) => {
   const handleJoin = async (id) => {
     await Axios.put(`/join/${id}`, { email: user?.email }).then((res) => {
       if (res.status === 200) {
-        const allEvents = async () => {
-          const res = await Axios.get("/all-events");
-          const data = await res.data;
-          setInvitedEvent(
-            data?.data?.filter(
-              (event) =>
-                event?.joinedPeople?.find((v) => v === user?.email) &&
-                event?.userId !== user._id
-            )
-          );
-        };
-        allEvents();
+        Axios.get(`/invited-event/${user?.phone}`)
+          .then((res) => {
+            setInvitedEvent(res.data?.data);
+          })
+          .catch((err) => {})
+          .finally(() => {
+            setLoading(false);
+          });
       }
     });
   };
 
   const handleUnJoin = async (id) => {
-    await Axios.put(`/unjoin/${id}`, { email: user?.email }).then((res) => {
-      if (res.status === 200) {
-        const allEvents = async () => {
-          const res = await Axios.get("/all-events");
-          const data = await res.data;
-          setInvitedEvent(
-            data?.data?.filter(
-              (event) =>
-                event?.joinedPeople?.find((v) => v === user?.email) &&
-                event?.userId !== user._id
-            )
-          );
-        };
-        allEvents();
+    await Axios.put(`/invited-unjoin/${id}`, { email: user?.email }).then(
+      (res) => {
+        if (res.status === 200) {
+          Axios.get(`/invited-event/${user?.phone}`)
+            .then((res) => {
+              setInvitedEvent(res.data?.data);
+            })
+            .catch((err) => {})
+            .finally(() => {
+              setLoading(false);
+            });
+        }
       }
-    });
+    );
   };
 
   return (
@@ -69,14 +62,17 @@ const InvitedEventCard = ({ event, setInvitedEvent }) => {
           </h2>
           <p className="text-gray-500 mb-2">
             {moment(event?.event_date?.date_start).format("MMMM D, YYYY")},{" "}
-            {moment(event?.event_time?.time_start).format("hh:mm a")} -{" "}
+            {event?.event_time?.time_start?.length > 6
+              ? moment(event?.event_time?.time_start).format("HH:mm")
+              : event?.event_time?.time_start}{" "}
             {moment(event?.event_date?.date_end).format("MMMM D, YYYY")},{" "}
-            {moment(event?.event_time?.time_end).format("hh:mm a")}
+            {event?.event_time?.time_end?.length > 6
+              ? moment(event?.event_time?.time_end).format("HH:mm")
+              : event?.event_time?.time_end}
           </p>
 
           <p className="text-sm font-medium text-[#333]">
             Joined People: {event.joinedPeople?.length}
-            {console.log(event.joinRejected)}
           </p>
 
           <div className="flex gap-3">
