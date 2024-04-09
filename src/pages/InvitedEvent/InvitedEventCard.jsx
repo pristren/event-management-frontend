@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import useAxios from "@/Hooks/useAxios";
 
 const InvitedEventCard = ({ event, setInvitedEvent }) => {
+  console.log(event);
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
   const { Axios } = useAxios();
