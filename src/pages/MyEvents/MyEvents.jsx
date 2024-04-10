@@ -6,6 +6,8 @@ import MyEventsCart from "./MyEventsCart";
 import useAxios from "../../Hooks/useAxios";
 import { useSelector } from "react-redux";
 import { Input } from "@/components/ui/input";
+import OthersCategoryModal from "./OthersCategoryModal";
+import Loader from "@/components/Loader/Loader";
 
 const MyEvents = () => {
   const { ownEvent, setMyEvent, isLoading } = useMyEvent();
@@ -21,6 +23,26 @@ const MyEvents = () => {
   };
   const [category, setCategory] = useState("");
   const [input, setInput] = useState("");
+
+  const [openModal3, setOpenModal3] = useState(false);
+
+  const handleSelectChange = (e) => {
+    setCategory(e.target.value);
+    if (e.target.value === "others") {
+      setOpenModal3(true);
+    }
+  };
+
+  const otherCategory = (e) => {
+    setCategory(e.target.value);
+  };
+
+  function handleCloseModal3() {
+    setOpenModal3(false);
+  }
+  function handleOpenModal3() {
+    setOpenModal3(true);
+  }
 
   return (
     <section className="flex">
@@ -57,23 +79,41 @@ const MyEvents = () => {
           </div>
           <div>
             <h3 className="mb-2 text-gray-500">Filter By Category</h3>
-            <select
-              name="category"
-              id="category"
-              className="outline-none p-2   border"
-              onChange={(e) => setCategory(e.target.value)}
-              value={category}
-            >
-              <option value="">All Categories</option>
-              <option value="Sports">Sports</option>
-              <option value="BirthDay">BirthDay</option>
-              <option value="Study">Study</option>
-            </select>
+            <div className="relative">
+              <select
+                name="category"
+                id="category"
+                className="outline-none p-2 border cursor-pointer"
+                onChange={handleSelectChange}
+                value={category}
+              >
+                <option value="">All Categories</option>
+                <option value="Game">Game</option>
+                <option value="Tournament">Tournament</option>
+                <option value="Free Play">Free Play</option>
+                <option value="3vs3">3vs3</option>
+                <option value="others">Others</option>
+                {/* <option value="others" onClick={handleOpenModal3}>
+                  Others
+                </option> */}
+              </select>
+              {/* {openModal3 && (
+                <OthersCategoryModal
+                  openModal={openModal3}
+                  handleCloseModal={handleCloseModal3}
+                  otherCategory={otherCategory}
+                />
+              )} */}
+            </div>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-5">
-          {isLoading === true && <p className="px-4 text-black">Loading...</p>}
+          {isLoading === true && (
+            <div className="min-h-full">
+              <Loader></Loader>
+            </div>
+          )}
           {ownEvent?.ownEvents?.length
             ? ownEvent?.ownEvents
                 ?.filter((event) =>

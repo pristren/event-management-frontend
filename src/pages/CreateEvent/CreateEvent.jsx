@@ -670,6 +670,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { isSameDay } from "date-fns";
+
 import { Button } from "@/components/ui/button";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
@@ -704,6 +706,7 @@ const CreateEvent = () => {
     longitude: "",
   });
   const [eventDate, setEventDate] = useState(false);
+
   // const [error, setError] = useState(false);
   const [createSuccess, setCreateSuccess] = useState(false);
   const [startTime, setStartTime] = useState(null);
@@ -991,14 +994,15 @@ const CreateEvent = () => {
                 onChange={handleInputChange}
                 value={inputData?.category}
               >
-                <option value="">Chose a category</option>
+                <option value="">Choose a category</option>
                 <option value="Game">Game</option>
                 <option value="Tournament">Tournament</option>
                 <option value="Free Play">Free Play</option>
                 <option value="3vs3">3vs3</option>
+                <option value="others">Others</option>
               </select>
             </div>
-            <div className="flex gap-5 mt-5">
+            <div className="flex w-full gap-5 mt-5">
               {/* <CustomDatePicker
                 date={startDate}
                 setDate={setStartDate}
@@ -1009,7 +1013,7 @@ const CreateEvent = () => {
                   <Button
                     variant={"outline"}
                     className={cn(
-                      "w-[280px] justify-start text-left font-normal",
+                      "w-1/2 justify-start text-left font-normal",
                       !startDate
                         ? "text-muted-foreground bg-white hover:bg-gray-50 border active:bg-gray-100 focus-visible:bg-gray-100 focus:bg-white"
                         : "bg-white hover:bg-gray-50 border active:bg-gray-100 focus-visible:bg-gray-100 focus:bg-white"
@@ -1052,7 +1056,7 @@ const CreateEvent = () => {
                   <Button
                     variant={"outline"}
                     className={cn(
-                      "w-[280px] justify-start text-left font-normal",
+                      "w-1/2 justify-start text-left font-normal",
                       !endDate
                         ? "text-muted-foreground bg-white hover:bg-gray-50 border active:bg-gray-100 focus-visible:bg-gray-100 focus:bg-white"
                         : "bg-white hover:bg-gray-50 border active:bg-gray-100 focus-visible:bg-gray-100 focus:bg-white"
@@ -1115,13 +1119,13 @@ const CreateEvent = () => {
                   selected={endTime}
                   value={endTime}
                   onChange={(date) => {
-                    if (startTime) {
-                      if (date > startTime) {
+                    if (isSameDay(startDate, endDate)) {
+                      if (!startTime) {
+                        toast.error("Select start time first!");
+                      } else if (date >= startTime) {
                         setEndTime(date);
                       } else {
-                        toast.error(
-                          "end time must be greater than start time!"
-                        );
+                        toast.error("End time must be later than start time!");
                       }
                     } else {
                       setEndTime(date);
