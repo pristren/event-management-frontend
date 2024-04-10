@@ -670,7 +670,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { isSameDay } from 'date-fns';
+import { isSameDay } from "date-fns";
 
 import { Button } from "@/components/ui/button";
 import { CalendarIcon } from "lucide-react";
@@ -706,7 +706,7 @@ const CreateEvent = () => {
     longitude: "",
   });
   const [eventDate, setEventDate] = useState(false);
-  
+
   // const [error, setError] = useState(false);
   const [createSuccess, setCreateSuccess] = useState(false);
   const [startTime, setStartTime] = useState(null);
@@ -994,14 +994,15 @@ const CreateEvent = () => {
                 onChange={handleInputChange}
                 value={inputData?.category}
               >
-                <option value="">Chose a category</option>
+                <option value="">Choose a category</option>
                 <option value="Game">Game</option>
                 <option value="Tournament">Tournament</option>
                 <option value="Free Play">Free Play</option>
                 <option value="3vs3">3vs3</option>
+                <option value="others">Others</option>
               </select>
             </div>
-            <div className="flex gap-5 mt-5">
+            <div className="flex w-full gap-5 mt-5">
               {/* <CustomDatePicker
                 date={startDate}
                 setDate={setStartDate}
@@ -1012,7 +1013,7 @@ const CreateEvent = () => {
                   <Button
                     variant={"outline"}
                     className={cn(
-                      "w-[280px] justify-start text-left font-normal",
+                      "w-1/2 justify-start text-left font-normal",
                       !startDate
                         ? "text-muted-foreground bg-white hover:bg-gray-50 border active:bg-gray-100 focus-visible:bg-gray-100 focus:bg-white"
                         : "bg-white hover:bg-gray-50 border active:bg-gray-100 focus-visible:bg-gray-100 focus:bg-white"
@@ -1055,7 +1056,7 @@ const CreateEvent = () => {
                   <Button
                     variant={"outline"}
                     className={cn(
-                      "w-[280px] justify-start text-left font-normal",
+                      "w-1/2 justify-start text-left font-normal",
                       !endDate
                         ? "text-muted-foreground bg-white hover:bg-gray-50 border active:bg-gray-100 focus-visible:bg-gray-100 focus:bg-white"
                         : "bg-white hover:bg-gray-50 border active:bg-gray-100 focus-visible:bg-gray-100 focus:bg-white"
@@ -1114,32 +1115,30 @@ const CreateEvent = () => {
               </div>
 
               <div className="w-full flex gap-3 items-center justify-between bg-white rounded-full shadow-primary">
-              <DatePicker
-  selected={endTime}
-  value={endTime}
-  onChange={(date) => {
-    // Check if start date and end date are the same
-    if (isSameDay(startDate, endDate)) {
-      // If start date and end date are the same, enforce time constraint
-      if (date >= startTime) {
-        setEndTime(date);
-      } else {
-        toast.error("End time must be later than start time!");
-      }
-    } else {
-      // If start date and end date are different, allow selecting any time range
-      setEndTime(date);
-    }
-  }}
-  showTimeSelect
-  showTimeSelectOnly
-  timeIntervals={15}
-  timeCaption="Time"
-  dateFormat="h:mm aa"
-  className="w-full py-2 px-4 outline-none border-none text-[15px] text-[black] bg-white font-medium rounded-full placeholder:text-[#6c757d] placeholder:font-medium"
-  placeholderText="Time End"
-/>
-
+                <DatePicker
+                  selected={endTime}
+                  value={endTime}
+                  onChange={(date) => {
+                    if (isSameDay(startDate, endDate)) {
+                      if (!startTime) {
+                        toast.error("Select start time first!");
+                      } else if (date >= startTime) {
+                        setEndTime(date);
+                      } else {
+                        toast.error("End time must be later than start time!");
+                      }
+                    } else {
+                      setEndTime(date);
+                    }
+                  }}
+                  showTimeSelect
+                  showTimeSelectOnly
+                  timeIntervals={15}
+                  timeCaption="Time"
+                  dateFormat="h:mm aa"
+                  className="w-full py-2 px-4 outline-none border-none text-[15px] text-[black] bg-white font-medium rounded-full placeholder:text-[#6c757d] placeholder:font-medium"
+                  placeholderText="Time End"
+                />
               </div>
             </div>
 

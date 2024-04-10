@@ -7,10 +7,10 @@ import { useSelector } from "react-redux";
 import useAxios from "../../Hooks/useAxios";
 import { APIProvider, AdvancedMarker, Map } from "@vis.gl/react-google-maps";
 import moment from "moment";
-import mapIcon from "../../assets/map.png";
-import logo from "../../assets/logo-white-bg-removebg-preview.png";
+import mapIcon from "../../assets/logo-white-bg-removebg-preview.png";
+import Loader from "@/components/Loader/Loader";
 
-const Home = () => {
+const Home = ({loading}) => {
   const { Axios } = useAxios();
   const navigate = useNavigate();
   const [isExpand, setIsExpand] = useState(false);
@@ -64,19 +64,32 @@ const Home = () => {
   const [invitedEvent, setInvitedEvent] = useState([]);
 
   useEffect(() => {
-    const allEvents = async () => {
-      const res = await Axios.get("/all-events");
-      const data = await res.data;
-      setInvitedEvent(
-        data?.data?.filter(
-          (event) =>
-            event?.joinedPeople?.find((v) => v === user?.email) &&
-            event?.userId !== user._id
-        )
-      );
-    };
-    allEvents();
-  }, []);
+    if (user?.phone) {
+      Axios.get(`/invited-event/${user?.phone}`)
+        .then((res) => {
+          console.log(res.data.data);
+          setInvitedEvent(res.data?.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [user?.phone]);
+
+  // useEffect(() => {
+  //   const allEvents = async () => {
+  //     const res = await Axios.get("/all-events");
+  //     const data = await res.data;
+  //     setInvitedEvent(
+  //       data?.data?.filter(
+  //         (event) =>
+  //           event?.joinedPeople?.find((v) => v === user?.email) &&
+  //           event?.userId !== user._id
+  //       )
+  //     );
+  //   };
+  //   allEvents();
+  // }, []);
 
   const [selected2, setSelected2] = useState([]);
   const { date } = useSelector((state) => state.layout);
@@ -93,7 +106,7 @@ const Home = () => {
       ? today.getDate() + 1
       : date.find((d) => d.name === "Today") !== undefined
       ? today.getDate()
-      : today.getDate() + 30
+      : today.getDate() + 29
   );
   // console.log(twoDaysLater);
 
@@ -117,6 +130,11 @@ const Home = () => {
         moment(twoDaysLater).format("MMMM D, YYYY")
     );
   });
+  if(loading){
+    return <div className="min-h-screen">
+      <Loader></Loader>
+    </div>
+  }
 
   return (
     <div className="text-whitefont-semibold">
@@ -192,8 +210,8 @@ const Home = () => {
                                 >
                                   {/* <div className="bg-white p-2 rounded-lg rotate-45 shadow-blue-300 shadow-2xl text-center"> */}
                                   <img
-                                    width={50}
-                                    height={50}
+                                    width={70}
+                                    height={70}
                                     src={mapIcon}
                                     alt=""
                                     className=""
@@ -270,7 +288,7 @@ const Home = () => {
                                 <img
                                   width={70}
                                   height={70}
-                                  src={logo}
+                                  src={mapIcon}
                                   alt=""
                                   // className="-rotate-45"
                                 />
@@ -374,8 +392,8 @@ const Home = () => {
                                 >
                                   {/* <div className="bg-white p-2 rounded-lg rotate-45 shadow-blue-300 shadow-2xl text-center"> */}
                                   <img
-                                    width={50}
-                                    height={50}
+                                    width={70}
+                                    height={70}
                                     src={mapIcon}
                                     alt=""
                                     // className="-rotate-45"
@@ -449,8 +467,8 @@ const Home = () => {
                               >
                                 {/* <div className="bg-white p-2 rounded-lg rotate-45 shadow-blue-300 shadow-2xl text-center"> */}
                                 <img
-                                  width={50}
-                                  height={50}
+                                  width={70}
+                                  height={70}
                                   src={mapIcon}
                                   alt=""
                                   // className="-rotate-45"

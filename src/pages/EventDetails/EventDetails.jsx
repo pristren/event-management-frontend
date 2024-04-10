@@ -7,7 +7,6 @@ import useAxios from "../../Hooks/useAxios";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import moment from "moment";
-import logo from "../../assets/logo-white-bg-removebg-preview.png";
 import { useSelector } from "react-redux";
 import { APIProvider, AdvancedMarker, Map } from "@vis.gl/react-google-maps";
 import AddImageModal from "./AddImageModal";
@@ -16,7 +15,7 @@ import like from "../../assets/like.svg";
 import CreateEventModal from "../CreateEvent/CreateEventModal";
 import ShareModal from "./ShareModal";
 import { ThumbsUp, UserRound } from "lucide-react";
-import mapIcon from "../../assets/map.png";
+import mapIcon from "../../assets/logo-white-bg-removebg-preview.png";
 import {
   Carousel,
   CarouselContent,
@@ -26,6 +25,7 @@ import {
 } from "@/components/ui/carousel";
 import { Card, CardContent } from "@/components/ui/card";
 import Autoplay from "embla-carousel-autoplay";
+import Loader from "@/components/Loader/Loader";
 
 const EventDetails = () => {
   const { user } = useSelector((state) => state?.auth);
@@ -531,13 +531,12 @@ const EventDetails = () => {
                             }}
                             onClick={() => setPopOver(!popover)}
                           >
-                            <div className="bg-white p-2 rounded-lg rotate-45 shadow-blue-300 shadow-2xl text-center">
+                            <div>
                               <img
-                                width={50}
-                                height={50}
-                                src={logo}
+                                width={80}
+                                height={80}
+                                src={mapIcon}
                                 alt=""
-                                className="-rotate-45"
                               />
                             </div>
                             {popover && (
@@ -574,7 +573,9 @@ const EventDetails = () => {
             </div>
           </div>
         ) : (
-          <p className="px-4">loading...</p>
+          <div className="min-h-full">
+        <Loader></Loader>
+      </div>
         )}
       </div>
     </section>
