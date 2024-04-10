@@ -670,6 +670,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { isSameDay } from 'date-fns';
+
 import { Button } from "@/components/ui/button";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
@@ -704,6 +706,7 @@ const CreateEvent = () => {
     longitude: "",
   });
   const [eventDate, setEventDate] = useState(false);
+  
   // const [error, setError] = useState(false);
   const [createSuccess, setCreateSuccess] = useState(false);
   const [startTime, setStartTime] = useState(null);
@@ -1111,30 +1114,32 @@ const CreateEvent = () => {
               </div>
 
               <div className="w-full flex gap-3 items-center justify-between bg-white rounded-full shadow-primary">
-                <DatePicker
-                  selected={endTime}
-                  value={endTime}
-                  onChange={(date) => {
-                    if (startTime) {
-                      if (date > startTime) {
-                        setEndTime(date);
-                      } else {
-                        toast.error(
-                          "end time must be greater than start time!"
-                        );
-                      }
-                    } else {
-                      setEndTime(date);
-                    }
-                  }}
-                  showTimeSelect
-                  showTimeSelectOnly
-                  timeIntervals={15}
-                  timeCaption="Time"
-                  dateFormat="h:mm aa"
-                  className="w-full py-2 px-4 outline-none border-none text-[15px] text-[black] bg-white font-medium rounded-full placeholder:text-[#6c757d] placeholder:font-medium"
-                  placeholderText="Time End"
-                />
+              <DatePicker
+  selected={endTime}
+  value={endTime}
+  onChange={(date) => {
+    // Check if start date and end date are the same
+    if (isSameDay(startDate, endDate)) {
+      // If start date and end date are the same, enforce time constraint
+      if (date >= startTime) {
+        setEndTime(date);
+      } else {
+        toast.error("End time must be later than start time!");
+      }
+    } else {
+      // If start date and end date are different, allow selecting any time range
+      setEndTime(date);
+    }
+  }}
+  showTimeSelect
+  showTimeSelectOnly
+  timeIntervals={15}
+  timeCaption="Time"
+  dateFormat="h:mm aa"
+  className="w-full py-2 px-4 outline-none border-none text-[15px] text-[black] bg-white font-medium rounded-full placeholder:text-[#6c757d] placeholder:font-medium"
+  placeholderText="Time End"
+/>
+
               </div>
             </div>
 
