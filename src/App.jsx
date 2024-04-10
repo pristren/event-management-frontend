@@ -11,13 +11,81 @@ import Login from "./pages/Authentication/Login/Login";
 import SignUp from "./pages/Authentication/SignUp/SignUp";
 import Layout from "./pages/Layouts/Layout";
 import MyProvider from "./Provider/Provider";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AuthProtected from "./routes/AuthProtected";
 import ProfilePage from "./pages/Profile/ProfilePage";
 import UpdateEvent from "./pages/UpdateEvent/UpdateEvent";
+import { useDispatch, useSelector } from "react-redux";
+import useAxios from "./Hooks/useAxios";
+import { userLoggedIn, userLoggedOut } from "./features/auth/authSlice";
 
 function App() {
   const [isExpand, setIsExpand] = useState(false);
+  const { accessToken } = useSelector((state) => state.auth);
+
+  const { Axios } = useAxios();
+
+  // const getUserInfo = () => {
+  //   Axios.get(`/user/get-user`, {
+  //     headers: {
+  //       Authorization: `Bearer ${accessToken}`,
+  //     },
+  //   })
+  //     .then((res) => {
+  //       console.log(res.data);
+  //     })
+  //     .catch(() => {
+  //       console.log("error");
+  //       // logOut();
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   if (accessToken) {
+  //     console.log("accessToken", accessToken);
+  //     // getUserInfo();
+  //     const getUserInfo = async () => {
+  //       try {
+  //         const res = await Axios.get(`/user/user`, {
+  //           headers: {
+  //             Authorization: `Bearer ${accessToken}`,
+  //           },
+  //         });
+  //         console.log(res.data);
+  //       } catch (error) {
+  //         console.log("error");
+  //         // logOut();
+  //       }
+  //     };
+  //     getUserInfo();
+  //   }
+  // }, [accessToken]);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const getUserInfo = async () => {
+      try {
+        const res = await Axios.get(`/user/get-user`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+        dispatch(
+          userLoggedIn({
+            user: res.data?.data.user,
+            accessToken: res.data?.data?.accessToken,
+          })
+        );
+      } catch (error) {
+        localStorage.removeItem("authUser");
+        dispatch(userLoggedOut());
+        // logOut();
+      }
+    };
+    getUserInfo();
+  }, []);
 
   return (
     <MyProvider.Provider value={{ isExpand, setIsExpand }}>

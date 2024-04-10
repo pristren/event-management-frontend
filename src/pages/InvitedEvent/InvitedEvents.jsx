@@ -21,8 +21,7 @@ const InvitedEvents = () => {
     if (user?.phone) {
       Axios.get(`/invited-event/${user?.phone}`)
         .then((res) => {
-          setInvitedEvents(res.data?.data, "invited events");
-          console.log(res);
+          setInvitedEvents(res.data?.data);
         })
         .catch((err) => {
           console.log(err);

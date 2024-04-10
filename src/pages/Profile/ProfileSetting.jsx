@@ -39,9 +39,11 @@ const ProfileSetting = () => {
   // const { phone, setPhone, sendOtp } = useMyEvent();
 
   useEffect(() => {
-    setInputData(state?.user);
-    setSelectedBtn(state?.user?.account_type);
-  }, []);
+    if (state.user) {
+      setInputData(state?.user);
+      setSelectedBtn(state?.user?.account_type);
+    }
+  }, [state.user]);
 
   const fileInputRef = useRef(null);
 

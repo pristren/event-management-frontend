@@ -122,7 +122,11 @@ const EventDetails = () => {
   }
 
   function handleOpenModal2() {
-    setOpenImgModal(true);
+    if (user) {
+      setOpenImgModal(true);
+    } else {
+      navigate("/login");
+    }
   }
   const [firstUser, setFirstUser] = useState({});
   useEffect(() => {
@@ -282,8 +286,8 @@ const EventDetails = () => {
                       <span>Add</span>
                     </button>
                   )}
-                  {user &&
-                  events?.alreadyLiked?.find((v) => v === user?._id)?.length ? (
+                  {/* {user &&
+                  events?.alreadyLiked?.find((v) => v === user?._id) ? (
                     <button
                       className="cursor-pointer"
                       onClick={() => handleLike(events?._id)}
@@ -319,6 +323,36 @@ const EventDetails = () => {
                         }`}
                       />
                     </button>
+                  )} */}
+
+                  {user &&
+                  events?.alreadyLiked?.find((v) => v === user?._id) ? (
+                    <button
+                      className="cursor-pointer"
+                      onClick={() => handleLike(events?._id)}
+                    >
+                      <ThumbsUp
+                        className={`w-7 h-7 rounded-md text-blue-500 `}
+                      />
+                    </button>
+                  ) : user &&
+                    events?.alreadyLiked?.find((v) => v !== user?._id) ? (
+                    <button
+                      className="cursor-pointer"
+                      onClick={() => handleLike(events?._id)}
+                    >
+                      <ThumbsUp className={`w-7 h-7 rounded-md `} />
+                    </button>
+                  ) : user && events?.alreadyLiked?.length === 0 ? (
+                    <button onClick={() => handleLike(events?._id)}>
+                      <ThumbsUp className={`rounded-md w-7 h-7 `} />
+                    </button>
+                  ) : (
+                    !user && (
+                      <button onClick={() => navigate("/login")}>
+                        <ThumbsUp className={`rounded-md w-7 h-7 `} />
+                      </button>
+                    )
                   )}
                 </div>
               </p>
@@ -352,56 +386,29 @@ const EventDetails = () => {
                     </svg>
                   </span>
 
-                  <div className={`${user &&
-                    events?.joinedPeople?.find((v) => v === user?.email) ? "hidden" : "flex"}`}>
-                  {user &&
-                  events?.joinRejected?.find((v) => v === user?.email)
-                    ?.length ? (
-                    <button className="bg-[#E0F5FD] text-[black] py-2 px-6 rounded-lg font-semibold">
-                      Rejected
-                    </button>
-                  ) : user &&
-                    events?.joinRejected?.find((v) => v !== user?.email) ? (
-                    <button
-                      onClick={() => handleLeave(events?._id)}
-                      className="bg-[#E0F5FD] text-[black] py-2 px-6 rounded-lg font-semibold"
-                    >
-                      Reject
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => navigate("/login")}
-                      className="bg-[#E0F5FD] text-[black] py-2 px-6 rounded-lg font-semibold"
-                    >
-                      Reject
-                    </button>
-                  )}
-                  </div>
-
-                  <div className={`${user &&
-                    events?.joinRejected?.find((v) => v === user?.email) ? "hidden" : "flex"}`}>
-                  {user &&
-                  events?.joinedPeople?.find((v) => v === user?.email)
-                    ?.length ? (
-                    <button className="bg-[#E0F5FD] text-[black] py-2 px-6 rounded-lg font-semibold">
-                      Joined
-                    </button>
-                  ) : user &&
-                    events?.joinedPeople?.find((v) => v !== user?.email) ? (
-                    <button
-                      onClick={() => handleJoin(events?._id)}
-                      className="bg-[#E0F5FD] text-[black] py-2 px-6 rounded-lg font-semibold"
-                    >
-                      Join
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => navigate("/login")}
-                      className="bg-[#E0F5FD] text-[black] py-2 px-6 rounded-lg font-semibold"
-                    >
-                      Join
-                    </button>
-                  )}
+                  <div>
+                    {user &&
+                    events?.joinedPeople?.find((v) => v === user?.email)
+                      ?.length ? (
+                      <button className="bg-[#E0F5FD] text-[black] py-2 px-6 rounded-lg font-semibold">
+                        Joined
+                      </button>
+                    ) : user &&
+                      events?.joinedPeople?.find((v) => v !== user?.email) ? (
+                      <button
+                        onClick={() => handleJoin(events?._id)}
+                        className="bg-[#E0F5FD] text-[black] py-2 px-6 rounded-lg font-semibold"
+                      >
+                        Join
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => navigate("/login")}
+                        className="bg-[#E0F5FD] text-[black] py-2 px-6 rounded-lg font-semibold"
+                      >
+                        Join
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -410,21 +417,13 @@ const EventDetails = () => {
               </p>
               <p className="text-[#828282] text-[14px] font-medium">
                 {moment(events?.event_date?.date_start).format("MMMM D, YYYY")},{" "}
-                {moment(events?.event_time?.time_start).format("hh:mm a")}{" "}
-                {/* {moment(events?.event_time?.time_end).diff(
-                  moment(events?.event_time?.time_start),
-                  "hours"
-                ) == 0
-                  ? `${moment(events?.event_time?.time_end).diff(
-                      moment(events?.event_time?.time_start),
-                      "minutes"
-                    )} minutes `
-                  : `${moment(events?.event_time?.time_end).diff(
-                      moment(events?.event_time?.time_start),
-                      "hours"
-                    )} hours `} */}
+                {events?.event_time?.time_start?.length > 6
+                  ? moment(events?.event_time?.time_start).format("HH:mm")
+                  : events?.event_time?.time_start}{" "}
                 - {moment(events?.event_date?.date_end).format("MMMM D, YYYY")},{" "}
-                {moment(events?.event_time?.time_end).format("hh:mm a")}
+                {events?.event_time?.time_end?.length > 6
+                  ? moment(events?.event_time?.time_end).format("HH:mm")
+                  : events?.event_time?.time_end}
               </p>
             </div>
 
