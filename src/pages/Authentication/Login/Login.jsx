@@ -72,7 +72,7 @@ const Login = () => {
             toast.success("Login Successful");
             navigate("/");
           } else {
-            toast.error(`${res?.error?.data?.message}`);
+            toast.error(`Email and Password did not matched!`);
           }
         });
         // Axios.post("/user/login", newData)

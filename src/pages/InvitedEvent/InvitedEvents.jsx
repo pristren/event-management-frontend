@@ -5,6 +5,7 @@ import MyProvider from "../../Provider/Provider";
 import useMyEvent from "../../Hooks/useMyEvent";
 import useAxios from "../../Hooks/useAxios";
 import { useSelector } from "react-redux";
+import Loader from "@/components/Loader/Loader";
 
 const InvitedEvents = () => {
   const { isExpand, setIsExpand } = useContext(MyProvider);
@@ -81,12 +82,15 @@ const InvitedEvents = () => {
                 <InvitedEventCard
                   event={event}
                   key={i}
+                  setLoading={setLoading}
                   setInvitedEvent={setInvitedEvents}
                 />
               );
             })
           ) : (
-            <p className="px-4">Loading...</p>
+            <div className="min-h-full">
+        <Loader></Loader>
+      </div>
           )}
         </div>
       </div>

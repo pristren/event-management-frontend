@@ -22,49 +22,15 @@ import { userLoggedIn, userLoggedOut } from "./features/auth/authSlice";
 function App() {
   const [isExpand, setIsExpand] = useState(false);
   const { accessToken } = useSelector((state) => state.auth);
-
+  const [loading, setLoading] = useState(true);
   const { Axios } = useAxios();
 
-  // const getUserInfo = () => {
-  //   Axios.get(`/user/get-user`, {
-  //     headers: {
-  //       Authorization: `Bearer ${accessToken}`,
-  //     },
-  //   })
-  //     .then((res) => {
-  //       console.log(res.data);
-  //     })
-  //     .catch(() => {
-  //       console.log("error");
-  //       // logOut();
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   if (accessToken) {
-  //     console.log("accessToken", accessToken);
-  //     // getUserInfo();
-  //     const getUserInfo = async () => {
-  //       try {
-  //         const res = await Axios.get(`/user/user`, {
-  //           headers: {
-  //             Authorization: `Bearer ${accessToken}`,
-  //           },
-  //         });
-  //         console.log(res.data);
-  //       } catch (error) {
-  //         console.log("error");
-  //         // logOut();
-  //       }
-  //     };
-  //     getUserInfo();
-  //   }
-  // }, [accessToken]);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     const getUserInfo = async () => {
+      // setLoading(true)
       try {
         const res = await Axios.get(`/user/get-user`, {
           headers: {
@@ -78,10 +44,11 @@ function App() {
             accessToken: res.data?.data?.accessToken,
           })
         );
-      } catch (error) {
+      setLoading(false)
+    } catch (error) {
         localStorage.removeItem("authUser");
         dispatch(userLoggedOut());
-        // logOut();
+        setLoading(false)
       }
     };
     getUserInfo();
@@ -91,7 +58,7 @@ function App() {
     <MyProvider.Provider value={{ isExpand, setIsExpand }}>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
+          <Route index element={<Home loading={loading}/>} />
           <Route path="login" element={<Login />} />
           <Route path="sign-up" element={<SignUp />} />
           {/* <Route path="home-screen" element={<HomeScreen />} /> */}

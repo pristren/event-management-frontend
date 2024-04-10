@@ -19,6 +19,7 @@ import ImageUploader from "react-images-upload";
 import { toast } from "react-hot-toast";
 // import useMyEvent from "../../Hooks/useMyEvent";
 import { UserRound } from "lucide-react";
+import Loader from "@/components/Loader/Loader";
 
 const ProfileSetting = () => {
   const { Axios } = useAxios();
@@ -87,6 +88,7 @@ const ProfileSetting = () => {
     // console.log("number ", number);
     // console.log("verifyPin ", verifyPin);
     // function here.....
+    setLoading(true);
     const event_img = uploadImages?.filter(
       (obj, index, array) => array.findIndex((item) => item === obj) === index
     );
@@ -107,15 +109,18 @@ const ProfileSetting = () => {
             // user: res.data,
           })
         );
+
         dispatch(
           userLoggedIn({
             accessToken: state.accessToken,
             user: res.data,
           })
         );
+        setLoading(false);
         toast.success("profile update was successful.");
       })
       .catch((err) => {
+        setLoading(false);
         toast.error("error while updating the profile.");
       });
   };
@@ -180,182 +185,187 @@ const ProfileSetting = () => {
           <Profile profile_images={profile_images} />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <div className="bg-[#F2F6FF] rounded">
-            <div className="flex flex-col items-center justify-center py-6 px-12">
-              <div className="flex relative rounded-3xl text-lg min-w-[15rem] bg-white shadow-md text-center py-[0.125rem]">
-                <span className="bg-[black] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center absolute left-1 top-0.5 ">
-                  {settingIcon}
-                </span>
-                <span className="mx-auto text-lg">Profile</span>
-              </div>
-
-              <div className="mt-10 flex flex-col items-center mb-3">
-                <figure className="bg-[black] text-white  rounded-full  w-24 h-24 flex justify-center items-center">
-                  {uploadImages?.length ? (
-                    <img
-                      src={profile_images ? profile_images : uploadImages[0]}
-                      className="w-24 h-24 rounded-full"
-                    />
-                  ) : (
-                    // <span className="text-6xl">{profileUserIcon}</span>
-                    <UserRound className="w-16 h-16 " />
-                  )}
-                </figure>
-
-                <div className="text-center">
-                  <h2 className="text-2xl font-semibold">
-                    {state?.user?.firstName} {state?.user?.lastName}
-                  </h2>
-                  <p className="text-gray-500 text-base">
-                    {state?.user?.email}
-                  </p>
+        {loading ? (
+          <div className="min-h-full">
+            <Loader></Loader>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="bg-[#F2F6FF] rounded">
+              <div className="flex flex-col items-center justify-center py-6 px-12">
+                <div className="flex relative rounded-3xl text-lg min-w-[15rem] bg-white shadow-md text-center py-[0.125rem]">
+                  <span className="bg-[black] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center absolute left-1 top-0.5 ">
+                    {settingIcon}
+                  </span>
+                  <span className="mx-auto text-lg">Profile</span>
                 </div>
-              </div>
 
-              <form className="mt-7">
-                <div className="flex flex-col gap-6">
-                  <div className="flex items-center justify-between gap-10">
-                    <div>
-                      <input
-                        type="text"
-                        name="firstName"
-                        value={inputData?.firstName}
-                        onChange={handleInputChange}
-                        placeholder="First Name"
-                        className="py-1 px-4 text-base rounded-[5rem] shadow-md w-full"
+                <div className="mt-10 flex flex-col items-center mb-3">
+                  <figure className="bg-[black] text-white  rounded-full  w-24 h-24 flex justify-center items-center">
+                    {uploadImages?.length ? (
+                      <img
+                        src={profile_images ? profile_images : uploadImages[0]}
+                        className="w-24 h-24 rounded-full"
                       />
-                    </div>
-                    <div>
-                      <input
-                        type="text"
-                        name="lastName"
-                        value={inputData?.lastName}
-                        onChange={handleInputChange}
-                        placeholder="last name"
-                        className="py-1 px-4 text-base rounded-[5rem] shadow-md w-full"
-                      />
-                    </div>
-                  </div>
+                    ) : (
+                      // <span className="text-6xl">{profileUserIcon}</span>
+                      <UserRound className="w-16 h-16 " />
+                    )}
+                  </figure>
 
-                  <div>
-                    <input
-                      type="number"
-                      name="phone"
-                      value={inputData?.phone}
-                      onChange={handleInputChange}
-                      placeholder="Phone Number"
-                      className="py-1 px-4 text-base rounded-[5rem] shadow-md w-full"
-                    />
-                  </div>
-
-                  <div className="relative">
-                    <textarea
-                      type="text"
-                      name="short_bio"
-                      value={inputData?.short_bio}
-                      onChange={handleInputChange}
-                      placeholder="Short Bio"
-                      className="py-3 px-4 text-base rounded-3xl shadow-md w-full resize-none focus:outline-none h-40"
-                    ></textarea>
-                    <p className="absolute right-5 bottom-5 text-gray-400">
-                      150 letters
+                  <div className="text-center">
+                    <h2 className="text-2xl font-semibold">
+                      {state?.user?.firstName} {state?.user?.lastName}
+                    </h2>
+                    <p className="text-gray-500 text-base">
+                      {state?.user?.email}
                     </p>
                   </div>
+                </div>
+
+                <form className="mt-7">
+                  <div className="flex flex-col gap-6">
+                    <div className="flex items-center justify-between gap-10">
+                      <div>
+                        <input
+                          type="text"
+                          name="firstName"
+                          value={inputData?.firstName}
+                          onChange={handleInputChange}
+                          placeholder="First Name"
+                          className="py-1 px-4 text-base rounded-[5rem] shadow-md w-full"
+                        />
+                      </div>
+                      <div>
+                        <input
+                          type="text"
+                          name="lastName"
+                          value={inputData?.lastName}
+                          onChange={handleInputChange}
+                          placeholder="last name"
+                          className="py-1 px-4 text-base rounded-[5rem] shadow-md w-full"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <input
+                        type="number"
+                        name="phone"
+                        value={inputData?.phone}
+                        onChange={handleInputChange}
+                        placeholder="Phone Number"
+                        className="py-1 px-4 text-base rounded-[5rem] shadow-md w-full"
+                      />
+                    </div>
+
+                    <div className="relative">
+                      <textarea
+                        type="text"
+                        name="short_bio"
+                        value={inputData?.short_bio}
+                        onChange={handleInputChange}
+                        placeholder="Short Bio"
+                        className="py-3 px-4 text-base rounded-3xl shadow-md w-full resize-none focus:outline-none h-40"
+                      ></textarea>
+                      <p className="absolute right-5 bottom-5 text-gray-400">
+                        150 letters
+                      </p>
+                    </div>
+
+                    <button
+                      onClick={() => setUpload(!upload)}
+                      onChange={handleInputChange}
+                      type="button"
+                      className="text-[black] py-0.5 px-3 flex items-center justify-left relative rounded-3xl text-lg w-full bg-white shadow-md text-center"
+                    >
+                      <span> Upload Pictures </span>
+                      <span className="text-[black] text-2xl rounded-full w-7 h-7 flex justify-center items-center absolute right-1 top-0.5">
+                        {rightArrow}
+                      </span>
+                    </button>
+                  </div>
+                </form>
+
+                <div className="flex flex-col gap-5 items-center justify-center my-8">
+                  <button
+                    onClick={(e) => setSelectedBtn("Private")}
+                    className={`flex gap-3 py-2 min-w-[14rem] px-3 items-center justify-center rounded-3xl text-lg shadow-md text-center ${
+                      selectedBtn === "Private"
+                        ? "bg-[black] text-white"
+                        : "bg-gray-300 text-black"
+                    }`}
+                  >
+                    <span>{privateUserIcon}</span>
+                    <span>Private</span>
+                  </button>
 
                   <button
-                    onClick={() => setUpload(!upload)}
-                    onChange={handleInputChange}
-                    type="button"
-                    className="text-[black] py-0.5 px-3 flex items-center justify-left relative rounded-3xl text-lg w-full bg-white shadow-md text-center"
+                    onClick={(e) => setSelectedBtn("Public")}
+                    className={`flex gap-3 py-2 min-w-[14rem] px-3 items-center justify-center rounded-3xl text-lg text-slate-950 shadow-md text-center font-semibold ${
+                      selectedBtn === "Public"
+                        ? "bg-[black] text-white"
+                        : "bg-gray-300 text-black"
+                    }`}
                   >
-                    <span> Upload Pictures </span>
-                    <span className="text-[black] text-2xl rounded-full w-7 h-7 flex justify-center items-center absolute right-1 top-0.5">
-                      {rightArrow}
-                    </span>
+                    <span>{businessIcon}</span>
+                    <span>Public</span>
                   </button>
                 </div>
-              </form>
-
-              <div className="flex flex-col gap-5 items-center justify-center my-8">
-                <button
-                  onClick={(e) => setSelectedBtn("Private")}
-                  className={`flex gap-3 py-2 min-w-[14rem] px-3 items-center justify-center rounded-3xl text-lg shadow-md text-center ${
-                    selectedBtn === "Private"
-                      ? "bg-[black] text-white"
-                      : "bg-gray-300 text-black"
-                  }`}
-                >
-                  <span>{privateUserIcon}</span>
-                  <span>Private</span>
-                </button>
 
                 <button
-                  onClick={(e) => setSelectedBtn("Public")}
-                  className={`flex gap-3 py-2 min-w-[14rem] px-3 items-center justify-center rounded-3xl text-lg text-slate-950 shadow-md text-center font-semibold ${
-                    selectedBtn === "Public"
-                      ? "bg-[black] text-white"
-                      : "bg-gray-300 text-black"
-                  }`}
+                  onClick={handleSubmit}
+                  className="py-2 min-w-[14rem] bg-[black] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mt-10"
                 >
-                  <span>{businessIcon}</span>
-                  <span>Public</span>
+                  <span>Update Profile</span>
                 </button>
               </div>
-
-              <button
-                onClick={handleSubmit}
-                className="py-2 min-w-[14rem] bg-[black] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mt-10"
-              >
-                <span>Update Profile</span>
-              </button>
             </div>
-          </div>
 
-          <div
-            className={`bg-[#F2F6FF] rounded transition-opacity delay-300 ${
-              upload ? "visible opacity-100" : "invisible opacity-0"
-            }`}
-          >
-            <div className="flex flex-col items-center justify-center py-6 px-12">
-              <div
-                onClick={handleDivClick}
-                className="cursor-pointer flex relative rounded-3xl text-lg min-w-[15rem] bg-white shadow-md text-center py-[0.125rem]"
-              >
-                <span className="bg-[black] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center absolute left-1 top-0.5 ">
-                  {uploadIcons}
-                </span>
-                <span className="mx-auto text-lg text-gray-600">
-                  Upload Pictures
-                </span>
-              </div>
-              <ImageUploader
-                withIcon={true}
-                buttonText="Choose images"
-                onChange={onDrop}
-                maxFileSize={5242880}
-                className="border-none"
-              />
+            <div
+              className={`bg-[#F2F6FF] rounded transition-opacity delay-300 ${
+                upload ? "visible opacity-100" : "invisible opacity-0"
+              }`}
+            >
+              <div className="flex flex-col items-center justify-center py-6 px-12">
+                <div
+                  onClick={handleDivClick}
+                  className="cursor-pointer flex relative rounded-3xl text-lg min-w-[15rem] bg-white shadow-md text-center py-[0.125rem]"
+                >
+                  <span className="bg-[black] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center absolute left-1 top-0.5 ">
+                    {uploadIcons}
+                  </span>
+                  <span className="mx-auto text-lg text-gray-600">
+                    Upload Pictures
+                  </span>
+                </div>
+                <ImageUploader
+                  withIcon={true}
+                  buttonText="Choose images"
+                  onChange={onDrop}
+                  maxFileSize={5242880}
+                  className="border-none"
+                />
 
-              <div className="mt-7">
-                <div className="flex flex-col gap-6">
-                  <div className="grid grid-cols-2 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-5">
-                    {uploadImages
-                      ?.filter(
-                        (obj, index, array) =>
-                          array.findIndex((item) => item === obj) === index
-                      )
-                      ?.map((img, i) => (
-                        <VeryCard
-                          key={i}
-                          img={img}
-                          handleImgChange={handleImgChange}
-                          handleImgDelete={handleImgDelete}
-                        />
-                      ))}
-                    {loading && <div>loading...</div>}
-                  </div>
-                  {/* <div className="w-[80%] mx-auto flex justify-between items-center gap-2 rounded-3xl text-lg min-w-[15rem] bg-white shadow-md px-1 overflow-hidden mt-8 mb-2">
+                <div className="mt-7">
+                  <div className="flex flex-col gap-6">
+                    <div className="grid grid-cols-2 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-5">
+                      {uploadImages
+                        ?.filter(
+                          (obj, index, array) =>
+                            array.findIndex((item) => item === obj) === index
+                        )
+                        ?.map((img, i) => (
+                          <VeryCard
+                            key={i}
+                            img={img}
+                            handleImgChange={handleImgChange}
+                            handleImgDelete={handleImgDelete}
+                          />
+                        ))}
+                      {loading && <div>loading...</div>}
+                    </div>
+                    {/* <div className="w-[80%] mx-auto flex justify-between items-center gap-2 rounded-3xl text-lg min-w-[15rem] bg-white shadow-md px-1 overflow-hidden mt-8 mb-2">
                     <span className="bg-[black] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center">
                       {lockIcon}
                     </span>
@@ -468,18 +478,19 @@ const ProfileSetting = () => {
                       />
                     </div>
                   </div> */}
+                  </div>
                 </div>
-              </div>
 
-              {/* <button
+                {/* <button
                 // onClick={handleSubmit}
                 className="py-2 min-w-[14rem] bg-[black] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mt-10"
               >
                 <span>Verify Phone</span>
               </button> */}
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   );

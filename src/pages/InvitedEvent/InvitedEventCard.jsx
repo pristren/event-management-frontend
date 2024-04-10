@@ -5,12 +5,13 @@ import { useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
 import useAxios from "@/Hooks/useAxios";
 
-const InvitedEventCard = ({ event, setInvitedEvent }) => {
+const InvitedEventCard = ({ event, setInvitedEvent, setLoading }) => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
   const { Axios } = useAxios();
 
   const handleJoin = async (id) => {
+    setLoading(true)
     await Axios.put(`/join/${id}`, { email: user?.email }).then((res) => {
       if (res.status === 200) {
         Axios.get(`/invited-event/${user?.phone}`)
@@ -26,6 +27,7 @@ const InvitedEventCard = ({ event, setInvitedEvent }) => {
   };
 
   const handleUnJoin = async (id) => {
+    setLoading(true)
     await Axios.put(`/invited-unjoin/${id}`, { email: user?.email }).then(
       (res) => {
         if (res.status === 200) {
@@ -76,7 +78,8 @@ const InvitedEventCard = ({ event, setInvitedEvent }) => {
           </p>
 
           <div className="flex gap-3">
-            {event?.joinRejected.find((e) => e === user?.email) ? (
+            {event?.joinedPeople.find((e) => e === user?.email) === undefined ? (
+
               <Button
                 className="w-full text-[#33BDEF] bg-[#33BDEF] bg-opacity-[0.15] hover:bg-opacity-80 hover:text-white transition duration-200 block text-center py-2 mt-7 hover:bg-[#33BDEF]"
                 onClick={() => handleJoin(event?._id)}
@@ -84,12 +87,19 @@ const InvitedEventCard = ({ event, setInvitedEvent }) => {
                 Join
               </Button>
             ) : (
+              <div className="flex justify-center items-center gap-2 w-full">
+                <Button
+                className="w-full text-[#33BDEF] bg-[#33BDEF] bg-opacity-[0.15] hover:bg-opacity-80 hover:text-white transition duration-200 block text-center py-2 mt-7 hover:bg-[#33BDEF]"
+              >
+                Joined
+              </Button>
               <Button
                 className="w-full text-[#ff0303] bg-[#ec542d] bg-opacity-[0.15] hover:bg-opacity-80 hover:text-white transition duration-200 block text-center py-2 mt-7   hover:bg-[#ec542d]"
                 onClick={() => handleUnJoin(event?._id)}
               >
-                Not Join
+                Leave
               </Button>
+              </div>
             )}
           </div>
         </div>

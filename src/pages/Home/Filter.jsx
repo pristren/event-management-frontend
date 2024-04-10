@@ -148,6 +148,9 @@ const type = [
   {
     name: "3vs3",
   },
+  {
+    name: "others",
+  },
 ];
 const dateCategory = [
   {

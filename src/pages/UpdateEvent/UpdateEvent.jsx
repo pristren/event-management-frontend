@@ -11,6 +11,7 @@ import CreateEventModal from "../CreateEvent/CreateEventModal";
 import ImageUploader from "react-images-upload";
 import CustomDatePicker from "@/components/DatePicker";
 import VeryCard2 from "@/components/VeryCard2";
+import { isSameDay } from "date-fns";
 
 const clubIcons = (
   <svg
@@ -328,13 +329,15 @@ export default function UpdateEvent() {
                 onChange={handleInputChange}
                 value={inputData?.category}
               >
-                <option value="">Chose a category</option>
-                <option value="Sports">Sports</option>
-                <option value="BirthDay">BirthDay</option>
-                <option value="Study">Study</option>
+                <option value="">Choose a category</option>
+                <option value="Game">Game</option>
+                <option value="Tournament">Tournament</option>
+                <option value="Free Play">Free Play</option>
+                <option value="3vs3">3vs3</option>
+                <option value="others">Others</option>
               </select>
             </div>
-            <div className="flex gap-5 mt-5">
+            <div className="flex w-full gap-5 mt-5">
               <CustomDatePicker
                 date={startDate}
                 setDate={setStartDate}
@@ -387,14 +390,26 @@ export default function UpdateEvent() {
                 <DatePicker
                   selected={endTime}
                   value={endTime}
-                  onChange={(date) => setEndTime(date)}
+                  onChange={(date) => {
+                    if (isSameDay(startDate, endDate)) {
+                      if (!startTime) {
+                        toast.error("Select start time first!");
+                      } else if (date >= startTime) {
+                        setEndTime(date);
+                      } else {
+                        toast.error("End time must be later than start time!");
+                      }
+                    } else {
+                      setEndTime(date);
+                    }
+                  }}
                   showTimeSelect
                   showTimeSelectOnly
                   timeIntervals={15}
                   timeCaption="Time"
                   dateFormat="h:mm aa"
                   className="w-full py-2 px-4 outline-none border-none text-[15px] text-[black] bg-white font-medium rounded-full placeholder:text-[#6c757d] placeholder:font-medium"
-                  placeholderText="Time start"
+                  placeholderText="Time End"
                 />
               </div>
             </div>
