@@ -91,7 +91,7 @@ export default function ShareModal({ openModal, handleCloseModal }) {
                             readOnly
                             type="text"
                             id="textToCopy"
-                            value={`${url}}`}
+                            value={`${url}`}
                           />
                           <button onClick={copyToClipboard}>Copy</button>
                         </div>
