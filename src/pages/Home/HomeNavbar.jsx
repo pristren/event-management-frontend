@@ -130,7 +130,7 @@ l71 -111 87 134 c47 73 112 174 144 223 119 186 361 560 554 859 110 170 214
             </svg> */}
             <img
               src={logoWhiteBg}
-              className=" hidden md:block"
+              className="hidden md:block"
               alt="Pin logo"
               width={100}
               // height={50}
@@ -145,6 +145,7 @@ l71 -111 87 134 c47 73 112 174 144 223 119 186 361 560 554 859 110 170 214
               "rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px",
           }}
         >
+
           <button
             onClick={(e) => {
               user ? setSelectedBtn("Invited") : navigate("/login");

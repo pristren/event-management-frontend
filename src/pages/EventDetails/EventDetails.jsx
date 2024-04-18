@@ -438,15 +438,13 @@ const EventDetails = () => {
                       <img
                         src={
                           firstUser?.profile_images?.length
-                            ? firstUser?.profile_images[0]
-                            : Image
+                            && firstUser?.profile_images[firstUser?.profile_images.length - 1]
                         }
                         alt=""
                         className="w-[40px] h-[40px] rounded-full object-cover"
                       />
                     ) : (
                       <figure className="bg-[black] text-white  rounded-full w-12 h-12 flex justify-center items-center">
-                        {/* <span className="text-2xl">{profileUserIcon}</span> */}
                         <UserRound />
                       </figure>
                     )}

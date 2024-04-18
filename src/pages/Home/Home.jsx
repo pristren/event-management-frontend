@@ -67,7 +67,6 @@ const Home = ({loading}) => {
     if (user?.phone) {
       Axios.get(`/invited-event/${user?.phone}`)
         .then((res) => {
-          console.log(res.data.data);
           setInvitedEvent(res.data?.data);
         })
         .catch((err) => {

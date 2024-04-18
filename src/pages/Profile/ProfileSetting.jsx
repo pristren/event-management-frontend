@@ -85,9 +85,7 @@ const ProfileSetting = () => {
   };
 
   const handleSubmit = () => {
-    // console.log("number ", number);
-    // console.log("verifyPin ", verifyPin);
-    // function here.....
+
     setLoading(true);
     const event_img = uploadImages?.filter(
       (obj, index, array) => array.findIndex((item) => item === obj) === index
@@ -159,6 +157,8 @@ const ProfileSetting = () => {
   const handleImgChange = (img) => {
     setProfileImages(img);
     localStorage.setItem("profile_image", JSON.stringify(img));
+    console.log(img);
+    // handleSubmit()
   };
 
   return (
@@ -182,7 +182,7 @@ const ProfileSetting = () => {
             </svg>
           </span>
           <h1 className="text-[black] font-bold text-2xl">Profile Setting</h1>
-          <Profile profile_images={profile_images} />
+          <Profile />
         </div>
 
         {loading ? (
@@ -204,8 +204,8 @@ const ProfileSetting = () => {
                   <figure className="bg-[black] text-white  rounded-full  w-24 h-24 flex justify-center items-center">
                     {uploadImages?.length ? (
                       <img
-                        src={profile_images ? profile_images : uploadImages[0]}
-                        className="w-24 h-24 rounded-full"
+                        src={uploadImages[uploadImages.length - 1]}
+                        className="w-24 h-24 rounded-full object-cover"
                       />
                     ) : (
                       // <span className="text-6xl">{profileUserIcon}</span>
@@ -314,7 +314,7 @@ const ProfileSetting = () => {
                 </div>
 
                 <button
-                  onClick={handleSubmit}
+                  // onClick={handleSubmit}
                   className="py-2 min-w-[14rem] bg-[black] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mt-10"
                 >
                   <span>Update Profile</span>
