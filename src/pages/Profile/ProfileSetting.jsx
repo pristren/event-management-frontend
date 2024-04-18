@@ -314,7 +314,7 @@ const ProfileSetting = () => {
                 </div>
 
                 <button
-                  // onClick={handleSubmit}
+                  onClick={handleSubmit}
                   className="py-2 min-w-[14rem] bg-[black] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mt-10"
                 >
                   <span>Update Profile</span>
