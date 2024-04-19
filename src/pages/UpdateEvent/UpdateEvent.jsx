@@ -48,9 +48,6 @@ export default function UpdateEvent() {
   const [endTime, setEndTime] = useState(null);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const [uploadImages, setUploadImages] = useState([]);
-
-  //   console.log(endTime);
 
   const [inputData, setInputData] = useState({
     invitedUserId: "",
@@ -251,7 +248,7 @@ export default function UpdateEvent() {
             </svg>
           </span>
           <h1 className="text-[black] font-bold text-2xl">Event creation</h1>
-          <Profile />
+          <Profile profile_images={user.currentProfile}/>
         </div>
 
         <div className="min-h-screen bg-[#F2F6FF] py-10 px-5 grid items-stretch grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-10">

@@ -18,6 +18,7 @@ import UpdateEvent from "./pages/UpdateEvent/UpdateEvent";
 import { useDispatch, useSelector } from "react-redux";
 import useAxios from "./Hooks/useAxios";
 import { userLoggedIn, userLoggedOut } from "./features/auth/authSlice";
+import JoinedEvent from "./pages/JoinedEvent/JoinedEvent";
 
 function App() {
   const [isExpand, setIsExpand] = useState(false);
@@ -99,6 +100,14 @@ function App() {
             element={
               <AuthProtected>
                 <InvitedEvents />
+              </AuthProtected>
+            }
+          />
+          <Route
+            path="joined-events"
+            element={
+              <AuthProtected>
+                <JoinedEvent />
               </AuthProtected>
             }
           />

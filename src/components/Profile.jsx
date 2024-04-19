@@ -14,17 +14,17 @@ const Profile = ({ profile_images }) => {
   // console.log(user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   return (
     <div className="">
       <div className=" w-32 md:w-56 text-right flex justify-end">
-        {user?.profile_images?.length ? (
+        {user?.currentProfile ? (
           <Menu as="div" className="relative inline-block text-left">
             <div>
               <Menu.Button className="inline-flex  justify-center bg-black/20 text-sm font-medium text-white focus:outline-none  bg-[black]  rounded-full w-10 h-10  items-center">
                 <img
-                  src={profile_images || user?.profile_images[0]}
-                  className="w-full h-full rounded-full"
+                  // src={profile_images || user?.profile_images[0]}
+                  src={user?.currentProfile}
+                  className="w-full h-full rounded-full object-cover"
                   alt=""
                 />
               </Menu.Button>

@@ -31,7 +31,7 @@ const EventDetails = () => {
   const { user } = useSelector((state) => state?.auth);
 
   const [loading, setLoading] = useState(true);
-
+  const state = useSelector((state) => state.auth);
   const { Axios } = useAxios();
   const [openModal, setOpenModal] = useState(false);
   const [like, setLike] = useState(false);
@@ -40,6 +40,8 @@ const EventDetails = () => {
   const navigate = useNavigate();
   const { isExpand, setIsExpand } = useContext(MyProvider);
   const { id } = useParams();
+
+
   function handleCloseModal() {
     setOpenModal(false);
   }
@@ -212,7 +214,7 @@ const EventDetails = () => {
           <h1 className="text-[black] font-bold text-xl md:text-2xl">
             Event details
           </h1>
-          <Profile />
+          <Profile profile_images={state?.user?.currentProfile}/>
         </div>
         {!loading ? (
           <div className="p-6">
@@ -438,15 +440,14 @@ const EventDetails = () => {
                       <img
                         src={
                           firstUser?.profile_images?.length
-                            ? firstUser?.profile_images[0]
-                            : Image
+                          ? firstUser?.profile_images[0]
+                          : Image
                         }
                         alt=""
                         className="w-[40px] h-[40px] rounded-full object-cover"
                       />
                     ) : (
                       <figure className="bg-[black] text-white  rounded-full w-12 h-12 flex justify-center items-center">
-                        {/* <span className="text-2xl">{profileUserIcon}</span> */}
                         <UserRound />
                       </figure>
                     )}

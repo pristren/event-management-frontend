@@ -43,7 +43,7 @@ export default function ProfilePage() {
           </svg>
         </span>
         <h1 className="text-[black] font-bold text-2xl">Profile details</h1>
-        <Profile />
+        <Profile profile_images={user.currentProfile}/>
       </div>
 
       {user && user?.account_type !== "Private" ? (

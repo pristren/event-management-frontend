@@ -1,26 +1,39 @@
-import React, { useContext, useEffect, useState } from "react";
-import Profile from "../../components/Profile";
-import InvitedEventCard from "./InvitedEventCard";
-import MyProvider from "../../Provider/Provider";
-import useMyEvent from "../../Hooks/useMyEvent";
-import useAxios from "../../Hooks/useAxios";
+import useAxios from "@/Hooks/useAxios";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import JoinedEventCard from "./joinedEventCard";
+import Profile from "@/components/Profile";
 import Loader from "@/components/Loader/Loader";
 
-const InvitedEvents = () => {
-  const { isExpand, setIsExpand } = useContext(MyProvider);
-
-  const { Axios } = useAxios();
+const JoinedEvent = () => {
   const { user } = useSelector((state) => state.auth);
-  const [invitedEvents, setInvitedEvents] = useState([]);
+  const [joinedEvents, setJoinedEvents] = useState([]);
   const [loading, setLoading] = useState(false);
+  const { Axios } = useAxios();
+  const state = useSelector((state) => state.auth);
+  const [uploadImages, setUploadImages] = useState([]);
+  const [profile_images, setProfileImages] = useState("");
+  useEffect(() => {
+    setUploadImages(state?.user?.profile_images);
+    const profile = localStorage.getItem("profile_image");
+    if (!profile) {
+      setProfileImages(state?.user?.profile_images[0]);
+    }
+  }, []);
+
+  useEffect(() => {
+    const profile = localStorage.getItem("profile_image");
+    if (profile) {
+      setProfileImages(JSON.parse(profile));
+    }
+  }, []);
 
   useEffect(() => {
     setLoading(true);
     if (user?.phone) {
-      Axios.get(`/invited-event/${user?.phone}`)
+      Axios.get(`/joined-event/${user?.email}`)
         .then((res) => {
-          setInvitedEvents(res.data?.data);
+          setJoinedEvents(res.data?.data);
         })
         .catch((err) => {
           console.log(err);
@@ -29,25 +42,7 @@ const InvitedEvents = () => {
           setLoading(false);
         });
     }
-  }, [user?.phone]);
-  // useEffect(() => {
-  //   setLoading(true);
-  //   const allEvents = async () => {
-  //     const res = await Axios.get("/all-events");
-  //     const data = await res.data;
-  //     console.log(data?.data);
-  //     setInvitedEvent(
-  //       data?.data?.filter(
-  //         (event) =>
-  //           event?.joinedPeople?.find((v) => v === user?.email) &&
-  //           event?.userId !== user._id
-  //       )
-  //     );
-  //     setLoading(false);
-  //   };
-  //   allEvents();
-  // }, []);
-
+  }, [user?.email]);
   return (
     <section className="flex">
       <div className="w-full">
@@ -68,27 +63,27 @@ const InvitedEvents = () => {
               <path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"></path>
             </svg>
           </span>
-          <h1 className="text-[black] font-bold text-2xl">Invited Events</h1>
-          <Profile profile_images={user?.currentProfile}/>
+          <h1 className="text-[black] font-bold text-2xl">Joined Events</h1>
+          <Profile profile_images={state?.user?.currentProfile}/>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 px-5">
           {!loading ? (
-            invitedEvents &&
-            invitedEvents.map((event, i) => {
+            joinedEvents &&
+            joinedEvents.map((event, i) => {
               return (
-                <InvitedEventCard
+                <JoinedEventCard
                   event={event}
                   key={i}
                   setLoading={setLoading}
-                  setInvitedEvent={setInvitedEvents}
+                  setJoinedEvent={setJoinedEvents}
                 />
               );
             })
           ) : (
             <div className="min-h-full">
-        <Loader></Loader>
-      </div>
+              <Loader></Loader>
+            </div>
           )}
         </div>
       </div>
@@ -96,4 +91,4 @@ const InvitedEvents = () => {
   );
 };
 
-export default InvitedEvents;
+export default JoinedEvent;

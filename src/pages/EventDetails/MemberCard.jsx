@@ -33,7 +33,7 @@ const MemberCard = ({ member }) => {
         <div className="flex items-center gap-3">
           {user?.profile_images?.length ? (
             <img
-              src={user?.profile_images[0]}
+            src={user?.currentProfile || user?.profile_images[0]}
               alt=""
               className="w-[40px] h-[40px] rounded-full object-cover"
             />
