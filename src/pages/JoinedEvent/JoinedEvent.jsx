@@ -1,7 +1,7 @@
 import useAxios from "@/Hooks/useAxios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import JoinedEventCard from "./joinedEventCard";
+import JoinedEventCard from "./JoinedEventCard";
 import Profile from "@/components/Profile";
 import Loader from "@/components/Loader/Loader";
 
@@ -64,7 +64,7 @@ const JoinedEvent = () => {
             </svg>
           </span>
           <h1 className="text-[black] font-bold text-2xl">Joined Events</h1>
-          <Profile profile_images={state?.user?.currentProfile}/>
+          <Profile profile_images={state?.user?.currentProfile} />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 px-5">
