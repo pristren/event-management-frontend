@@ -54,23 +54,23 @@ const ProfileSetting = () => {
   const [uploadImages, setUploadImages] = useState([]);
   const [profile_images, setProfileImages] = useState("");
   const API_KEY = "c8818fe821c0aee81ebf0b77344f0e2b";
-  useEffect(() => {
-    setUploadImages(state?.user?.profile_images);
-    const profile = localStorage.getItem("profile_image");
-    if (!profile) {
-      setProfileImages(state?.user?.profile_images[0]);
-    }
-    if (state?.user?.profile_images?.length) {
-      setUpload(true);
-    }
-  }, []);
+  // useEffect(() => {
+  //   setUploadImages(state?.user?.profile_images);
+  //   const profile = localStorage.getItem("profile_image");
+  //   if (!profile) {
+  //     setProfileImages(state?.user?.profile_images[0]);
+  //   }
+  //   if (state?.user?.profile_images?.length) {
+  //     setUpload(true);
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    const profile = localStorage.getItem("profile_image");
-    if (profile) {
-      setProfileImages(JSON.parse(profile));
-    }
-  }, []);
+  // useEffect(() => {
+  //   const profile = localStorage.getItem("profile_image");
+  //   if (profile) {
+  //     setProfileImages(JSON.parse(profile));
+  //   }
+  // }, []);
 
   const dispatch = useDispatch();
 
@@ -85,7 +85,6 @@ const ProfileSetting = () => {
   };
 
   const handleSubmit = () => {
-
     setLoading(true);
     const event_img = uploadImages?.filter(
       (obj, index, array) => array.findIndex((item) => item === obj) === index
@@ -107,6 +106,9 @@ const ProfileSetting = () => {
             // user: res.data,
           })
         );
+        if(state?.user?.currentProfile === ""){
+          setProfileInDb(uploadImages[0])
+        }
 
         dispatch(
           userLoggedIn({
@@ -121,6 +123,26 @@ const ProfileSetting = () => {
         setLoading(false);
         toast.error("error while updating the profile.");
       });
+  };
+
+  const setProfileInDb = async (img) => {
+    try {
+      const res = await Axios.put(`user/update/profile/${state.user._id}`, {
+        profile_image: img,
+      });
+      setInputData(res.data);
+      dispatch(
+        userLoggedIn({
+          accessToken: state.accessToken,
+          user: res.data,
+        })
+      );
+      setLoading(false);
+      toast.success("Profile picture updated successfully.");
+    } catch (error) {
+      setLoading(false);
+      toast.error("Error updating profile picture.");
+    }
   };
 
   const handleImgDelete = (url) => {
@@ -147,18 +169,15 @@ const ProfileSetting = () => {
 
     if (uploadedImagesArray?.length) {
       setLoading(false);
-
       setUploadImages([...uploadImages, ...uploadedImagesArray]);
-      // console.log(uploadedImagesArray);
-      // console.log(uploadImages);
       uploadedImagesArray = [];
     }
+    setLoading(false);
   };
   const handleImgChange = (img) => {
     setProfileImages(img);
-    localStorage.setItem("profile_image", JSON.stringify(img));
-    console.log(img);
-    // handleSubmit()
+    // localStorage.setItem("profile_image", JSON.stringify(img));
+    setProfileInDb(img);
   };
 
   return (
@@ -182,7 +201,7 @@ const ProfileSetting = () => {
             </svg>
           </span>
           <h1 className="text-[black] font-bold text-2xl">Profile Setting</h1>
-          <Profile />
+          <Profile profile_images={state?.user?.currentProfile} />
         </div>
 
         {loading ? (
@@ -202,9 +221,9 @@ const ProfileSetting = () => {
 
                 <div className="mt-10 flex flex-col items-center mb-3">
                   <figure className="bg-[black] text-white  rounded-full  w-24 h-24 flex justify-center items-center">
-                    {uploadImages?.length ? (
+                    {state?.user?.currentProfile ? (
                       <img
-                        src={uploadImages[uploadImages.length - 1]}
+                        src={state?.user?.currentProfile}
                         className="w-24 h-24 rounded-full object-cover"
                       />
                     ) : (
@@ -350,6 +369,7 @@ const ProfileSetting = () => {
                 <div className="mt-7">
                   <div className="flex flex-col gap-6">
                     <div className="grid grid-cols-2 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-5">
+
                       {uploadImages
                         ?.filter(
                           (obj, index, array) =>
@@ -362,7 +382,20 @@ const ProfileSetting = () => {
                             handleImgChange={handleImgChange}
                             handleImgDelete={handleImgDelete}
                           />
-                        ))}
+                        ))}                      
+                        {state?.user?.profile_images
+                          ?.filter(
+                            (obj, index, array) =>
+                              array.findIndex((item) => item === obj) === index
+                          )
+                          ?.map((img, i) => (
+                            <VeryCard
+                              key={i}
+                              img={img}
+                              handleImgChange={handleImgChange}
+                              handleImgDelete={handleImgDelete}
+                            />
+                          ))}
                       {loading && <div>loading...</div>}
                     </div>
                     {/* <div className="w-[80%] mx-auto flex justify-between items-center gap-2 rounded-3xl text-lg min-w-[15rem] bg-white shadow-md px-1 overflow-hidden mt-8 mb-2">

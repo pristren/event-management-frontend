@@ -11,12 +11,10 @@ const InvitedEvents = () => {
   const { isExpand, setIsExpand } = useContext(MyProvider);
 
   const { Axios } = useAxios();
-
   const { user } = useSelector((state) => state.auth);
-  // console.log(user);
-
   const [invitedEvents, setInvitedEvents] = useState([]);
   const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     setLoading(true);
     if (user?.phone) {
@@ -71,7 +69,7 @@ const InvitedEvents = () => {
             </svg>
           </span>
           <h1 className="text-[black] font-bold text-2xl">Invited Events</h1>
-          <Profile />
+          <Profile profile_images={user?.currentProfile}/>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 px-5">

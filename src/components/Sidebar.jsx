@@ -38,7 +38,7 @@ const Sidebar = () => {
           <img src={Logo} alt="" className="w-[120px] h-auto" />
         </div> */}
         <div className="flex justify-center flex-col items-center mb-12 ">
-          <img src={Logo} alt="" className="w-[120px] " />
+          <img src={Logo} alt="" className="w-[120px]" />
           {/* <p className="font-semibold text-lg -mt-4">Pin</p> */}
         </div>
         <ul className="flex flex-col gap-5">

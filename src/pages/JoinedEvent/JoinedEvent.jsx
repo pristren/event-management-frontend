@@ -10,6 +10,23 @@ const JoinedEvent = () => {
   const [joinedEvents, setJoinedEvents] = useState([]);
   const [loading, setLoading] = useState(false);
   const { Axios } = useAxios();
+  const state = useSelector((state) => state.auth);
+  const [uploadImages, setUploadImages] = useState([]);
+  const [profile_images, setProfileImages] = useState("");
+  useEffect(() => {
+    setUploadImages(state?.user?.profile_images);
+    const profile = localStorage.getItem("profile_image");
+    if (!profile) {
+      setProfileImages(state?.user?.profile_images[0]);
+    }
+  }, []);
+
+  useEffect(() => {
+    const profile = localStorage.getItem("profile_image");
+    if (profile) {
+      setProfileImages(JSON.parse(profile));
+    }
+  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -47,7 +64,7 @@ const JoinedEvent = () => {
             </svg>
           </span>
           <h1 className="text-[black] font-bold text-2xl">Joined Events</h1>
-          <Profile />
+          <Profile profile_images={state.user.currentProfile}/>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 px-5">

@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import useMyEvent from "../../Hooks/useMyEvent";
 import MyProvider from "../../Provider/Provider";
 import Profile from "../../components/Profile";
@@ -13,7 +13,6 @@ const MyEvents = () => {
   const { ownEvent, setMyEvent, isLoading } = useMyEvent();
   const { isExpand, setIsExpand } = useContext(MyProvider);
   const { user } = useSelector((state) => state.auth);
-
   const { Axios } = useAxios();
   const handleDelete = async (id) => {
     const res = await Axios.delete(`/events/${id}`);
@@ -65,7 +64,7 @@ const MyEvents = () => {
             </svg>
           </span>
           <h1 className="text-[black] font-bold text-2xl">My Events</h1>
-          <Profile />
+          <Profile profile_images={user?.currentProfile}/>
         </div>
 
         <div className="p-5 pb-12 flex justify-between">
