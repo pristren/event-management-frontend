@@ -214,7 +214,7 @@ const EventDetails = () => {
           <h1 className="text-[black] font-bold text-xl md:text-2xl">
             Event details
           </h1>
-          <Profile profile_images={state.user.currentProfile}/>
+          <Profile profile_images={state?.user?.currentProfile}/>
         </div>
         {!loading ? (
           <div className="p-6">
