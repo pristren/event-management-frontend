@@ -27,7 +27,7 @@ const ProfileSetting = () => {
   const [selectedBtn, setSelectedBtn] = useState("");
   const [upload, setUpload] = useState(false);
   const state = useSelector((state) => state.auth);
-  console.log(state);
+  // console.log(state);
   const [inputData, setInputData] = useState({});
   // const [verifyPin, setVerifyPin] = useState({
   //   one: "",
@@ -43,8 +43,12 @@ const ProfileSetting = () => {
     if (state.user) {
       setInputData(state?.user);
       setSelectedBtn(state?.user?.account_type);
+      setUploadImages(state?.user?.profile_images);
+      if (state?.user?.profile_images?.length) {
+        setUpload(true);
+      }
     }
-  }, [state.user]);
+  }, [state.user, state?.user?.profile_images]);
 
   const fileInputRef = useRef(null);
 
@@ -84,7 +88,7 @@ const ProfileSetting = () => {
     }));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setLoading(true);
     const event_img = uploadImages?.filter(
       (obj, index, array) => array.findIndex((item) => item === obj) === index
@@ -94,6 +98,11 @@ const ProfileSetting = () => {
       account_type: selectedBtn,
       profile_images: event_img,
     };
+    if (event_img.length === 0) {
+      await Axios.put(`/user/update/profile/${state.user._id}`, {
+        profile_image: "",
+      });
+    }
     Axios.put(`/user/updates/${state.user._id}`, newData)
       .then((res) => {
         // console.log(res.data);
@@ -106,8 +115,8 @@ const ProfileSetting = () => {
             // user: res.data,
           })
         );
-        if(state?.user?.currentProfile === ""){
-          setProfileInDb(uploadImages[0])
+        if (state?.user?.currentProfile === "") {
+          setProfileFirst(uploadImages[0]);
         }
 
         dispatch(
@@ -126,8 +135,33 @@ const ProfileSetting = () => {
   };
 
   const setProfileInDb = async (img) => {
+    if (state?.user?.profile_images?.includes(img)) {
+      try {
+        const res = await Axios.put(`/user/update/profile/${state.user._id}`, {
+          profile_image: img,
+        });
+        setInputData(res.data);
+        dispatch(
+          userLoggedIn({
+            accessToken: state.accessToken,
+            user: res.data,
+          })
+        );
+        setLoading(false);
+        toast.success("Profile picture updated successfully.");
+      } catch (error) {
+        setLoading(false);
+        toast.error("Error updating profile picture.");
+      }
+    } else {
+      toast.error(
+        "Update Your Pictures First. Then select it to make profile picture."
+      );
+    }
+  };
+  const setProfileFirst = async (img) => {
     try {
-      const res = await Axios.put(`user/update/profile/${state.user._id}`, {
+      const res = await Axios.put(`/user/update/profile/${state.user._id}`, {
         profile_image: img,
       });
       setInputData(res.data);
@@ -138,10 +172,8 @@ const ProfileSetting = () => {
         })
       );
       setLoading(false);
-      toast.success("Profile picture updated successfully.");
     } catch (error) {
       setLoading(false);
-      toast.error("Error updating profile picture.");
     }
   };
 
@@ -369,7 +401,6 @@ const ProfileSetting = () => {
                 <div className="mt-7">
                   <div className="flex flex-col gap-6">
                     <div className="grid grid-cols-2 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-5">
-
                       {uploadImages
                         ?.filter(
                           (obj, index, array) =>
@@ -382,20 +413,20 @@ const ProfileSetting = () => {
                             handleImgChange={handleImgChange}
                             handleImgDelete={handleImgDelete}
                           />
-                        ))}                      
-                        {state?.user?.profile_images
-                          ?.filter(
-                            (obj, index, array) =>
-                              array.findIndex((item) => item === obj) === index
-                          )
-                          ?.map((img, i) => (
-                            <VeryCard
-                              key={i}
-                              img={img}
-                              handleImgChange={handleImgChange}
-                              handleImgDelete={handleImgDelete}
-                            />
-                          ))}
+                        ))}
+                      {/* {state?.user?.profile_images
+                        ?.filter(
+                          (obj, index, array) =>
+                            array.findIndex((item) => item === obj) === index
+                        )
+                        ?.map((img, i) => (
+                          <VeryCard
+                            key={i}
+                            img={img}
+                            handleImgChange={handleImgChange}
+                            handleImgDelete={handleImgDelete}
+                          />
+                        ))} */}
                       {loading && <div>loading...</div>}
                     </div>
                     {/* <div className="w-[80%] mx-auto flex justify-between items-center gap-2 rounded-3xl text-lg min-w-[15rem] bg-white shadow-md px-1 overflow-hidden mt-8 mb-2">

@@ -191,7 +191,7 @@ const Filter = ({ selected2, setSelected2 }) => {
 
   return (
     <div className="realtive">
-      <div className="absolute top-[120px] md:top-[200px] right-2 md:right-1 lg:right-5  w-min bg-white rounded-2xl flex border-[2px] border-white shadow-xl  ">
+      <div className="absolute top-[80px] md:top-[130px] right-2 md:right-1 lg:right-5  w-min bg-white rounded-2xl flex border-[2px] border-white shadow-xl  ">
         <div className="w-full flex items-center justify-between">
           <div className="w-full  h-full">
             <Listbox
@@ -294,7 +294,7 @@ const Filter = ({ selected2, setSelected2 }) => {
       </div>
       {/* calendar */}
       <div
-        className={`absolute top-[120px] lg:top-[200px] left-2 ${
+        className={`absolute top-[80px] lg:top-[130px] left-2 ${
           user ? "lg:left-72" : "lg:left-5"
         } rounded-2xl flex`}
       >

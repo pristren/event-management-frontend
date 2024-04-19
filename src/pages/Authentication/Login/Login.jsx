@@ -183,7 +183,7 @@ const Login = () => {
 
                   <button
                     type="submit"
-                    className="flex relative rounded-xl text-lg max-w-[10rem] w-full bg-[black] hover:bg-white text-white hover:text-black shadow-primary text-center py-[0.3rem] transition duration-300 uppercase mt-10 mx-auto"
+                    className="flex relative rounded-xl text-lg max-w-[10rem] w-full bg-[black]  text-white  shadow-primary text-center py-[0.3rem] transition duration-300 uppercase mt-10 mx-auto"
                   >
                     <span className="mx-auto text-lg"> Login </span>
                   </button>

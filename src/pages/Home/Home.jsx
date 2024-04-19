@@ -10,7 +10,7 @@ import moment from "moment";
 import mapIcon from "../../assets/logo-white-bg-removebg-preview.png";
 import Loader from "@/components/Loader/Loader";
 
-const Home = ({loading}) => {
+const Home = ({ loading }) => {
   const { Axios } = useAxios();
   const navigate = useNavigate();
   const [isExpand, setIsExpand] = useState(false);
@@ -129,10 +129,12 @@ const Home = ({loading}) => {
         moment(twoDaysLater).format("MMMM D, YYYY")
     );
   });
-  if(loading){
-    return <div className="min-h-screen">
-      <Loader></Loader>
-    </div>
+  if (loading) {
+    return (
+      <div className="min-h-screen">
+        <Loader></Loader>
+      </div>
+    );
   }
 
   return (

@@ -62,11 +62,11 @@ const VeryCard = ({ img, handleImgDelete, handleImgChange }) => {
   //   console.log(response);
   // };
   return (
-    <div
-      onClick={() => handleImgChange(img)}
-      className="h-full w-full text-center group rounded-md relative transition duration-300 cursor-pointer bg-white"
-    >
-      <figure className="w-full h-full overflow-hidden">
+    <div className="h-full w-full text-center group rounded-md relative transition duration-300 cursor-pointer bg-white">
+      <figure
+        className="w-full h-full overflow-hidden"
+        onClick={() => handleImgChange(img)}
+      >
         <img src={img} className="w-full h-auto" />
       </figure>
 
