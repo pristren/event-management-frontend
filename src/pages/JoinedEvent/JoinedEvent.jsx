@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import JoinedEventCard from "./JoinedEventCard";
 import Profile from "@/components/Profile";
 import Loader from "@/components/Loader/Loader";
+import { Input } from "@/components/ui/input";
 
 const JoinedEvent = () => {
   const { user } = useSelector((state) => state.auth);
@@ -13,6 +14,12 @@ const JoinedEvent = () => {
   const state = useSelector((state) => state.auth);
   const [uploadImages, setUploadImages] = useState([]);
   const [profile_images, setProfileImages] = useState("");
+  const [category, setCategory] = useState("");
+  const [input, setInput] = useState("");
+
+  const handleSelectChange = (e) => {
+    setCategory(e.target.value);
+  };
   useEffect(() => {
     setUploadImages(state?.user?.profile_images);
     const profile = localStorage.getItem("profile_image");
@@ -30,7 +37,7 @@ const JoinedEvent = () => {
 
   useEffect(() => {
     setLoading(true);
-    if (user?.phone) {
+    if (user?.email) {
       Axios.get(`/joined-event/${user?.email}`)
         .then((res) => {
           setJoinedEvents(res.data?.data);
@@ -45,8 +52,8 @@ const JoinedEvent = () => {
   }, [user?.email]);
   return (
     <section className="flex">
-      <div className="w-full">
-        <div className="flex items-center justify-between pt-4 pb-5 sm:pb-10 px-4">
+      <div className="w-full px-4">
+        <div className="flex items-center justify-between pt-4 pb-5 sm:pb-10 ">
           <span
             className="cursor-pointer sm:hidden"
             onClick={() => setIsExpand(!isExpand)}
@@ -67,7 +74,73 @@ const JoinedEvent = () => {
           <Profile profile_images={state?.user?.currentProfile} />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 px-5">
+        <div className=" pb-12 flex justify-between">
+          <div className="w-2/4">
+            <h3 className="text-gray-500 mb-2">Filter By Name</h3>
+            <Input
+              className="focus-visible:ring-0  focus-visible:ring-offset-0 "
+              placeholder="Type event name..."
+              onChange={(e) => setInput(e.target.value)}
+            />
+          </div>
+          <div>
+            <h3 className="mb-2 text-gray-500">Filter By Category</h3>
+            <div className="relative">
+              <select
+                name="category"
+                id="category"
+                className="outline-none p-2 border cursor-pointer"
+                onChange={handleSelectChange}
+                value={category}
+              >
+                <option value="">All Categories</option>
+                <option value="Game">Game</option>
+                <option value="Tournament">Tournament</option>
+                <option value="Free Play">Free Play</option>
+                <option value="3vs3">3vs3</option>
+                <option value="others">Others</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {!loading && joinedEvents?.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 px-5">
+            {joinedEvents
+              ?.filter((event) =>
+                event?.category
+                  ?.toLowerCase()
+                  ?.includes(category?.toLowerCase())
+              )
+              ?.filter((event) =>
+                event?.event_title
+                  ?.toLowerCase()
+                  ?.includes(input?.toLowerCase())
+              )
+              ?.map((event, i) => {
+                return (
+                  <JoinedEventCard
+                    event={event}
+                    key={i}
+                    setLoading={setLoading}
+                    setJoinedEvent={setJoinedEvents}
+                  />
+                );
+              })}
+          </div>
+        ) : !loading && joinedEvents?.length === 0 ? (
+          <div className="min-h-full w-full">
+            <h1 className="text-left text-lg text-gray-700">
+              You have not joined any event yet.
+            </h1>
+          </div>
+        ) : (
+          <div className="min-h-full">
+            <Loader></Loader>
+          </div>
+        )}
+
+        {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 px-5">
           {!loading ? (
             joinedEvents &&
             joinedEvents.map((event, i) => {
@@ -85,7 +158,7 @@ const JoinedEvent = () => {
               <Loader></Loader>
             </div>
           )}
-        </div>
+        </div> */}
       </div>
     </section>
   );

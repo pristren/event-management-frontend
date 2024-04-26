@@ -6,6 +6,7 @@ import useMyEvent from "../../Hooks/useMyEvent";
 import useAxios from "../../Hooks/useAxios";
 import { useSelector } from "react-redux";
 import Loader from "@/components/Loader/Loader";
+import { Input } from "@/components/ui/input";
 
 const InvitedEvents = () => {
   const { isExpand, setIsExpand } = useContext(MyProvider);
@@ -14,6 +15,13 @@ const InvitedEvents = () => {
   const { user } = useSelector((state) => state.auth);
   const [invitedEvents, setInvitedEvents] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [showMessage, setShowMessage] = useState("");
+  const [category, setCategory] = useState("");
+  const [input, setInput] = useState("");
+
+  const handleSelectChange = (e) => {
+    setCategory(e.target.value);
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -27,7 +35,16 @@ const InvitedEvents = () => {
         })
         .finally(() => {
           setLoading(false);
+          setShowMessage("");
         });
+    } else if (user?.email) {
+      if (user?.phone === null) {
+        setShowMessage(
+          "Please update your phone number to see invited event lists!"
+        );
+        setLoading(false);
+        return;
+      }
     }
   }, [user?.phone]);
   // useEffect(() => {
@@ -50,8 +67,8 @@ const InvitedEvents = () => {
 
   return (
     <section className="flex">
-      <div className="w-full">
-        <div className="flex items-center justify-between pt-4 pb-5 sm:pb-10 px-4">
+      <div className="w-full px-4">
+        <div className="flex items-center justify-between pt-4 pb-5 sm:pb-10 ">
           <span
             className="cursor-pointer sm:hidden"
             onClick={() => setIsExpand(!isExpand)}
@@ -69,28 +86,79 @@ const InvitedEvents = () => {
             </svg>
           </span>
           <h1 className="text-[black] font-bold text-2xl">Invited Events</h1>
-          <Profile profile_images={user?.currentProfile}/>
+          <Profile profile_images={user?.currentProfile} />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 px-5">
-          {!loading ? (
-            invitedEvents &&
-            invitedEvents.map((event, i) => {
-              return (
-                <InvitedEventCard
-                  event={event}
-                  key={i}
-                  setLoading={setLoading}
-                  setInvitedEvent={setInvitedEvents}
-                />
-              );
-            })
-          ) : (
-            <div className="min-h-full">
-        <Loader></Loader>
-      </div>
-          )}
+        <div className=" pb-12 flex justify-between">
+          <div className="w-2/4">
+            <h3 className="text-gray-500 mb-2">Filter By Name</h3>
+            <Input
+              className="focus-visible:ring-0  focus-visible:ring-offset-0 "
+              placeholder="Type event name..."
+              onChange={(e) => setInput(e.target.value)}
+            />
+          </div>
+          <div>
+            <h3 className="mb-2 text-gray-500">Filter By Category</h3>
+            <div className="relative">
+              <select
+                name="category"
+                id="category"
+                className="outline-none p-2 border cursor-pointer"
+                onChange={handleSelectChange}
+                value={category}
+              >
+                <option value="">All Categories</option>
+                <option value="Game">Game</option>
+                <option value="Tournament">Tournament</option>
+                <option value="Free Play">Free Play</option>
+                <option value="3vs3">3vs3</option>
+                <option value="others">Others</option>
+              </select>
+            </div>
+          </div>
         </div>
+
+        {!loading && invitedEvents?.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 px-5">
+            {invitedEvents
+              ?.filter((event) =>
+                event?.category
+                  ?.toLowerCase()
+                  ?.includes(category?.toLowerCase())
+              )
+              ?.filter((event) =>
+                event?.event_title
+                  ?.toLowerCase()
+                  ?.includes(input?.toLowerCase())
+              )
+
+              ?.map((event, i) => {
+                return (
+                  <InvitedEventCard
+                    event={event}
+                    key={i}
+                    setLoading={setLoading}
+                    setInvitedEvent={setInvitedEvents}
+                  />
+                );
+              })}
+          </div>
+        ) : !loading && showMessage ? (
+          <div className="min-h-full w-full">
+            <h1 className="text-left text-lg text-gray-700">{showMessage}</h1>
+          </div>
+        ) : !loading && invitedEvents?.length === 0 ? (
+          <div className="min-h-full w-full">
+            <h1 className="text-left text-lg text-gray-700">
+              No one has invited you to any event yet!.
+            </h1>
+          </div>
+        ) : (
+          <div className="min-h-full">
+            <Loader></Loader>
+          </div>
+        )}
       </div>
     </section>
   );
