@@ -25,8 +25,10 @@ const InvitedEvents = () => {
 
   useEffect(() => {
     setLoading(true);
-    if (user?.phone) {
-      Axios.get(`/invited-event/${user?.phone}`)
+    if (user?.onlyPhone) {
+      Axios.get(
+        `/invited-event/phone=${user?.onlyPhone}&code=${user?.countryCode}`
+      )
         .then((res) => {
           setInvitedEvents(res.data?.data);
         })
@@ -38,7 +40,7 @@ const InvitedEvents = () => {
           setShowMessage("");
         });
     } else if (user?.email) {
-      if (user?.phone === null) {
+      if (user?.onlyPhone === null) {
         setShowMessage(
           "Please update your phone number to see invited event lists!"
         );
@@ -46,7 +48,7 @@ const InvitedEvents = () => {
         return;
       }
     }
-  }, [user?.phone]);
+  }, [user?.onlyPhone]);
   // useEffect(() => {
   //   setLoading(true);
   //   const allEvents = async () => {

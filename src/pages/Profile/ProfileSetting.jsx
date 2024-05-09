@@ -37,6 +37,8 @@ const ProfileSetting = () => {
   //   five: "",
   // });
   const { isExpand, setIsExpand } = useContext(MyProvider);
+
+  console.log(inputData?.phoneWithCode);
   // const { phone, setPhone, sendOtp } = useMyEvent();
 
   useEffect(() => {
@@ -301,12 +303,14 @@ const ProfileSetting = () => {
 
                     <div>
                       <input
-                        type="number"
-                        name="phone"
-                        value={inputData?.phone}
-                        onChange={handleInputChange}
-                        placeholder="Phone Number"
-                        className="py-1 px-4 text-base rounded-[5rem] shadow-md w-full"
+                        type="text"
+                        // name="phone"
+
+                        // onChange={handleInputChange}
+                        placeholder="Phone Number 2"
+                        className="py-1 px-4 text-base rounded-[5rem] shadow-md w-full bg-white cursor-not-allowed"
+                        defaultValue={inputData?.phoneWithCode}
+                        disabled
                       />
                     </div>
 
@@ -314,7 +318,7 @@ const ProfileSetting = () => {
                       <textarea
                         type="text"
                         name="short_bio"
-                        value={inputData?.short_bio}
+                        value={inputData?.short_bio || ""}
                         onChange={handleInputChange}
                         placeholder="Short Bio"
                         className="py-3 px-4 text-base rounded-3xl shadow-md w-full resize-none focus:outline-none h-40"

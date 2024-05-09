@@ -12,28 +12,28 @@ const JoinedEvent = () => {
   const [loading, setLoading] = useState(false);
   const { Axios } = useAxios();
   const state = useSelector((state) => state.auth);
-  const [uploadImages, setUploadImages] = useState([]);
-  const [profile_images, setProfileImages] = useState("");
+  // const [uploadImages, setUploadImages] = useState([]);
+  // const [profile_images, setProfileImages] = useState("");
   const [category, setCategory] = useState("");
   const [input, setInput] = useState("");
 
   const handleSelectChange = (e) => {
     setCategory(e.target.value);
   };
-  useEffect(() => {
-    setUploadImages(state?.user?.profile_images);
-    const profile = localStorage.getItem("profile_image");
-    if (!profile) {
-      setProfileImages(state?.user?.profile_images[0]);
-    }
-  }, []);
+  // useEffect(() => {
+  //   setUploadImages(state?.user?.profile_images);
+  //   const profile = localStorage.getItem("profile_image");
+  //   if (!profile) {
+  //     setProfileImages(state?.user?.profile_images[0]);
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    const profile = localStorage.getItem("profile_image");
-    if (profile) {
-      setProfileImages(JSON.parse(profile));
-    }
-  }, []);
+  // useEffect(() => {
+  //   const profile = localStorage.getItem("profile_image");
+  //   if (profile) {
+  //     setProfileImages(JSON.parse(profile));
+  //   }
+  // }, []);
 
   useEffect(() => {
     setLoading(true);

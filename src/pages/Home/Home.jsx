@@ -64,8 +64,10 @@ const Home = ({ loading }) => {
   const [invitedEvent, setInvitedEvent] = useState([]);
 
   useEffect(() => {
-    if (user?.phone) {
-      Axios.get(`/invited-event/${user?.phone}`)
+    if (user?.onlyPhone) {
+      Axios.get(
+        `/invited-event/phone=${user?.onlyPhone}&code=${user?.countryCode}`
+      )
         .then((res) => {
           setInvitedEvent(res.data?.data);
         })
@@ -73,7 +75,7 @@ const Home = ({ loading }) => {
           console.log(err);
         });
     }
-  }, [user?.phone]);
+  }, [user?.onlyPhone]);
 
   // useEffect(() => {
   //   const allEvents = async () => {
