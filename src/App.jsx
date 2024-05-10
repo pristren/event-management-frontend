@@ -19,13 +19,13 @@ import { useDispatch, useSelector } from "react-redux";
 import useAxios from "./Hooks/useAxios";
 import { userLoggedIn, userLoggedOut } from "./features/auth/authSlice";
 import JoinedEvent from "./pages/JoinedEvent/JoinedEvent";
+import Privacy from "./pages/Privacy/Page";
 
 function App() {
   const [isExpand, setIsExpand] = useState(false);
   const { accessToken } = useSelector((state) => state.auth);
   const [loading, setLoading] = useState(true);
   const { Axios } = useAxios();
-
 
   const dispatch = useDispatch();
 
@@ -45,11 +45,11 @@ function App() {
             accessToken: res.data?.data?.accessToken,
           })
         );
-      setLoading(false)
-    } catch (error) {
+        setLoading(false);
+      } catch (error) {
         localStorage.removeItem("authUser");
         dispatch(userLoggedOut());
-        setLoading(false)
+        setLoading(false);
       }
     };
     getUserInfo();
@@ -59,7 +59,8 @@ function App() {
     <MyProvider.Provider value={{ isExpand, setIsExpand }}>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Home loading={loading}/>} />
+          <Route index element={<Home loading={loading} />} />
+          <Route path="privacy-policy" element={<Privacy />} />
           <Route path="login" element={<Login />} />
           <Route path="sign-up" element={<SignUp />} />
           {/* <Route path="home-screen" element={<HomeScreen />} /> */}

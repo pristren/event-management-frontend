@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Filter from "./Filter";
 import HomeNavbar from "./HomeNavbar";
 import HomeSidebar from "./HomeSidebar";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import useAxios from "../../Hooks/useAxios";
 import { APIProvider, AdvancedMarker, Map } from "@vis.gl/react-google-maps";
@@ -148,6 +148,12 @@ const Home = ({ loading }) => {
         selectedBtn={selectedBtn}
         setSelectedBtn={setSelectedBtn}
       />
+      <Link
+        to={"/privacy-policy"}
+        className="absolute bottom-2 left-2 z-20 underline text-sm text-gray-800 "
+      >
+        @Privacy And Policy
+      </Link>
       <div className="flex">
         {state.user && (
           <HomeSidebar setIsExpand={setIsExpand} isExpand={isExpand} />
