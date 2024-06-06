@@ -98,33 +98,6 @@ export default function CreateEventModal({
                           />
                           <button onClick={copyToClipboard}>Copy</button>
                         </div>
-                        {/* <div className="grid grid-cols-4 gap-4">
-                          <button className="flex items-center justify-center ">
-                            <FacebookIcon className="w-10 h-10 text-blue-600 border p-2" />
-                            <span className="sr-only">Share on Facebook</span>
-                          </button>
-                          <button
-                            className="flex items-center justify-center"
-                            variant="outline"
-                          >
-                            <TwitterIcon className="w-10 h-10 text-blue-400 border p-2" />
-                            <span className="sr-only">Share on Twitter</span>
-                          </button>
-                          <button
-                            className="flex items-center justify-center"
-                            variant="outline"
-                          >
-                            <LinkedinIcon className="w-10 h-10 text-blue-700 border p-2" />
-                            <span className="sr-only">Share on LinkedIn</span>
-                          </button>
-                          <button
-                            className="flex items-center justify-center"
-                            variant="outline"
-                          >
-                            <MailIcon className="w-10 h-10 text-gray-500 border p-2" />
-                            <span className="sr-only">Share via Email</span>
-                          </button>
-                        </div> */}
                       </div>
                     </div>
                   </div>

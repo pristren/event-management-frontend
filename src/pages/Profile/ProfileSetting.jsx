@@ -14,12 +14,23 @@ import {
 } from "../../components/SVGIcons/Icons";
 // import axios from "axios";
 import useAxios from "../../Hooks/useAxios";
-import { userLoggedIn } from "../../features/auth/authSlice";
+import { userLoggedIn, userLoggedOut } from "../../features/auth/authSlice";
 import ImageUploader from "react-images-upload";
 import { toast } from "react-hot-toast";
 // import useMyEvent from "../../Hooks/useMyEvent";
 import { UserRound } from "lucide-react";
 import Loader from "@/components/Loader/Loader";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 
 const ProfileSetting = () => {
   const { Axios } = useAxios();
@@ -29,17 +40,47 @@ const ProfileSetting = () => {
   const state = useSelector((state) => state.auth);
   // console.log(state);
   const [inputData, setInputData] = useState({});
-  // const [verifyPin, setVerifyPin] = useState({
-  //   one: "",
-  //   two: "",
-  //   three: "",
-  //   four: "",
-  //   five: "",
-  // });
+
+  const dispatch = useDispatch();
+
+  const [password, setPassword] = useState("");
+
   const { isExpand, setIsExpand } = useContext(MyProvider);
 
-  console.log(inputData?.phoneWithCode);
-  // const { phone, setPhone, sendOtp } = useMyEvent();
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleDeleteAccount = async () => {
+    if (password === "") {
+      toast.error("Please enter your password.");
+      return;
+    }
+    setDeleteLoading(true);
+    await Axios.put(`/user/request/delete/${inputData?._id}`, {
+      password: password,
+      email: inputData?.email,
+    })
+      .then((res) => {
+        toast.success("Account deletion request sent successfully.");
+        setOpenModal(false);
+        localStorage.removeItem("authUser");
+        dispatch(userLoggedOut());
+        navigate("/login");
+      })
+      .catch((err) => {
+        if (err.response.status === 403) {
+          toast.error("Incorrect password.");
+        } else if (err.response.status === 404) {
+          toast.error("User not found.");
+        } else {
+          toast.error("Error while deleting the account.");
+        }
+      })
+      .finally(() => {
+        setDeleteLoading(false);
+        setPassword("");
+      });
+  };
 
   useEffect(() => {
     if (state.user) {
@@ -60,25 +101,6 @@ const ProfileSetting = () => {
   const [uploadImages, setUploadImages] = useState([]);
   const [profile_images, setProfileImages] = useState("");
   const API_KEY = "c8818fe821c0aee81ebf0b77344f0e2b";
-  // useEffect(() => {
-  //   setUploadImages(state?.user?.profile_images);
-  //   const profile = localStorage.getItem("profile_image");
-  //   if (!profile) {
-  //     setProfileImages(state?.user?.profile_images[0]);
-  //   }
-  //   if (state?.user?.profile_images?.length) {
-  //     setUpload(true);
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   const profile = localStorage.getItem("profile_image");
-  //   if (profile) {
-  //     setProfileImages(JSON.parse(profile));
-  //   }
-  // }, []);
-
-  const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(false);
 
@@ -370,10 +392,57 @@ const ProfileSetting = () => {
 
                 <button
                   onClick={handleSubmit}
-                  className="py-2 min-w-[14rem] bg-[black] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mt-10"
+                  className="py-2 min-w-[14rem] bg-[black] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mt-4"
                 >
                   <span>Update Profile</span>
                 </button>
+                <Dialog open={openModal} onOpenChange={setOpenModal}>
+                  <DialogTrigger asChild>
+                    <Button
+                      className="bg-red-100 text-red-500 hover:text-red-600 hover:bg-red-200 rounded-3xl mt-6"
+                      variant="outline"
+                    >
+                      Delete Account
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader className={"space-y-2"}>
+                      <DialogTitle>
+                        Are you sure you want to delete your account?
+                      </DialogTitle>
+                      <DialogDescription className=" text-gray-500">
+                        This action cannot be undone. This will permanently
+                        delete your account. Please type your password to
+                        confirm.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <DialogDescription>
+                      <Input
+                        type="password"
+                        className="w-full border rounded-lg px-3"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                      />
+                    </DialogDescription>
+                    <DialogFooter>
+                      <Button
+                        onClick={() => setOpenModal(false)}
+                        className=""
+                        variant="outline"
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        className=""
+                        variant="destructive"
+                        onClick={handleDeleteAccount}
+                      >
+                        Delete Account
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
               </div>
             </div>
 
@@ -418,143 +487,11 @@ const ProfileSetting = () => {
                             handleImgDelete={handleImgDelete}
                           />
                         ))}
-                      {/* {state?.user?.profile_images
-                        ?.filter(
-                          (obj, index, array) =>
-                            array.findIndex((item) => item === obj) === index
-                        )
-                        ?.map((img, i) => (
-                          <VeryCard
-                            key={i}
-                            img={img}
-                            handleImgChange={handleImgChange}
-                            handleImgDelete={handleImgDelete}
-                          />
-                        ))} */}
+
                       {loading && <div>loading...</div>}
                     </div>
-                    {/* <div className="w-[80%] mx-auto flex justify-between items-center gap-2 rounded-3xl text-lg min-w-[15rem] bg-white shadow-md px-1 overflow-hidden mt-8 mb-2">
-                    <span className="bg-[black] text-white px-1 py-1 rounded-full w-7 h-7 flex justify-center items-center">
-                      {lockIcon}
-                    </span>
-
-                    <input
-                      onChange={(e) => setPhone(e.target.value)}
-                      type="text"
-                      value={phone}
-                      placeholder="Phone Verification"
-                      className="py-2 px-4 text-base w-full outline-none border-none"
-                    />
-                  </div>
-                  <div className="">
-                    <button
-                      type="button"
-                      id="sign-in-button"
-                      // onClick={sendOtp}
-                      className="py-2 min-w-[14rem] bg-[black] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mx-auto mb-4"
-                    >
-                      <span>Send Otp</span>
-                    </button>
-                  </div>
-                  <div>
-                    <div className="flex gap-1 text-center justify-center items-center">
-                      <input
-                        onKeyDown={(e) => (e.target.value = "")}
-                        onKeyUp={(e) => {
-                          {
-                            setVerifyPin({ ...verifyPin, one: e.target.value });
-                            e.target.value = Array(e.target.value.length).fill(
-                              "*"
-                            );
-                          }
-                        }}
-                        maxLength="1"
-                        require="true"
-                        type="text"
-                        className="text-2xl px-1 w-[2.5rem] h-[3rem] rounded-xl border-[2px] border-gray-400 text-center flex justify-center items-center "
-                      />
-                      <input
-                        onKeyDown={(e) => (e.target.value = "")}
-                        onKeyUp={(e) => {
-                          {
-                            setVerifyPin({ ...verifyPin, two: e.target.value });
-                            e.target.value = Array(e.target.value.length).fill(
-                              "*"
-                            );
-                          }
-                        }}
-                        maxLength="1"
-                        require="true"
-                        type="text"
-                        className="text-2xl px-1 w-[2.5rem] h-[3rem] rounded-xl border-[2px] border-gray-400 text-center flex justify-center items-center "
-                      />
-                      <input
-                        onKeyDown={(e) => {
-                          e.target.value = "";
-                        }}
-                        onKeyUp={(e) => {
-                          {
-                            setVerifyPin({
-                              ...verifyPin,
-                              three: e.target.value,
-                            });
-                            e.target.value = Array(e.target.value.length).fill(
-                              "*"
-                            );
-                          }
-                        }}
-                        maxLength="1"
-                        require="true"
-                        type="text"
-                        className="text-2xl px-1 w-[2.5rem] h-[3rem] rounded-xl border-[2px] border-gray-400 text-center flex justify-center items-center"
-                      />
-                      <input
-                        onKeyDown={(e) => (e.target.value = "")}
-                        onKeyUp={(e) => {
-                          {
-                            setVerifyPin({
-                              ...verifyPin,
-                              four: e.target.value,
-                            });
-                            e.target.value = Array(e.target.value.length).fill(
-                              "*"
-                            );
-                          }
-                        }}
-                        maxLength="1"
-                        require="true"
-                        type="text"
-                        className="text-2xl px-1 w-[2.5rem] h-[3rem] rounded-xl border-[2px] border-gray-400 text-center flex justify-center items-center"
-                      />
-                      <input
-                        onKeyDown={(e) => (e.target.value = "")}
-                        onKeyUp={(e) => {
-                          {
-                            setVerifyPin({
-                              ...verifyPin,
-                              five: e.target.value,
-                            });
-                            e.target.value = Array(e.target.value.length).fill(
-                              "*"
-                            );
-                          }
-                        }}
-                        maxLength="1"
-                        require="true"
-                        type="text"
-                        className="text-2xl px-1 w-[2.5rem] h-[3rem] rounded-xl border-[2px] border-gray-400 text-center flex justify-center items-center"
-                      />
-                    </div>
-                  </div> */}
                   </div>
                 </div>
-
-                {/* <button
-                // onClick={handleSubmit}
-                className="py-2 min-w-[14rem] bg-[black] px-3 flex items-center justify-center relative rounded-3xl text-lg text-white shadow-md text-center mt-10"
-              >
-                <span>Verify Phone</span>
-              </button> */}
               </div>
             </div>
           </div>

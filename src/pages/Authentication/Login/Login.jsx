@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import useAxios from "../../../Hooks/useAxios";
 import { useLoginMutation } from "../../../features/auth/authApi";
 import { Loader2 } from "lucide-react";
+import { useDispatch } from "react-redux";
 
 const loginIcons = (
   <svg
@@ -61,6 +62,8 @@ const Login = () => {
     rememberMe: "",
   });
 
+  const dispatch = useDispatch();
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -71,6 +74,14 @@ const Login = () => {
         const newData = { email: userName, password };
         login(newData).then((res) => {
           if (res?.data) {
+            if (res.data?.data?.user?.deleteRequest) {
+              toast.error(
+                "Your account has been requested for deletion. Please contact to support or create a new account."
+              );
+              localStorage.removeItem("authUser");
+
+              return;
+            }
             toast.success("Login Successful");
             navigate("/");
           } else {
