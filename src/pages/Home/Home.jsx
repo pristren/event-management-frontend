@@ -538,12 +538,7 @@ const Home = ({ loading }) => {
             )}
         </div>
       </div>
-      <Filter
-        selected2={selected2}
-        setSelected2={setSelected2}
-        // dateSelect={dateSelect}
-        // setDateSelect={setDateSelect}
-      />
+      <Filter selected2={selected2} setSelected2={setSelected2} />
     </div>
   );
 };

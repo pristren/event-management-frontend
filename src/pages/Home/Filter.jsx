@@ -170,13 +170,13 @@ const Filter = ({ selected2, setSelected2 }) => {
   const { user } = state || {};
   const filterBtn = (
     <div className="block truncate text-gray-400">
-      <button
+      <div
         className="bg-[black] text-white p-4 rounded-2xl flex items-center gap-2"
         // className="bg-[#1BB6E-D--- ] text-white p-4 rounded-l-2xl flex items-center gap-2"
       >
         <span>{funnelIcons}</span>
         <span>Basketball Category</span>
-      </button>
+      </div>
     </div>
   );
   const [dateSelect, setDateSelect] = useState([
@@ -208,33 +208,7 @@ const Filter = ({ selected2, setSelected2 }) => {
                       : "border-[#E5E7EC] "
                   } focus:outline-none flex gap-2`}
                 >
-                  <span className="flex gap-2 items-center">
-                    {filterBtn}
-                    {/* {selected2?.length
-                      ? selected2?.map((s, i) => {
-                          return (
-                            <span
-                              key={i}
-                              className="inline-flex truncate bg-[black] text-white px-3 py-2 rounded-2xl items-center gap-1 text-sm"
-                            >
-                              <span> {s.name}</span>
-
-                              <span
-                                onClick={() => {
-                                  const res = selected2.filter(
-                                    (sl) => sl.name !== s.name
-                                  );
-                                  setSelected2(res);
-                                }}
-                                className="w-5 h-5"
-                              >
-                                {closeIcons}
-                              </span>
-                            </span>
-                          );
-                        })
-                      : ""} */}
-                  </span>
+                  <span className="flex gap-2 items-center">{filterBtn}</span>
                 </Listbox.Button>
                 <div>
                   <Transition
@@ -285,17 +259,12 @@ const Filter = ({ selected2, setSelected2 }) => {
               </div>
             </Listbox>
           </div>
-
-          {/* <button className="bg-[black] text-white p-4 rounded-2xl">
-            {" "}
-            {searchIcons}{" "}
-          </button> */}
         </div>
       </div>
       {/* calendar */}
       <div
-        className={`absolute top-[80px] lg:top-[130px] left-2 ${
-          user ? "lg:left-72" : "lg:left-5"
+        className={`absolute top-[80px] md:top-[130px] left-2 ${
+          user ? "md:left-[16rem]" : "md:left-5"
         } rounded-2xl flex`}
       >
         <Listbox value={dateSelect} onChange={setDateSelect} multiple>

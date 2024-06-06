@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import useAxios from "../../../Hooks/useAxios";
 import { useLoginMutation } from "../../../features/auth/authApi";
+import { Loader2 } from "lucide-react";
 
 const loginIcons = (
   <svg
@@ -62,6 +63,7 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     const { userName, password, rememberMe } = loginData;
 
     if (userName && password) {
@@ -75,37 +77,13 @@ const Login = () => {
             toast.error(`Email and Password did not matched!`);
           }
         });
-        // Axios.post("/user/login", newData)
-        //   .then((res) => {
-        //     if (res.status == 201) {
-        //       const response = res?.data?.data;
-        //       const user = {
-        //         token: response?.accessToken,
-        //         data: {
-        //           email: response?.user?.email,
-        //           _id: response?.user?._id,
-        //           name: `${response?.user?.firstName} ${response?.user?.lastName}`,
-        //         },
-        //       };
-        //       localStorage.setItem("user", JSON.stringify(user));
-        //       toast.success("Login Successful");
-        //       navigate("/");
-        //     }
-        //   })
-        //   .catch((err) => {
-        //     console.log("err ", err);
-        //     toast.error(err?.message);
-        //   });
+      } else {
+        toast.error("Please fill all the fields");
       }
+    } else {
+      toast.error("Please fill all the fields");
     }
   };
-
-  // const localUser = JSON.parse(localStorage.getItem("user"));
-  // useEffect(() => {
-  //   if (localUser?.token) {
-  //     navigate("/");
-  //   }
-  // }, []);
 
   return (
     <div className="max-w-7xl mx-auto">
@@ -135,7 +113,7 @@ const Login = () => {
                       onKeyUp={(e) =>
                         setLoginData({ ...loginData, userName: e.target.value })
                       }
-                      placeholder="Email / Username"
+                      placeholder="Email"
                     />
                   </div>
 
@@ -183,9 +161,13 @@ const Login = () => {
 
                   <button
                     type="submit"
-                    className="flex relative rounded-xl text-lg max-w-[10rem] w-full bg-[black]  text-white  shadow-primary text-center py-[0.3rem] transition duration-300 uppercase mt-10 mx-auto"
+                    className="flex relative rounded-xl text-lg max-w-[10rem] w-full bg-[black]  text-white  shadow-primary text-center py-[0.3rem] transition duration-300 uppercase mt-10 mx-auto items-center gap-2 justify-center disabled:opacity-50 disabled:cursor-auto"
+                    disabled={isLoading}
                   >
-                    <span className="mx-auto text-lg"> Login </span>
+                    {isLoading && (
+                      <Loader2 className="animate-spin" size={20} />
+                    )}
+                    <span className=" text-lg"> Login </span>
                   </button>
                 </div>
               </form>
@@ -193,7 +175,7 @@ const Login = () => {
               <p className="text-base mt-6">
                 I don't have an account.
                 <Link
-                  className="text-[black] hover:underline select-none ml-2 min-w-max "
+                  className="text-[black] underline select-none ml-2 min-w-max "
                   to="/sign-up"
                 >
                   I want to open a new account

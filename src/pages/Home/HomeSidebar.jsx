@@ -23,14 +23,13 @@ const HomeSidebar = ({ isExpand, setIsExpand }) => {
   return (
     <React.Fragment>
       <div
-        className={`max-w-[250px] w-full h-screen p-5 pt-9 bg-white border-r fixed top-0 sm:static transition-all ${
+        className={`max-w-[250px] w-full h-screen p-5 pt-9 bg-white border-r fixed top-0 md:static transition-all ${
           isExpand ? "left-0" : "-left-[1000px]"
         } z-[9999] transition-all`}
         ref={expandUserMenuRef}
       >
         <div className="flex justify-center flex-col items-center mb-12 md:hidden">
           <img src={Logo} alt="" className="w-[120px] " />
-          {/* <p className="font-semibold text-lg -mt-4">Pin</p> */}
         </div>
         <ul className="flex flex-col gap-5">
           <li>
@@ -108,31 +107,6 @@ const HomeSidebar = ({ isExpand, setIsExpand }) => {
             </Link>
           </li>
 
-          {/* <li>
-            <Link
-              to={"/chat-and-calls"}
-              className="flex items-center gap-3 cursor-pointer font-semibold"
-            >
-              <span>
-                <svg
-                  stroke="currentColor"
-                  fill="#9E9E9E"
-                  strokeWidth="0"
-                  viewBox="0 0 16 16"
-                  height="20px"
-                  width="20px"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M2.678 11.894a1 1 0 0 1 .287.801 10.97 10.97 0 0 1-.398 2c1.395-.323 2.247-.697 2.634-.893a1 1 0 0 1 .71-.074A8.06 8.06 0 0 0 8 14c3.996 0 7-2.807 7-6 0-3.192-3.004-6-7-6S1 4.808 1 8c0 1.468.617 2.83 1.678 3.894zm-.493 3.905a21.682 21.682 0 0 1-.713.129c-.2.032-.352-.176-.273-.362a9.68 9.68 0 0 0 .244-.637l.003-.01c.248-.72.45-1.548.524-2.319C.743 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.52.263-1.639.742-3.468 1.105z"></path>
-                  <path d="M4 5.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8zm0 2.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5z"></path>
-                </svg>
-              </span>
-              <span className="text-[#9E9E9E] hover:text-[black]">
-                Chat and calls
-              </span>
-            </Link>
-          </li> */}
-
           <li>
             <Link
               to={"/my-events"}
@@ -203,29 +177,6 @@ const HomeSidebar = ({ isExpand, setIsExpand }) => {
               </span>
             </Link>
           </li>
-          {/* <li>
-            <Link
-              to={"/event-details"}
-              className="flex items-center gap-3 cursor-pointer font-semibold"
-            >
-              <span>
-                <svg
-                  stroke="currentColor"
-                  fill="#9E9E9E"
-                  strokeWidth="0"
-                  viewBox="0 0 24 24"
-                  height="23px"
-                  width="23px"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M3 2H19.0049C20.1068 2 21 2.89821 21 3.9908V20.0092C21 21.1087 20.1074 22 19.0049 22H3V2ZM7 4H5V20H7V4ZM9 20H19V4H9V20ZM11 16C11 14.3431 12.3431 13 14 13C15.6569 13 17 14.3431 17 16H11ZM14 12C12.8954 12 12 11.1046 12 10C12 8.89543 12.8954 8 14 8C15.1046 8 16 8.89543 16 10C16 11.1046 15.1046 12 14 12ZM22 6H24V10H22V6ZM22 12H24V16H22V12Z"></path>
-                </svg>
-              </span>
-              <span className="text-[#9E9E9E] hover:text-[black]">
-                Event details
-              </span>
-            </Link>
-          </li> */}
         </ul>
       </div>
     </React.Fragment>
