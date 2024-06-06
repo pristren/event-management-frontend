@@ -26,6 +26,18 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import Autoplay from "embla-carousel-autoplay";
 import Loader from "@/components/Loader/Loader";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
+import { Button } from "@/components/ui/button";
+import toast from "react-hot-toast";
 
 const EventDetails = () => {
   const { user } = useSelector((state) => state?.auth);
@@ -40,7 +52,6 @@ const EventDetails = () => {
   const navigate = useNavigate();
   const { isExpand, setIsExpand } = useContext(MyProvider);
   const { id } = useParams();
-
 
   function handleCloseModal() {
     setOpenModal(false);
@@ -176,6 +187,37 @@ const EventDetails = () => {
     setEvents(updatedEventData);
   };
 
+  const [reportState, setReportState] = useState(false);
+
+  const handleReport = async (eventId, description, eventCreator) => {
+    if (!user?._id) {
+      // router.push("/(modals)/modal_auth");
+      alert("You are not logged in");
+      return;
+    }
+    await Axios.post("/report/event", {
+      eventId,
+      description,
+      reportedBy: user?.firstName + " " + user?.lastName,
+      eventCreator,
+      reportedByUser: user?._id,
+    })
+      .then((res) => {
+        if (res.status === 201) {
+          const already = JSON.parse(localStorage.getItem("report")) || [];
+
+          already.push(eventId);
+
+          localStorage.setItem("report", JSON.stringify(already));
+
+          setReportState(true);
+        }
+      })
+      .catch((err) => {
+        toast.error("Something went wrong");
+      });
+  };
+
   return (
     <section className="flex">
       {openModal && (
@@ -214,7 +256,7 @@ const EventDetails = () => {
           <h1 className="text-[black] font-bold text-xl md:text-2xl">
             Event details
           </h1>
-          <Profile profile_images={state?.user?.currentProfile}/>
+          <Profile profile_images={state?.user?.currentProfile} />
         </div>
         {!loading ? (
           <div className="p-6">
@@ -249,8 +291,6 @@ const EventDetails = () => {
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              {/* <CarouselPrevious />
-              <CarouselNext /> */}
             </Carousel>
 
             <div>
@@ -288,44 +328,6 @@ const EventDetails = () => {
                       <span>Add</span>
                     </button>
                   )}
-                  {/* {user &&
-                  events?.alreadyLiked?.find((v) => v === user?._id) ? (
-                    <button
-                      className="cursor-pointer"
-                      onClick={() => handleLike(events?._id)}
-                    >
-                      <ThumbsUp
-                        className={`w-7 h-7 rounded-md ${
-                          !like ? "bg-blue-500 p-[3px]  text-white" : ""
-                        }`}
-                      />
-                    </button>
-                  ) : user &&
-                    events?.alreadyLiked?.find((v) => v !== user?._id) ? (
-                    <button onClick={() => handleLike(events?._id)}>
-                      <ThumbsUp
-                        className={`rounded-md w-7 h-7 ${
-                          !like ? "bg-blue-500 p-[3px]  text-white" : ""
-                        }`}
-                      />
-                    </button>
-                  ) : user && events?.alreadyLiked?.length === 0 ? (
-                    <button onClick={() => handleLike(events?._id)}>
-                      <ThumbsUp
-                        className={`rounded-md w-7 h-7 ${
-                          !like ? "bg-blue-500 p-[3px]  text-white" : ""
-                        }`}
-                      />
-                    </button>
-                  ) : (
-                    <button onClick={() => navigate("/login")}>
-                      <ThumbsUp
-                        className={`rounded-md w-7 h-7 ${
-                          !like ? "bg-blue-500 p-[3px]  text-white" : ""
-                        }`}
-                      />
-                    </button>
-                  )} */}
 
                   {user &&
                   events?.alreadyLiked?.find((v) => v === user?._id) ? (
@@ -440,8 +442,8 @@ const EventDetails = () => {
                       <img
                         src={
                           firstUser?.profile_images?.length
-                          ? firstUser?.profile_images[0]
-                          : Image
+                            ? firstUser?.profile_images[0]
+                            : Image
                         }
                         alt=""
                         className="w-[40px] h-[40px] rounded-full object-cover"
@@ -571,12 +573,166 @@ const EventDetails = () => {
                     </div>
                   )}
               </div>
+
+              <Drawer>
+                {localStorage.getItem("report")?.includes(events?._id) ? (
+                  <div>
+                    <div className="mt-5 flex justify-end gap-2 items-center cursor-auto">
+                      <p className="underline">Reporte this event.</p>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="text-gray-500 w-6 h-6"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M3 3v1.5M3 21v-6m0 0 2.77-.693a9 9 0 0 1 6.208.682l.108.054a9 9 0 0 0 6.086.71l3.114-.732a48.524 48.524 0 0 1-.005-10.499l-3.11.732a9 9 0 0 1-6.085-.711l-.108-.054a9 9 0 0 0-6.208-.682L3 4.5M3 15V4.5"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                ) : (
+                  <DrawerTrigger asChild>
+                    <div className="mt-5 flex justify-end gap-2 items-center cursor-pointer">
+                      <p className="underline">Report this event.</p>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="text-red-500 w-6 h-6"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M3 3v1.5M3 21v-6m0 0 2.77-.693a9 9 0 0 1 6.208.682l.108.054a9 9 0 0 0 6.086.71l3.114-.732a48.524 48.524 0 0 1-.005-10.499l-3.11.732a9 9 0 0 1-6.085-.711l-.108-.054a9 9 0 0 0-6.208-.682L3 4.5M3 15V4.5"
+                        />
+                      </svg>
+                    </div>
+                  </DrawerTrigger>
+                )}
+
+                <DrawerContent className="focus-within:outline-none">
+                  {reportState ? (
+                    <div className="p-6 max-w-lg mx-auto">
+                      <p className="text-center text-lg font-medium mt-4">
+                        Thanks for sharing your feedback!
+                      </p>
+                      <p className="mt-5 text-center text-md leading-5">
+                        We'll review your report to determine whether there have
+                        been a violation of our Community Guidelines. If you
+                        have any further questions or concerns, please contact
+                        us at dailyframe@gmail.com
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="">
+                      <DrawerHeader>
+                        <DrawerTitle className="text-xl">
+                          Report event
+                        </DrawerTitle>
+                        <DrawerDescription className="text-lg font-medium ">
+                          Why you are reporting this content?
+                        </DrawerDescription>
+                      </DrawerHeader>
+                      <DrawerDescription className="space-y-2 p-4 ">
+                        <p
+                          className="cursor-pointer hover:bg-gray-200 p-2 w-min whitespace-nowrap rounded-md"
+                          onClick={() =>
+                            handleReport(
+                              events?._id,
+                              "I find it offensive",
+                              events?.userId
+                            )
+                          }
+                        >
+                          I find it offensive
+                        </p>
+                        <p
+                          className="cursor-pointer hover:bg-gray-200 p-2 w-min whitespace-nowrap rounded-md"
+                          onClick={() =>
+                            handleReport(
+                              events?._id,
+                              "It's a spam",
+                              events?.userId
+                            )
+                          }
+                        >
+                          It's a spam
+                        </p>
+                        <p
+                          className="cursor-pointer hover:bg-gray-200 p-2 w-min whitespace-nowrap rounded-md"
+                          onClick={() =>
+                            handleReport(
+                              events?._id,
+                              "It sexually inappropriate",
+                              events?.userId
+                            )
+                          }
+                        >
+                          It sexually inappropriate
+                        </p>
+                        <p
+                          className="cursor-pointer hover:bg-gray-200 p-2 w-min whitespace-nowrap rounded-md"
+                          onClick={() =>
+                            handleReport(
+                              events?._id,
+                              "It's a scam or its misleading",
+                              events?.userId
+                            )
+                          }
+                        >
+                          It's a scam or its misleading
+                        </p>
+                        <p
+                          className="cursor-pointer hover:bg-gray-200 p-2 w-min whitespace-nowrap rounded-md"
+                          onClick={() =>
+                            handleReport(
+                              events?._id,
+                              "It's violent or prohibited content",
+                              events?.userId
+                            )
+                          }
+                        >
+                          It's violent or prohibited content
+                        </p>
+                        <p
+                          className="cursor-pointer hover:bg-gray-200 p-2 w-min whitespace-nowrap rounded-md"
+                          onClick={() =>
+                            handleReport(
+                              events?._id,
+                              "It's violates my intellectual property rights",
+                              events?.userId
+                            )
+                          }
+                        >
+                          {" "}
+                          It's violates my intellectual property rights
+                        </p>
+                        <p
+                          className="cursor-pointer hover:bg-gray-200 p-2 w-min whitespace-nowrap rounded-md"
+                          onClick={() =>
+                            handleReport(events?._id, "Others", events?.userId)
+                          }
+                        >
+                          Others
+                        </p>
+                      </DrawerDescription>
+                    </div>
+                  )}
+                </DrawerContent>
+              </Drawer>
             </div>
           </div>
         ) : (
           <div className="min-h-full">
-        <Loader></Loader>
-      </div>
+            <Loader></Loader>
+          </div>
         )}
       </div>
     </section>

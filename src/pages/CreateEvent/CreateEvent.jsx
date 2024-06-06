@@ -755,6 +755,9 @@ const CreateEvent = () => {
       inputData?.event_clubName !== "" &&
       inputData?.category !== ""
     ) {
+      if (user?.blocked) {
+        return toast.error("You are blocked from creating events");
+      }
       const newData = {
         userId: user?._id,
         event_images: multipleImages,
@@ -850,7 +853,6 @@ const CreateEvent = () => {
     setOpenModal(true);
   }
 
-
   const onDrop = async (pictureFiles) => {
     setFileUploadLoading(true);
     // setPictures(pictureFiles);
@@ -881,8 +883,6 @@ const CreateEvent = () => {
     setEndDate();
   };
 
-  
-
   return (
     <div className="flex ">
       {openModal && (
@@ -911,7 +911,7 @@ const CreateEvent = () => {
             </svg>
           </span>
           <h1 className="text-[black] font-bold text-2xl">Event creation</h1>
-          <Profile profile_images={user?.currentProfile}/>
+          <Profile profile_images={user?.currentProfile} />
         </div>
 
         <div className="min-h-screen bg-[#F2F6FF] py-10 px-5 grid items-stretch grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-10">
