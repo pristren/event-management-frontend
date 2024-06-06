@@ -330,7 +330,7 @@ const ProfileSetting = () => {
 
                         // onChange={handleInputChange}
                         placeholder="Phone Number 2"
-                        className="py-1 px-4 text-base rounded-[5rem] shadow-md w-full bg-white cursor-not-allowed"
+                        className="py-1 px-4 text-base rounded-[5rem] shadow-md w-full bg-white cursor-not-allowed disabled:opacity-60"
                         defaultValue={inputData?.phoneWithCode}
                         disabled
                       />

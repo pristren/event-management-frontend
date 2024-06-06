@@ -30,7 +30,27 @@ const InvitedEvents = () => {
         `/invited-event/phone=${user?.onlyPhone}&code=${user?.countryCode}`
       )
         .then((res) => {
-          setInvitedEvents(res.data?.data);
+          if (user?.blocked_users?.length > 0) {
+            const filtered = res.data?.data?.filter(
+              (e) => !user?.blocked_users?.includes(e?.userId)
+            );
+            setInvitedEvents(
+              filtered.sort(
+                (a, b) =>
+                  new Date(b.event_date.date_start) -
+                  new Date(a.event_date.date_start)
+              )
+            );
+          } else {
+            setInvitedEvents(
+              res.data?.data.sort(
+                (a, b) =>
+                  new Date(b.event_date.date_start) -
+                  new Date(a.event_date.date_start)
+              )
+            );
+          }
+          // setInvitedEvents(res.data?.data);
         })
         .catch((err) => {
           console.log(err);
@@ -49,23 +69,6 @@ const InvitedEvents = () => {
       }
     }
   }, [user?.onlyPhone]);
-  // useEffect(() => {
-  //   setLoading(true);
-  //   const allEvents = async () => {
-  //     const res = await Axios.get("/all-events");
-  //     const data = await res.data;
-  //     console.log(data?.data);
-  //     setInvitedEvent(
-  //       data?.data?.filter(
-  //         (event) =>
-  //           event?.joinedPeople?.find((v) => v === user?.email) &&
-  //           event?.userId !== user._id
-  //       )
-  //     );
-  //     setLoading(false);
-  //   };
-  //   allEvents();
-  // }, []);
 
   return (
     <section className="flex">
