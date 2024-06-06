@@ -575,9 +575,21 @@ const EventDetails = () => {
               </div>
 
               <Drawer>
-                {localStorage.getItem("report")?.includes(events?._id) ? (
-                  <div>
-                    <div className="mt-5 flex justify-end gap-2 items-center cursor-auto">
+                {localStorage.getItem("report")?.includes(events?._id) ||
+                events?.userId === user?._id ? (
+                  <div
+                    onClick={() =>
+                      events?.userId === user?._id &&
+                      toast.error("You can't report your own event")
+                    }
+                  >
+                    <div
+                      className={`mt-5 flex justify-end gap-2 items-center ${
+                        events?.userId === user?._id
+                          ? "cursor-pointer"
+                          : "cursor-auto"
+                      }`}
+                    >
                       <p className="underline">Reporte this event.</p>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
