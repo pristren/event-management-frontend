@@ -9,6 +9,7 @@ import { APIProvider, AdvancedMarker, Map } from "@vis.gl/react-google-maps";
 import moment from "moment";
 import mapIcon from "../../assets/logo-white-bg-removebg-preview.png";
 import Loader from "@/components/Loader/Loader";
+import { X } from "lucide-react";
 
 const Home = ({ loading }) => {
   const { Axios } = useAxios();
@@ -87,43 +88,49 @@ const Home = ({ loading }) => {
   const { date } = useSelector((state) => state.layout);
   // console.log(date);
 
-  const today = new Date();
+  const today = moment();
 
-  // Calculate two days from now
-  const twoDaysLater = new Date();
-  twoDaysLater.setDate(
+  const twoDaysLater = moment();
+  twoDaysLater.add(
     date.find((d) => d.name === "This Week") !== undefined
-      ? today.getDate() + 6
+      ? 7
       : date.find((d) => d.name === "Tomorrow") !== undefined
-      ? today.getDate() + 1
+      ? 1
       : date.find((d) => d.name === "Today") !== undefined
-      ? today.getDate()
-      : today.getDate() + 180
+      ? 0
+      : 180,
+    "days"
   );
-  // console.log(twoDaysLater);
 
   // Filter events within today and the next two days
   const upcomingEvents = events.filter((event) => {
-    // console.log(event?.event_date?.date_start);
     return (
-      (moment(event?.event_date?.date_start).format("YYYY-MM-DD") >=
-        moment(today).format("YYYY-MM-DD") ||
-        moment(event?.event_date?.date_end).format("YYYY-MM-DD") >=
-          moment(today).format("YYYY-MM-DD")) &&
-      moment(event?.event_date?.date_end).format("YYYY-MM-DD") <=
-        moment(twoDaysLater).format("YYYY-MM-DD")
+      (moment(event?.event_date?.date_start).isSameOrAfter(today, "date") ||
+        moment(event?.event_date?.date_end).isSameOrAfter(today, "date")) &&
+      // (
+      moment(event?.event_date?.date_end).isSameOrBefore(twoDaysLater, "date")
+      //  ||
+      //   moment(event?.event_date?.date_start).isSameOrBefore(
+      //     twoDaysLater,
+      //     "date"
+      //   )
+      // )
     );
   });
 
   const upcomingEventsInvited = invitedEvent.filter((event) => {
     // console.log(event?.event_date?.date_start);
     return (
-      (moment(event?.event_date?.date_start).format("YYYY-MM-DD") >=
-        moment(today).format("YYYY-MM-DD") ||
-        moment(event?.event_date?.date_end).format("YYYY-MM-DD") >=
-          moment(today).format("YYYY-MM-DD")) &&
-      moment(event?.event_date?.date_end).format("YYYY-MM-DD") <=
-        moment(twoDaysLater).format("YYYY-MM-DD")
+      (moment(event?.event_date?.date_start).isSameOrAfter(today, "date") ||
+        moment(event?.event_date?.date_end).isSameOrAfter(today, "date")) &&
+      // (
+      moment(event?.event_date?.date_end).isSameOrBefore(twoDaysLater, "date")
+      //  ||
+      //   moment(event?.event_date?.date_start).isSameOrBefore(
+      //     twoDaysLater,
+      //     "date"
+      //   )
+      // )
     );
   });
   if (loading) {
@@ -156,10 +163,9 @@ const Home = ({ loading }) => {
         <div
           style={{ height: "100vh", width: "100%" }}
           onClick={() => {
-            setPopOver({
-              ...popover,
-              popover: false,
-            });
+            // setPopOver({
+            //   ...popover,
+            // });
           }}
         >
           {userLocation?.center?.lat !== undefined &&
@@ -207,7 +213,7 @@ const Home = ({ loading }) => {
                                   }}
                                   onClick={() =>
                                     setPopOver({
-                                      popover: !popover?.popover,
+                                      popover: true,
                                       id: event?._id,
                                     })
                                   }
@@ -223,25 +229,47 @@ const Home = ({ loading }) => {
                                   {/* </div> */}
                                   {popover?.popover &&
                                     popover.id === event._id && (
-                                      <div className="grid grid-cols-2 absolute z-10">
-                                        <div
-                                          className="!bg-white w-96 !z-[9999] py-6 px-4 text-lg -translate-x-[40%] rounded-lg shadow-2xl shadow-blue-300 h-36 text-center mt-2 flex items-center gap-2"
-                                          onClick={() =>
-                                            navigate(
-                                              `/event-details/${event?._id}`
-                                            )
-                                          }
-                                        >
-                                          <div className="h-20 w-20 ring-2 ring-black rounded-full p-1">
-                                            <img
-                                              src={
-                                                event?.event_images[0]?.image
-                                              }
-                                              className="w-full h-full rounded-full   object-cover "
+                                      <div className="grid grid-cols-2 absolute !z-[10]">
+                                        <div className="!bg-white w-96 !z-[9999] py-6 px-4 text-lg -translate-x-[40%] rounded-lg shadow-2xl shadow-blue-300 h-36 text-center mt-2 flex items-center gap-2">
+                                          <div className="absolute right-4 top-4">
+                                            <X
+                                              onClick={(e) => {
+                                                e.stopPropagation();
+                                                setPopOver({
+                                                  popover: false,
+                                                  id: "",
+                                                });
+                                              }}
                                             />
                                           </div>
+                                          <div
+                                            onClick={() =>
+                                              navigate(
+                                                `/event-details/${event?._id}`
+                                              )
+                                            }
+                                            className="h-20 w-20 ring-2 ring-black rounded-full p-1"
+                                          >
+                                            {event?.event_images[0]?.image ? (
+                                              <img
+                                                src={
+                                                  event?.event_images[0]?.image
+                                                }
+                                                className="w-full h-full rounded-full  object-cover "
+                                              />
+                                            ) : (
+                                              <p>no images</p>
+                                            )}
+                                          </div>
 
-                                          <div className="w-[60%]">
+                                          <div
+                                            onClick={() =>
+                                              navigate(
+                                                `/event-details/${event?._id}`
+                                              )
+                                            }
+                                            className="w-[60%]"
+                                          >
                                             <p>
                                               {event?.event_title?.length > 20
                                                 ? event?.event_title?.slice(
@@ -299,12 +327,12 @@ const Home = ({ loading }) => {
                                   lat: Number(event.mapLocation?.lat),
                                   lng: Number(event.mapLocation?.lng),
                                 }}
-                                onClick={() =>
+                                onClick={() => {
                                   setPopOver({
-                                    popover: !popover?.popover,
+                                    popover: true,
                                     id: event?._id,
-                                  })
-                                }
+                                  });
+                                }}
                               >
                                 {/* <div className="bg-white p-2 rounded-lg rotate-45 shadow-blue-300 shadow-2xl text-center"> */}
                                 <img
@@ -318,15 +346,26 @@ const Home = ({ loading }) => {
                                 {popover?.popover &&
                                   popover.id === event._id && (
                                     <div className="grid grid-cols-2 absolute !z-[10]">
-                                      <div
-                                        className="!bg-white w-96 !z-[9999] py-6 px-4 text-lg -translate-x-[40%] rounded-lg shadow-2xl shadow-blue-300 h-36 text-center mt-2 flex items-center gap-2"
-                                        onClick={() =>
-                                          navigate(
-                                            `/event-details/${event?._id}`
-                                          )
-                                        }
-                                      >
-                                        <div className="h-20 w-20 ring-2 ring-black rounded-full p-1">
+                                      <div className="!bg-white w-96 !z-[9999] py-6 px-4 text-lg -translate-x-[40%] rounded-lg shadow-2xl shadow-blue-300 h-36 text-center mt-2 flex items-center gap-2">
+                                        <div className="absolute right-4 top-4">
+                                          <X
+                                            onClick={(e) => {
+                                              e.stopPropagation();
+                                              setPopOver({
+                                                popover: false,
+                                                id: "",
+                                              });
+                                            }}
+                                          />
+                                        </div>
+                                        <div
+                                          onClick={() =>
+                                            navigate(
+                                              `/event-details/${event?._id}`
+                                            )
+                                          }
+                                          className="h-20 w-20 ring-2 ring-black rounded-full p-1"
+                                        >
                                           {event?.event_images[0]?.image ? (
                                             <img
                                               src={
@@ -339,7 +378,14 @@ const Home = ({ loading }) => {
                                           )}
                                         </div>
 
-                                        <div className="w-[60%]">
+                                        <div
+                                          onClick={() =>
+                                            navigate(
+                                              `/event-details/${event?._id}`
+                                            )
+                                          }
+                                          className="w-[60%]"
+                                        >
                                           <p>
                                             {event?.event_title?.length > 20
                                               ? event?.event_title?.slice(
@@ -424,7 +470,7 @@ const Home = ({ loading }) => {
                                   }}
                                   onClick={() =>
                                     setPopOver({
-                                      popover: !popover?.popover,
+                                      popover: true,
                                       id: event?._id,
                                     })
                                   }
@@ -440,25 +486,47 @@ const Home = ({ loading }) => {
                                   {/* </div> */}
                                   {popover?.popover &&
                                     popover.id === event._id && (
-                                      <div className="grid grid-cols-2 absolute z-10">
-                                        <div
-                                          className="!bg-white w-96 !z-[9999] py-6 px-4 text-lg -translate-x-[40%] rounded-lg shadow-2xl shadow-blue-300 h-36 text-center mt-2 flex items-center gap-2"
-                                          onClick={() =>
-                                            navigate(
-                                              `/event-details/${event?._id}`
-                                            )
-                                          }
-                                        >
-                                          <div className="h-20 w-20 ring-2 ring-black rounded-full p-1">
-                                            <img
-                                              src={
-                                                event?.event_images[0]?.image
-                                              }
-                                              className="w-full h-full rounded-full object-cover "
+                                      <div className="grid grid-cols-2 absolute !z-[10]">
+                                        <div className="!bg-white w-96 !z-[9999] py-6 px-4 text-lg -translate-x-[40%] rounded-lg shadow-2xl shadow-blue-300 h-36 text-center mt-2 flex items-center gap-2">
+                                          <div className="absolute right-4 top-4">
+                                            <X
+                                              onClick={(e) => {
+                                                e.stopPropagation();
+                                                setPopOver({
+                                                  popover: false,
+                                                  id: "",
+                                                });
+                                              }}
                                             />
                                           </div>
+                                          <div
+                                            onClick={() =>
+                                              navigate(
+                                                `/event-details/${event?._id}`
+                                              )
+                                            }
+                                            className="h-20 w-20 ring-2 ring-black rounded-full p-1"
+                                          >
+                                            {event?.event_images[0]?.image ? (
+                                              <img
+                                                src={
+                                                  event?.event_images[0]?.image
+                                                }
+                                                className="w-full h-full rounded-full  object-cover "
+                                              />
+                                            ) : (
+                                              <p>no images</p>
+                                            )}
+                                          </div>
 
-                                          <div className="w-[60%]">
+                                          <div
+                                            onClick={() =>
+                                              navigate(
+                                                `/event-details/${event?._id}`
+                                              )
+                                            }
+                                            className="w-[60%]"
+                                          >
                                             <p>
                                               {event?.event_title?.length > 20
                                                 ? event?.event_title?.slice(
@@ -517,7 +585,7 @@ const Home = ({ loading }) => {
                                 }}
                                 onClick={() =>
                                   setPopOver({
-                                    popover: !popover?.popover,
+                                    popover: true,
                                     id: event?._id,
                                   })
                                 }
@@ -533,23 +601,47 @@ const Home = ({ loading }) => {
                                 {/* </div> */}
                                 {popover?.popover &&
                                   popover.id === event._id && (
-                                    <div className="grid grid-cols-2 absolute z-10">
-                                      <div
-                                        className="!bg-white w-96 !z-[9999] py-6 px-4 text-lg -translate-x-[40%] rounded-lg shadow-2xl shadow-blue-300 h-36 text-center mt-2 flex items-center gap-2"
-                                        onClick={() =>
-                                          navigate(
-                                            `/event-details/${event?._id}`
-                                          )
-                                        }
-                                      >
-                                        <div className="h-20 w-20 ring-2 ring-black rounded-full p-1">
-                                          <img
-                                            src={event?.event_images[0]?.image}
-                                            className="w-full h-full rounded-full  object-cover "
+                                    <div className="grid grid-cols-2 absolute !z-[10]">
+                                      <div className="!bg-white w-96 !z-[9999] py-6 px-4 text-lg -translate-x-[40%] rounded-lg shadow-2xl shadow-blue-300 h-36 text-center mt-2 flex items-center gap-2">
+                                        <div className="absolute right-4 top-4">
+                                          <X
+                                            onClick={(e) => {
+                                              e.stopPropagation();
+                                              setPopOver({
+                                                popover: false,
+                                                id: "",
+                                              });
+                                            }}
                                           />
                                         </div>
+                                        <div
+                                          onClick={() =>
+                                            navigate(
+                                              `/event-details/${event?._id}`
+                                            )
+                                          }
+                                          className="h-20 w-20 ring-2 ring-black rounded-full p-1"
+                                        >
+                                          {event?.event_images[0]?.image ? (
+                                            <img
+                                              src={
+                                                event?.event_images[0]?.image
+                                              }
+                                              className="w-full h-full rounded-full  object-cover "
+                                            />
+                                          ) : (
+                                            <p>no images</p>
+                                          )}
+                                        </div>
 
-                                        <div className="w-[60%]">
+                                        <div
+                                          onClick={() =>
+                                            navigate(
+                                              `/event-details/${event?._id}`
+                                            )
+                                          }
+                                          className="w-[60%]"
+                                        >
                                           <p>
                                             {event?.event_title?.length > 20
                                               ? event?.event_title?.slice(
