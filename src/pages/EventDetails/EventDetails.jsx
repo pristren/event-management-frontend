@@ -639,7 +639,7 @@ const EventDetails = () => {
                         We'll review your report to determine whether there have
                         been a violation of our Community Guidelines. If you
                         have any further questions or concerns, please contact
-                        us at dailyframe@gmail.com
+                        us at dailyframeapp@gmail.com
                       </p>
                     </div>
                   ) : (

@@ -180,8 +180,8 @@ const Filter = ({ selected2, setSelected2 }) => {
     </div>
   );
   const [dateSelect, setDateSelect] = useState([
-    dateCategory[0],
-    dateCategory[1],
+    // dateCategory[0],
+    // dateCategory[1],
   ]);
   const dispatch = useDispatch();
   // console.log(dateSelect);

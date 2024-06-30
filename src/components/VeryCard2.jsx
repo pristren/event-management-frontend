@@ -57,10 +57,7 @@ const deleteIcon = (
 );
 
 const VeryCard2 = ({ img, handleImgDelete }) => {
-  // const handleDelete = async () => {
-  //   const response = await axios.delete(`${img?.delete_url}`);
-  //   console.log(response);
-  // };
+ 
   return (
     <div className="h-full w-full text-center group rounded-md relative transition duration-300 cursor-pointer bg-white">
       <figure className="w-full h-60 overflow-hidden">

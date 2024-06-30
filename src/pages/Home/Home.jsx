@@ -14,7 +14,13 @@ const Home = ({ loading }) => {
   const { Axios } = useAxios();
   const navigate = useNavigate();
   const [isExpand, setIsExpand] = useState(false);
-  const [userLocation, setUserLocation] = useState({});
+  const [userLocation, setUserLocation] = useState({
+    center: {
+      lat: 47.3769,
+      lng: 8.5417,
+    },
+    zoom: 11,
+  });
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -40,8 +46,8 @@ const Home = ({ loading }) => {
 
   const defaultProps = {
     center: {
-      lat: 23.7330218,
-      lng: 90.3983829,
+      lat: 47.3769,
+      lng: 8.5417,
     },
     zoom: 11,
   };
@@ -77,21 +83,6 @@ const Home = ({ loading }) => {
     }
   }, [user?.onlyPhone]);
 
-  // useEffect(() => {
-  //   const allEvents = async () => {
-  //     const res = await Axios.get("/all-events");
-  //     const data = await res.data;
-  //     setInvitedEvent(
-  //       data?.data?.filter(
-  //         (event) =>
-  //           event?.joinedPeople?.find((v) => v === user?.email) &&
-  //           event?.userId !== user._id
-  //       )
-  //     );
-  //   };
-  //   allEvents();
-  // }, []);
-
   const [selected2, setSelected2] = useState([]);
   const { date } = useSelector((state) => state.layout);
   // console.log(date);
@@ -107,7 +98,7 @@ const Home = ({ loading }) => {
       ? today.getDate() + 1
       : date.find((d) => d.name === "Today") !== undefined
       ? today.getDate()
-      : today.getDate() + 29
+      : today.getDate() + 180
   );
   // console.log(twoDaysLater);
 
@@ -115,20 +106,24 @@ const Home = ({ loading }) => {
   const upcomingEvents = events.filter((event) => {
     // console.log(event?.event_date?.date_start);
     return (
-      moment(event?.event_date?.date_start).format("MMMM D, YYYY") >=
-        moment(today).format("MMMM D, YYYY") &&
-      moment(event?.event_date?.date_start).format("MMMM D, YYYY") <=
-        moment(twoDaysLater).format("MMMM D, YYYY")
+      (moment(event?.event_date?.date_start).format("YYYY-MM-DD") >=
+        moment(today).format("YYYY-MM-DD") ||
+        moment(event?.event_date?.date_end).format("YYYY-MM-DD") >=
+          moment(today).format("YYYY-MM-DD")) &&
+      moment(event?.event_date?.date_end).format("YYYY-MM-DD") <=
+        moment(twoDaysLater).format("YYYY-MM-DD")
     );
   });
 
   const upcomingEventsInvited = invitedEvent.filter((event) => {
     // console.log(event?.event_date?.date_start);
     return (
-      moment(event?.event_date?.date_start).format("MMMM D, YYYY") >=
-        moment(today).format("MMMM D, YYYY") &&
-      moment(event?.event_date?.date_start).format("MMMM D, YYYY") <=
-        moment(twoDaysLater).format("MMMM D, YYYY")
+      (moment(event?.event_date?.date_start).format("YYYY-MM-DD") >=
+        moment(today).format("YYYY-MM-DD") ||
+        moment(event?.event_date?.date_end).format("YYYY-MM-DD") >=
+          moment(today).format("YYYY-MM-DD")) &&
+      moment(event?.event_date?.date_end).format("YYYY-MM-DD") <=
+        moment(twoDaysLater).format("YYYY-MM-DD")
     );
   });
   if (loading) {
