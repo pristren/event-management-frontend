@@ -225,7 +225,7 @@ const Home = ({ loading }) => {
                                     popover.id === event._id && (
                                       <div className="grid grid-cols-2 absolute z-10">
                                         <div
-                                          className="!bg-white w-80 !z-[999] py-6 px-4 text-lg -translate-x-[40%] rounded-lg shadow-2xl shadow-blue-300 h-36 text-center mt-2 flex items-center gap-2"
+                                          className="!bg-white w-96 !z-[9999] py-6 px-4 text-lg -translate-x-[40%] rounded-lg shadow-2xl shadow-blue-300 h-36 text-center mt-2 flex items-center gap-2"
                                           onClick={() =>
                                             navigate(
                                               `/event-details/${event?._id}`
@@ -242,7 +242,14 @@ const Home = ({ loading }) => {
                                           </div>
 
                                           <div className="w-[60%]">
-                                            <p>{event?.event_title}</p>
+                                            <p>
+                                              {event?.event_title?.length > 20
+                                                ? event?.event_title?.slice(
+                                                    0,
+                                                    20
+                                                  ) + "..."
+                                                : event?.event_title}
+                                            </p>
                                             <p className="text-[#828282] text-[12px] font-medium">
                                               {moment(
                                                 event?.event_date?.date_start
@@ -250,7 +257,13 @@ const Home = ({ loading }) => {
                                               ,{" "}
                                               {moment(
                                                 event?.event_time?.time_start
-                                              ).format("hh:mm a")}{" "}
+                                              ).format("hh:mm a") ===
+                                              "Invalid date"
+                                                ? event?.event_time?.time_start
+                                                : moment(
+                                                    event?.event_time
+                                                      ?.time_start
+                                                  ).format("hh:mm a")}{" "}
                                               -{" "}
                                               {moment(
                                                 event?.event_date?.date_end
@@ -258,7 +271,12 @@ const Home = ({ loading }) => {
                                               ,{" "}
                                               {moment(
                                                 event?.event_time?.time_end
-                                              ).format("hh:mm a")}
+                                              ).format("hh:mm a") ===
+                                              "Invalid date"
+                                                ? event?.event_time?.time_end
+                                                : moment(
+                                                    event?.event_time?.time_end
+                                                  ).format("hh:mm a")}
                                             </p>
                                             <p className="text-[#2e2e2e] text-[12px] font-medium">
                                               Joined People:{" "}
@@ -299,9 +317,9 @@ const Home = ({ loading }) => {
                                 {/* </div> */}
                                 {popover?.popover &&
                                   popover.id === event._id && (
-                                    <div className="grid grid-cols-2 absolute z-10">
+                                    <div className="grid grid-cols-2 absolute !z-[10]">
                                       <div
-                                        className="!bg-white w-80 !z-[999] py-6 px-4 text-lg -translate-x-[40%] rounded-lg shadow-2xl shadow-blue-300 h-36 text-center mt-2 flex items-center gap-2"
+                                        className="!bg-white w-96 !z-[9999] py-6 px-4 text-lg -translate-x-[40%] rounded-lg shadow-2xl shadow-blue-300 h-36 text-center mt-2 flex items-center gap-2"
                                         onClick={() =>
                                           navigate(
                                             `/event-details/${event?._id}`
@@ -322,7 +340,14 @@ const Home = ({ loading }) => {
                                         </div>
 
                                         <div className="w-[60%]">
-                                          <p>{event?.event_title}</p>
+                                          <p>
+                                            {event?.event_title?.length > 20
+                                              ? event?.event_title?.slice(
+                                                  0,
+                                                  20
+                                                ) + "..."
+                                              : event?.event_title}
+                                          </p>
                                           <p className="text-[#828282] text-[12px] font-medium">
                                             {moment(
                                               event?.event_date?.date_start
@@ -330,7 +355,12 @@ const Home = ({ loading }) => {
                                             ,{" "}
                                             {moment(
                                               event?.event_time?.time_start
-                                            ).format("hh:mm a")}{" "}
+                                            ).format("hh:mm a") ===
+                                            "Invalid date"
+                                              ? event?.event_time?.time_start
+                                              : moment(
+                                                  event?.event_time?.time_start
+                                                ).format("hh:mm a")}{" "}
                                             -{" "}
                                             {moment(
                                               event?.event_date?.date_end
@@ -338,7 +368,12 @@ const Home = ({ loading }) => {
                                             ,{" "}
                                             {moment(
                                               event?.event_time?.time_end
-                                            ).format("hh:mm a")}
+                                            ).format("hh:mm a") ===
+                                            "Invalid date"
+                                              ? event?.event_time?.time_end
+                                              : moment(
+                                                  event?.event_time?.time_end
+                                                ).format("hh:mm a")}
                                           </p>
                                           <p className="text-[#2e2e2e] text-[12px] font-medium">
                                             Joined People:{" "}
@@ -407,7 +442,7 @@ const Home = ({ loading }) => {
                                     popover.id === event._id && (
                                       <div className="grid grid-cols-2 absolute z-10">
                                         <div
-                                          className="!bg-white w-80 !z-[999] py-6 px-4 text-lg -translate-x-[40%] rounded-lg shadow-2xl shadow-blue-300 h-36 text-center mt-2 flex items-center gap-2"
+                                          className="!bg-white w-96 !z-[9999] py-6 px-4 text-lg -translate-x-[40%] rounded-lg shadow-2xl shadow-blue-300 h-36 text-center mt-2 flex items-center gap-2"
                                           onClick={() =>
                                             navigate(
                                               `/event-details/${event?._id}`
@@ -424,7 +459,14 @@ const Home = ({ loading }) => {
                                           </div>
 
                                           <div className="w-[60%]">
-                                            <p>{event?.event_title}</p>
+                                            <p>
+                                              {event?.event_title?.length > 20
+                                                ? event?.event_title?.slice(
+                                                    0,
+                                                    20
+                                                  ) + "..."
+                                                : event?.event_title}
+                                            </p>
                                             <p className="text-[#828282] text-[12px] font-medium">
                                               {moment(
                                                 event?.event_date?.date_start
@@ -432,7 +474,13 @@ const Home = ({ loading }) => {
                                               ,{" "}
                                               {moment(
                                                 event?.event_time?.time_start
-                                              ).format("hh:mm a")}{" "}
+                                              ).format("hh:mm a") ===
+                                              "Invalid date"
+                                                ? event?.event_time?.time_start
+                                                : moment(
+                                                    event?.event_time
+                                                      ?.time_start
+                                                  ).format("hh:mm a")}{" "}
                                               -{" "}
                                               {moment(
                                                 event?.event_date?.date_end
@@ -440,7 +488,12 @@ const Home = ({ loading }) => {
                                               ,{" "}
                                               {moment(
                                                 event?.event_time?.time_end
-                                              ).format("hh:mm a")}
+                                              ).format("hh:mm a") ===
+                                              "Invalid date"
+                                                ? event?.event_time?.time_end
+                                                : moment(
+                                                    event?.event_time?.time_end
+                                                  ).format("hh:mm a")}
                                             </p>
                                             <p className="text-[#2e2e2e] text-[12px] font-medium">
                                               Joined People:{" "}
@@ -482,7 +535,7 @@ const Home = ({ loading }) => {
                                   popover.id === event._id && (
                                     <div className="grid grid-cols-2 absolute z-10">
                                       <div
-                                        className="!bg-white w-80 !z-[999] py-6 px-4 text-lg -translate-x-[40%] rounded-lg shadow-2xl shadow-blue-300 h-36 text-center mt-2 flex items-center gap-2"
+                                        className="!bg-white w-96 !z-[9999] py-6 px-4 text-lg -translate-x-[40%] rounded-lg shadow-2xl shadow-blue-300 h-36 text-center mt-2 flex items-center gap-2"
                                         onClick={() =>
                                           navigate(
                                             `/event-details/${event?._id}`
@@ -497,7 +550,14 @@ const Home = ({ loading }) => {
                                         </div>
 
                                         <div className="w-[60%]">
-                                          <p>{event?.event_title}</p>
+                                          <p>
+                                            {event?.event_title?.length > 20
+                                              ? event?.event_title?.slice(
+                                                  0,
+                                                  20
+                                                ) + "..."
+                                              : event?.event_title}
+                                          </p>
                                           <p className="text-[#828282] text-[12px] font-medium">
                                             {moment(
                                               event?.event_date?.date_start
@@ -505,7 +565,12 @@ const Home = ({ loading }) => {
                                             ,{" "}
                                             {moment(
                                               event?.event_time?.time_start
-                                            ).format("hh:mm a")}{" "}
+                                            ).format("hh:mm a") ===
+                                            "Invalid date"
+                                              ? event?.event_time?.time_start
+                                              : moment(
+                                                  event?.event_time?.time_start
+                                                ).format("hh:mm a")}{" "}
                                             -{" "}
                                             {moment(
                                               event?.event_date?.date_end
@@ -513,7 +578,12 @@ const Home = ({ loading }) => {
                                             ,{" "}
                                             {moment(
                                               event?.event_time?.time_end
-                                            ).format("hh:mm a")}
+                                            ).format("hh:mm a") ===
+                                            "Invalid date"
+                                              ? event?.event_time?.time_end
+                                              : moment(
+                                                  event?.event_time?.time_end
+                                                ).format("hh:mm a")}
                                           </p>
                                           <p className="text-[#2e2e2e] text-[12px] font-medium">
                                             Joined People:{" "}

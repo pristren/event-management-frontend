@@ -21,7 +21,7 @@ export const apiSlice = createApi({
     const result = await baseQuery(args, api, extraOptions);
     if (result?.error?.status === 401) {
       // dispatch logout action
-      sessionStorage.removeItem("authUser");
+      // sessionStorage.removeItem("authUser");
     }
     return result;
   },
