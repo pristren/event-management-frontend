@@ -58,8 +58,8 @@ const useMyEvent = () => {
   // console.log(myEvent);
 
   useEffect(() => {
-    setIsLoading(true);
     if (user?._id) {
+      setIsLoading(true);
       Axios.get(`/my-events/${user?._id}`)
         .then((res) => {
           setMyEvent(res.data);
@@ -69,7 +69,7 @@ const useMyEvent = () => {
           setIsLoading(false);
         });
     }
-  }, []);
+  }, [user?._id]);
 
   useEffect(() => {
     setOwnEvent(myEvent?.data?.ownEvents);

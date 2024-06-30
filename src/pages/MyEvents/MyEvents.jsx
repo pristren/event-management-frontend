@@ -64,7 +64,7 @@ const MyEvents = () => {
             </svg>
           </span>
           <h1 className="text-[black] font-bold text-2xl">My Events</h1>
-          <Profile profile_images={user?.currentProfile}/>
+          <Profile profile_images={user?.currentProfile} />
         </div>
 
         <div className="p-5 pb-12 flex justify-between">
@@ -113,26 +113,32 @@ const MyEvents = () => {
               <Loader></Loader>
             </div>
           )}
-          {ownEvent?.ownEvents?.length
-            ? ownEvent?.ownEvents
-                ?.filter((event) =>
-                  event?.category
-                    ?.toLowerCase()
-                    ?.includes(category?.toLowerCase())
-                )
-                ?.filter((event) =>
-                  event?.event_title
-                    ?.toLowerCase()
-                    ?.includes(input?.toLowerCase())
-                )
-                ?.map((event, idx) => (
-                  <MyEventsCart
-                    key={idx}
-                    event={event}
-                    handleDelete={handleDelete}
-                  />
-                ))
-            : null}
+          {ownEvent?.ownEvents?.length ? (
+            ownEvent?.ownEvents
+              ?.filter((event) =>
+                event?.category
+                  ?.toLowerCase()
+                  ?.includes(category?.toLowerCase())
+              )
+              ?.filter((event) =>
+                event?.event_title
+                  ?.toLowerCase()
+                  ?.includes(input?.toLowerCase())
+              )
+              ?.map((event, idx) => (
+                <MyEventsCart
+                  key={idx}
+                  event={event}
+                  handleDelete={handleDelete}
+                />
+              ))
+          ) : ownEvent?.ownEvents?.length === 0 ? (
+            <div className="">
+              <h1 className="text-left text-lg text-gray-700">
+                No event created yet!
+              </h1>
+            </div>
+          ) : null}
         </div>
       </div>
     </section>

@@ -24,8 +24,8 @@ const InvitedEvents = () => {
   };
 
   useEffect(() => {
-    setLoading(true);
     if (user?.onlyPhone) {
+      setLoading(true);
       Axios.get(
         `/invited-event/phone=${user?.onlyPhone}&code=${user?.countryCode}`
       )
@@ -60,7 +60,8 @@ const InvitedEvents = () => {
           setShowMessage("");
         });
     } else if (user?.email) {
-      if (user?.onlyPhone === null) {
+      setLoading(true);
+      if (user?.onlyPhone === "" || user?.onlyPhone === null) {
         setShowMessage(
           "Please update your phone number to see invited event lists!"
         );
