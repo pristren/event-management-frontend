@@ -42,7 +42,7 @@ const SignUp = () => {
     email: "",
     password: "",
     confirmPW: "",
-    rememberMe: "",
+    termsCheckBox: "",
     onlyPhone: "",
     phoneWithCode: "",
     countryCode: "",
@@ -57,11 +57,16 @@ const SignUp = () => {
       email,
       password,
       confirmPW,
-      rememberMe,
+      termsCheckBox,
       countryCode,
       onlyPhone,
       phoneWithCode,
     } = signUpData;
+
+    if (!termsCheckBox) {
+      toast.error("Please agree to the terms and conditions");
+      return;
+    }
 
     if (
       firstName === "" ||
@@ -261,19 +266,34 @@ const SignUp = () => {
                     <div className="flex items-center">
                       <input
                         type="checkbox"
-                        id="rememberMe"
+                        id="termsCheckBox"
                         className="checkbox"
-                        onChange={(e) =>
-                          setSignUpData({
-                            ...signUpData,
-                            rememberMe: e.target.checked,
-                          })
+                        onChange={
+                          (e) =>
+                            setSignUpData({
+                              ...signUpData,
+                              termsCheckBox: e.target.checked,
+                            })
+                          // setLoginData({
+                          //   ...loginData,
+                          //   termsCheckBox: e.target.checked,
+                          // })
                         }
                       />
-                      {/* <label className="select-none" htmlFor="rememberMe">
+                      <label className="select-none" htmlFor="termsCheckBox">
+                        I have read{" "}
+                        <span
+                          className="text-blue-500 underline"
+                          onClick={() => navigate("/privacy-policy")}
+                        >
+                          Terms and Conditions
+                        </span>{" "}
+                        and agree to them.
+                      </label>
+                    </div>
+                    {/* <label className="select-none" htmlFor="termsCheckBox">
                         Enable picture uploads from another participants
                       </label> */}
-                    </div>
 
                     <button
                       type="submit"
