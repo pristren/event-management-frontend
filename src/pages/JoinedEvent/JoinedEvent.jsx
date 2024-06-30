@@ -38,7 +38,7 @@ const JoinedEvent = () => {
   useEffect(() => {
     setLoading(true);
     if (user?.email) {
-      Axios.get(`/joined-event/${user?.email}`)
+      Axios.get(`/my-joinedEvents/${user?.email}`)
         .then((res) => {
           setJoinedEvents(res.data?.data);
         })

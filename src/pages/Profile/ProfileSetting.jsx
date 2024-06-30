@@ -350,7 +350,8 @@ const ProfileSetting = () => {
                       <input
                         type="text"
                         name="phoneWithCode"
-                        defaultValue={inputData?.phoneWithCode}
+                        value={inputData?.phoneWithCode}
+                        onChange={() => {}}
                         disabled
                         placeholder="Phone Number"
                         className="py-1 px-4 text-base rounded-[5rem] shadow-md 
