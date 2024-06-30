@@ -18,7 +18,7 @@ import { userLoggedIn, userLoggedOut } from "../../features/auth/authSlice";
 import ImageUploader from "react-images-upload";
 import { toast } from "react-hot-toast";
 // import useMyEvent from "../../Hooks/useMyEvent";
-import { UserRound } from "lucide-react";
+import { ChevronDown, ChevronUp, UserRound } from "lucide-react";
 import Loader from "@/components/Loader/Loader";
 import { Button } from "@/components/ui/button";
 import {
@@ -31,6 +31,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import PhoneInput from "react-phone-input-2";
 
 const ProfileSetting = () => {
   const { Axios } = useAxios();
@@ -49,6 +50,12 @@ const ProfileSetting = () => {
 
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [addPhone, setAddPhone] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState({
+    onlyPhone: "",
+    phoneWithCode: "",
+    countryCode: "",
+  });
 
   const handleDeleteAccount = async () => {
     if (password === "") {
@@ -121,6 +128,9 @@ const ProfileSetting = () => {
       ...inputData,
       account_type: selectedBtn,
       profile_images: event_img,
+      onlyPhone: phoneNumber.onlyPhone,
+      phoneWithCode: phoneNumber.phoneWithCode,
+      countryCode: phoneNumber.countryCode,
     };
     if (event_img.length === 0) {
       await Axios.put(`/user/update/profile/${state.user._id}`, {
@@ -151,10 +161,12 @@ const ProfileSetting = () => {
         );
         setLoading(false);
         toast.success("profile update was successful.");
+        setAddPhone(false);
       })
       .catch((err) => {
         setLoading(false);
         toast.error("error while updating the profile.");
+        setAddPhone(false);
       });
   };
 
@@ -323,17 +335,95 @@ const ProfileSetting = () => {
                       </div>
                     </div>
 
-                    <div>
-                      <input
+                    <div className="flex items-center justify-between gap-x-4">
+                      {/* <input
                         type="text"
                         // name="phone"
 
                         // onChange={handleInputChange}
                         placeholder="Phone Number 2"
-                        className="py-1 px-4 text-base rounded-[5rem] shadow-md w-full bg-white cursor-not-allowed disabled:opacity-60"
+                        className="py-1 px-4 text-base rounded-[5rem] shadow-md w-full bg-white  disabled:opacity-60"
+                        defaultValue={inputData?.phoneWithCode}
+                        // disabled
+                      /> */}
+
+                      <input
+                        type="text"
+                        name="phoneWithCode"
                         defaultValue={inputData?.phoneWithCode}
                         disabled
+                        placeholder="Phone Number"
+                        className="py-1 px-4 text-base rounded-[5rem] shadow-md 
+                          disabled:opacity-50 disabled:bg-white
+                          w-full"
                       />
+
+                      {inputData?.phoneWithCode === "" ? (
+                        <Button
+                          variant=""
+                          type="button"
+                          onClick={() => setAddPhone(!addPhone)}
+                        >
+                          Add Phone{" "}
+                          {!addPhone ? (
+                            <ChevronDown className="w-5 h-5 " />
+                          ) : (
+                            <ChevronUp className="w-5 h-5" />
+                          )}
+                        </Button>
+                      ) : (
+                        <Button
+                          onClick={() => {
+                            toast(
+                              "Please contact at dailyframeapp@gmail.com to change your phone number.",
+                              {
+                                icon: "👏",
+                                position: "bottom-right",
+                              }
+                            );
+                          }}
+                          type="button"
+                          variant="default"
+                        >
+                          Update Phone
+                        </Button>
+                      )}
+                    </div>
+                    <div className="">
+                      {addPhone && (
+                        <PhoneInput
+                          buttonStyle={{
+                            border: "none",
+                            padding: "0.5rem",
+                          }}
+                          placeholder="Phone Number"
+                          inputStyle={{
+                            // padding: "0.5rem 1rem",
+                            borderRadius: "5rem",
+                            width: "100%",
+                            border: "none",
+                          }}
+                          country={"ch"}
+                          value={phoneNumber.phoneWithCode}
+                          // value={signUpData?.phoneWithCode}
+                          onChange={
+                            (phone, country, e, formatted) => {
+                              const code = `${country.dialCode}`;
+                              const withoutCode = phone.replace(code, "");
+                              const newPhone = `+${code}${withoutCode}`;
+
+                              setPhoneNumber((inputs) => ({
+                                ...inputs,
+                                onlyPhone: withoutCode,
+                                phoneWithCode: newPhone,
+                                countryCode: `+${code}`,
+                              }));
+                            }
+
+                            // console.log({ phone, country, e, formatted })
+                          }
+                        />
+                      )}
                     </div>
 
                     <div className="relative">

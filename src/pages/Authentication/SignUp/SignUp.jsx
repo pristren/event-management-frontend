@@ -11,6 +11,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Loader2 } from "lucide-react";
 
 const loginIcons = (
   <svg
@@ -73,10 +74,7 @@ const SignUp = () => {
       lastName === "" ||
       email === "" ||
       password === "" ||
-      confirmPW === "" ||
-      onlyPhone === "" ||
-      phoneWithCode === "" ||
-      countryCode === ""
+      confirmPW === ""
     ) {
       toast.error("All fields are required");
       return;
@@ -184,7 +182,7 @@ const SignUp = () => {
                     </div>
                     <div className="-mt-3 space-y-1">
                       <span className="inline-block px-2 text-gray-700">
-                        Phone Number{" "}
+                        Phone Number (Optional)
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
@@ -297,9 +295,13 @@ const SignUp = () => {
 
                     <button
                       type="submit"
-                      className={`flex relative rounded-3xl text-lg min-w-[15rem] w-full shadow-primary text-center py-[0.125rem] transition duration-300 uppercase bg-[black]  text-white  `}
+                      className="flex relative rounded-xl text-lg max-w-[15rem] w-full bg-[black]  text-white  shadow-primary text-center py-[0.3rem] transition duration-300 uppercase mt-10 mx-auto items-center gap-2 justify-center disabled:opacity-50 disabled:cursor-auto"
+                      disabled={isLoading}
                     >
-                      <span className="mx-auto text-lg"> Register now </span>
+                      {isLoading && (
+                        <Loader2 className="animate-spin" size={20} />
+                      )}
+                      <span className=" text-lg"> Register Now </span>
                     </button>
                   </div>
                 </form>
