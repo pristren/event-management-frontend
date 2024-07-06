@@ -12,7 +12,7 @@ const InvitedEvents = () => {
   const { isExpand, setIsExpand } = useContext(MyProvider);
 
   const { Axios } = useAxios();
-  const { user } = useSelector((state) => state.auth);
+  const { user, accessToken } = useSelector((state) => state.auth);
   const [invitedEvents, setInvitedEvents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showMessage, setShowMessage] = useState("");
@@ -27,7 +27,12 @@ const InvitedEvents = () => {
     if (user?.onlyPhone) {
       setLoading(true);
       Axios.get(
-        `/invited-event/phone=${user?.onlyPhone}&code=${user?.countryCode}`
+        `/invited-event/phone=${user?.onlyPhone}&code=${user?.countryCode}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
       )
         .then((res) => {
           if (user?.blocked_users?.length > 0) {
@@ -114,12 +119,12 @@ const InvitedEvents = () => {
                 onChange={handleSelectChange}
                 value={category}
               >
-                <option value="">All Categories</option>
-                <option value="Game">Game</option>
-                <option value="Tournament">Tournament</option>
-                <option value="Free Play">Free Play</option>
-                <option value="3vs3">3vs3</option>
-                <option value="others">Others</option>
+                <option value="">Choose a category</option>
+                <option value="Culture">Culture</option>
+                <option value="Food">Food</option>
+                <option value="Music">Music</option>
+                <option value="Sport">Sport</option>
+                <option value="Other">Other</option>
               </select>
             </div>
           </div>

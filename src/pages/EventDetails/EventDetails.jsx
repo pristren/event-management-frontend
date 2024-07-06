@@ -40,7 +40,7 @@ import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
 
 const EventDetails = () => {
-  const { user } = useSelector((state) => state?.auth);
+  const { user, accessToken } = useSelector((state) => state?.auth);
 
   const [loading, setLoading] = useState(true);
   const state = useSelector((state) => state.auth);
@@ -52,6 +52,10 @@ const EventDetails = () => {
   const navigate = useNavigate();
   const { isExpand, setIsExpand } = useContext(MyProvider);
   const { id } = useParams();
+  const [firstUser, setFirstUser] = useState({
+    profile_images: [],
+    currentProfile: "",
+  });
 
   function handleCloseModal() {
     setOpenModal(false);
@@ -64,10 +68,13 @@ const EventDetails = () => {
   useEffect(() => {
     // setLoading(true);
     Axios.get(`/event-details/${id}`)
-      .then((res) => setEvents(res.data.data))
+      .then((res) => {
+        setEvents(res.data.data);
+        setFirstUser(res.data.data?.firstUser);
+      })
       .catch((err) => console.log(err))
       .finally(() => {
-        // setLoading(false);
+        setLoading(false);
       });
   }, []);
 
@@ -108,7 +115,15 @@ const EventDetails = () => {
   const [popover, setPopOver] = useState(false);
 
   const handleJoin = async (id) => {
-    await Axios.put(`/join/${id}`, { email: user?.email }).then((res) => {
+    await Axios.put(
+      `/join/${id}`,
+      { email: user?.email },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    ).then((res) => {
       if (res.status === 200) {
         Axios.get(`/event-details/${id}`)
           .then((res) => setEvents(res.data.data))
@@ -118,7 +133,15 @@ const EventDetails = () => {
   };
 
   const handleLeave = async (id) => {
-    await Axios.put(`/unjoin/${id}`, { email: user?.email }).then((res) => {
+    await Axios.put(
+      `/unjoin/${id}`,
+      { email: user?.email },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    ).then((res) => {
       console.log(res);
       if (res.status === 200) {
         Axios.get(`/event-details/${id}`)
@@ -141,23 +164,22 @@ const EventDetails = () => {
       navigate("/login");
     }
   }
-  const [firstUser, setFirstUser] = useState({});
-  useEffect(() => {
-    if (events?.joinedPeople) {
-      setLoading(true);
-      const user = async () => {
-        await Axios.get(`/user/${events?.joinedPeople[0]}`)
-          .then((res) => {
-            setFirstUser(res.data?.data?.user);
-          })
-          .finally(() => {
-            setLoading(false);
-          });
-      };
-      user();
-    }
-  }, [events?.joinedPeople?.length]);
-  // console.log(firstUser);
+  // useEffect(() => {
+  //   if (events?.joinedPeople) {
+  //     setLoading(true);
+  //     const user = async () => {
+  //       await Axios.get(`/user/${events?.joinedPeople[0]}`)
+  //         .then((res) => {
+  //           setFirstUser(res.data?.data?.user);
+  //         })
+  //         .finally(() => {
+  //           setLoading(false);
+  //         });
+  //     };
+  //     user();
+  //   }
+  // }, [events?.joinedPeople?.length]);
+
   const [openModal3, setOpenModal3] = useState(false);
 
   function handleCloseModal3() {
@@ -175,10 +197,26 @@ const EventDetails = () => {
 
     if (alreadyLiked) {
       // If already liked, unlike the event
-      await Axios.put(`/removeLike/${id}`, { alreadyLiked: user?._id });
+      await Axios.put(
+        `/removeLike/${id}`,
+        { alreadyLiked: user?._id },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
     } else {
       // If not already liked, like the event
-      await Axios.put(`/addLike/${id}`, { alreadyLiked: user?._id });
+      await Axios.put(
+        `/addLike/${id}`,
+        { alreadyLiked: user?._id },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
     }
 
     // After updating the like status, update the events data
@@ -195,13 +233,21 @@ const EventDetails = () => {
       alert("You are not logged in");
       return;
     }
-    await Axios.post("/report/event", {
-      eventId,
-      description,
-      reportedBy: user?.firstName + " " + user?.lastName,
-      eventCreator,
-      reportedByUser: user?._id,
-    })
+    await Axios.post(
+      "/report/event",
+      {
+        eventId,
+        description,
+        reportedBy: user?.firstName + " " + user?.lastName,
+        eventCreator,
+        reportedByUser: user?._id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
       .then((res) => {
         if (res.status === 201) {
           const already = JSON.parse(localStorage.getItem("report")) || [];
@@ -220,7 +266,7 @@ const EventDetails = () => {
 
   return (
     <section className="flex">
-      {openModal && (
+      {user?._id && openModal && (
         <MembersModal
           openModal={openModal}
           handleCloseModal={handleCloseModal}
@@ -441,8 +487,10 @@ const EventDetails = () => {
                     {firstUser?.profile_images?.length ? (
                       <img
                         src={
-                          firstUser?.profile_images?.length
-                            ? firstUser?.profile_images[0]
+                          firstUser?.currentProfile
+                            ? firstUser?.currentProfile
+                            : firstUser?.profile_images?.length
+                            ? firstUser?.profile_images[0]?.image
                             : Image
                         }
                         alt=""
@@ -462,7 +510,13 @@ const EventDetails = () => {
 
                   <span
                     className="text-[15px] text-[black] cursor-pointer"
-                    onClick={handleOpenModal}
+                    onClick={() => {
+                      if (user?._id) {
+                        handleOpenModal();
+                      } else {
+                        navigate("/login");
+                      }
+                    }}
                   >
                     See all
                   </span>

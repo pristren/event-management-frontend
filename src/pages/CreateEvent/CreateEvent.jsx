@@ -41,7 +41,7 @@ const CreateEvent = () => {
   const navigate = useNavigate();
   const { Axios } = useAxios();
   const { isExpand, setIsExpand } = useContext(MyProvider);
-  const { user } = useSelector((state) => state.auth);
+  const { user, accessToken } = useSelector((state) => state.auth);
   const [selectedBtn, setSelectedBtn] = useState("public");
   const [multipleImages, setMultipleImages] = useState([]);
   const [fileUploadLoading, setFileUploadLoading] = useState(false);
@@ -128,7 +128,11 @@ const CreateEvent = () => {
         category: inputData.category,
         joinedPeople: inputData.joinedPeople,
       };
-      Axios.post("/create-event", newData)
+      Axios.post("/create-event", newData, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
         .then((res) => {
           // toast.success("Event Created Successfully!");
           setCreateSuccess(res?.data?.event);
@@ -342,11 +346,11 @@ const CreateEvent = () => {
                 value={inputData?.category}
               >
                 <option value="">Choose a category</option>
-                <option value="Game">Game</option>
-                <option value="Tournament">Tournament</option>
-                <option value="Free Play">Free Play</option>
-                <option value="3vs3">3vs3</option>
-                <option value="others">Others</option>
+                <option value="Culture">Culture</option>
+                <option value="Food">Food</option>
+                <option value="Music">Music</option>
+                <option value="Sport">Sport</option>
+                <option value="Other">Other</option>
               </select>
             </div>
             <div className="flex w-full gap-5 mt-5">

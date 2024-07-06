@@ -12,12 +12,16 @@ import Loader from "@/components/Loader/Loader";
 const MyEvents = () => {
   const { ownEvent, setMyEvent, isLoading } = useMyEvent();
   const { isExpand, setIsExpand } = useContext(MyProvider);
-  const { user } = useSelector((state) => state.auth);
+  const { user, accessToken } = useSelector((state) => state.auth);
   const { Axios } = useAxios();
   const handleDelete = async (id) => {
     const res = await Axios.delete(`/events/${id}`);
     if (res.data.message) {
-      Axios.get(`/my-events/${user?._id}`).then((res) => setMyEvent(res.data));
+      Axios.get(`/my-events/${user?._id}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }).then((res) => setMyEvent(res.data));
     }
   };
   const [category, setCategory] = useState("");
@@ -86,12 +90,12 @@ const MyEvents = () => {
                 onChange={handleSelectChange}
                 value={category}
               >
-                <option value="">All Categories</option>
-                <option value="Game">Game</option>
-                <option value="Tournament">Tournament</option>
-                <option value="Free Play">Free Play</option>
-                <option value="3vs3">3vs3</option>
-                <option value="others">Others</option>
+                <option value="">Choose a category</option>
+                <option value="Culture">Culture</option>
+                <option value="Food">Food</option>
+                <option value="Music">Music</option>
+                <option value="Sport">Sport</option>
+                <option value="Other">Other</option>
                 {/* <option value="others" onClick={handleOpenModal3}>
                   Others
                 </option> */}

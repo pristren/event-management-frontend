@@ -32,7 +32,7 @@ export default function UpdateEvent() {
   const navigate = useNavigate();
   const { Axios } = useAxios();
   const { isExpand, setIsExpand } = useContext(MyProvider);
-  const { user } = useSelector((state) => state.auth);
+  const { user, accessToken } = useSelector((state) => state.auth);
   const [selectedBtn, setSelectedBtn] = useState("public");
   const [multipleImages, setMultipleImages] = useState([]);
   const [fileUploadLoading, setFileUploadLoading] = useState(false);
@@ -145,7 +145,11 @@ export default function UpdateEvent() {
         joinedPeople: inputData.joinedPeople,
       };
       //   console.log(newData);
-      await Axios.put(`/update-event/${id}`, newData)
+      await Axios.put(`/update-event/${id}`, newData, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
         .then((res) => {
           setCreateSuccess(res?.data?.event);
           toast.success("event was updated successfully!");
@@ -248,7 +252,7 @@ export default function UpdateEvent() {
             </svg>
           </span>
           <h1 className="text-[black] font-bold text-2xl">Event creation</h1>
-          <Profile profile_images={user.currentProfile}/>
+          <Profile profile_images={user.currentProfile} />
         </div>
 
         <div className="min-h-screen bg-[#F2F6FF] py-10 px-5 grid items-stretch grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-10">
@@ -327,11 +331,11 @@ export default function UpdateEvent() {
                 value={inputData?.category}
               >
                 <option value="">Choose a category</option>
-                <option value="Game">Game</option>
-                <option value="Tournament">Tournament</option>
-                <option value="Free Play">Free Play</option>
-                <option value="3vs3">3vs3</option>
-                <option value="others">Others</option>
+                <option value="Culture">Culture</option>
+                <option value="Food">Food</option>
+                <option value="Music">Music</option>
+                <option value="Sport">Sport</option>
+                <option value="Other">Other</option>
               </select>
             </div>
             <div className="flex w-full gap-5 mt-5">

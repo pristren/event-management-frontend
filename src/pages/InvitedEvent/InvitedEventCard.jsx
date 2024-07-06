@@ -7,15 +7,28 @@ import useAxios from "@/Hooks/useAxios";
 
 const InvitedEventCard = ({ event, setInvitedEvent, setLoading }) => {
   const navigate = useNavigate();
-  const { user } = useSelector((state) => state.auth);
+  const { user, accessToken } = useSelector((state) => state.auth);
   const { Axios } = useAxios();
 
   const handleJoin = async (id) => {
     setLoading(true);
-    await Axios.put(`/join/${id}`, { email: user?.email }).then((res) => {
+    await Axios.put(
+      `/join/${id}`,
+      { email: user?.email },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    ).then((res) => {
       if (res.status === 200) {
         Axios.get(
-          `/invited-event/phone=${user?.onlyPhone}&code=${user?.countryCode}`
+          `/invited-event/phone=${user?.onlyPhone}&code=${user?.countryCode}`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
         )
           .then((res) => {
             setInvitedEvent(res.data?.data);
@@ -30,22 +43,33 @@ const InvitedEventCard = ({ event, setInvitedEvent, setLoading }) => {
 
   const handleUnJoin = async (id) => {
     setLoading(true);
-    await Axios.put(`/invited-unjoin/${id}`, { email: user?.email }).then(
-      (res) => {
-        if (res.status === 200) {
-          Axios.get(
-            `/invited-event/phone=${user?.onlyPhone}&code=${user?.countryCode}`
-          )
-            .then((res) => {
-              setInvitedEvent(res.data?.data);
-            })
-            .catch((err) => {})
-            .finally(() => {
-              setLoading(false);
-            });
-        }
+    await Axios.put(
+      `/invited-unjoin/${id}`,
+      { email: user?.email },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       }
-    );
+    ).then((res) => {
+      if (res.status === 200) {
+        Axios.get(
+          `/invited-event/phone=${user?.onlyPhone}&code=${user?.countryCode}`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        )
+          .then((res) => {
+            setInvitedEvent(res.data?.data);
+          })
+          .catch((err) => {})
+          .finally(() => {
+            setLoading(false);
+          });
+      }
+    });
   };
 
   return (

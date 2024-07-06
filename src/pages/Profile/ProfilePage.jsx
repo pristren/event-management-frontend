@@ -5,7 +5,7 @@ import { profileUserIcon } from "../../components/SVGIcons/Icons";
 import { useParams } from "react-router-dom";
 import useAxios from "../../Hooks/useAxios";
 import p from "../../assets/p.webp";
-import { BlocksIcon } from "lucide-react";
+import { BlocksIcon, UserRound } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { userLoggedIn } from "@/features/auth/authSlice";
@@ -14,11 +14,15 @@ export default function ProfilePage() {
   const { isExpand, setIsExpand } = useContext(MyProvider);
   const { id } = useParams();
   const [actualUser, setActualUser] = useState([]);
-  const { user } = useSelector((state) => state.auth);
+  const { user, accessToken } = useSelector((state) => state.auth);
   const { Axios } = useAxios();
   useEffect(() => {
     const user = async () => {
-      await Axios.get(`/user/u/${id}`).then((res) => {
+      await Axios.get(`/user/u/${id}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }).then((res) => {
         setActualUser(res.data?.data?.user);
       });
     };
@@ -36,9 +40,17 @@ export default function ProfilePage() {
         toast.error("You have already blocked this user!");
         return;
       } else {
-        await Axios.put(`/user/block/${user?._id}`, {
-          blockedUser,
-        })
+        await Axios.put(
+          `/user/block/${user?._id}`,
+          {
+            blockedUser,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        )
           .then((res) => {
             dispatch(
               userLoggedIn({
@@ -108,17 +120,25 @@ export default function ProfilePage() {
           <div className="flex flex-col items-center gap-6 p-4 md:p-6 lg:p-10">
             <div className="h-24 w-24 ">
               <figure className="bg-[black] text-white rounded-full w-24 h-24 flex justify-center items-center">
-                {actualUser?.profile_images?.length && (
+                {actualUser?.currentProfile ? (
+                  <img
+                    src={actualUser?.currentProfile}
+                    className="w-full h-full rounded-full"
+                    alt=""
+                  />
+                ) : actualUser?.profile_images?.length ? (
                   <img
                     src={actualUser?.profile_images[0]}
                     className="w-full h-full rounded-full"
                     alt=""
                   />
+                ) : (
+                  <UserRound className="w-8 h-8" />
                 )}
               </figure>
             </div>
             <div className="text-center">
-              <h1 className="font-bold text-2xl flex items-center gap-3">
+              <h1 className="font-bold text-2xl flex justify-center items-center gap-3">
                 {actualUser?.firstName} {actualUser?.lastName}{" "}
                 {user?.blocked_users?.includes(actualUser?._id) && (
                   <span>

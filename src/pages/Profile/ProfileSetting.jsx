@@ -39,6 +39,7 @@ const ProfileSetting = () => {
   const [selectedBtn, setSelectedBtn] = useState("");
   const [upload, setUpload] = useState(false);
   const state = useSelector((state) => state.auth);
+  const { accessToken } = state;
   // console.log(state);
   const [inputData, setInputData] = useState({});
 
@@ -63,10 +64,18 @@ const ProfileSetting = () => {
       return;
     }
     setDeleteLoading(true);
-    await Axios.put(`/user/request/delete/${inputData?._id}`, {
-      password: password,
-      email: inputData?.email,
-    })
+    await Axios.put(
+      `/user/request/delete/${inputData?._id}`,
+      {
+        password: password,
+        email: inputData?.email,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
       .then((res) => {
         toast.success("Account deletion request sent successfully.");
         setOpenModal(false);
@@ -133,11 +142,23 @@ const ProfileSetting = () => {
       countryCode: phoneNumber.countryCode,
     };
     if (event_img.length === 0) {
-      await Axios.put(`/user/update/profile/${state.user._id}`, {
-        profile_image: "",
-      });
+      await Axios.put(
+        `/user/update/profile/${state.user._id}`,
+        {
+          profile_image: "",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
     }
-    Axios.put(`/user/updates/${state.user._id}`, newData)
+    Axios.put(`/user/updates/${state.user._id}`, newData, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
       .then((res) => {
         // console.log(res.data);
         setUploadImages(res.data?.profile_images);
@@ -173,9 +194,17 @@ const ProfileSetting = () => {
   const setProfileInDb = async (img) => {
     if (state?.user?.profile_images?.includes(img)) {
       try {
-        const res = await Axios.put(`/user/update/profile/${state.user._id}`, {
-          profile_image: img,
-        });
+        const res = await Axios.put(
+          `/user/update/profile/${state.user._id}`,
+          {
+            profile_image: img,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
         setInputData(res.data);
         dispatch(
           userLoggedIn({
@@ -197,9 +226,17 @@ const ProfileSetting = () => {
   };
   const setProfileFirst = async (img) => {
     try {
-      const res = await Axios.put(`/user/update/profile/${state.user._id}`, {
-        profile_image: img,
-      });
+      const res = await Axios.put(
+        `/user/update/profile/${state.user._id}`,
+        {
+          profile_image: img,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
       setInputData(res.data);
       dispatch(
         userLoggedIn({

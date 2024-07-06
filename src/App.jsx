@@ -39,9 +39,11 @@ function App() {
           },
         });
 
+        // console.log(res.data?.data.accessToken);
+
         dispatch(
           userLoggedIn({
-            user: res.data?.data.user,
+            user: res.data?.data,
             accessToken: res.data?.data?.accessToken,
           })
         );
@@ -113,7 +115,14 @@ function App() {
             }
           />
           <Route path="event-details/:id" element={<EventDetails />} />
-          <Route path="profile/:id" element={<ProfilePage />} />
+          <Route
+            path="profile/:id"
+            element={
+              <AuthProtected>
+                <ProfilePage />
+              </AuthProtected>
+            }
+          />
         </Route>
       </Routes>
     </MyProvider.Provider>

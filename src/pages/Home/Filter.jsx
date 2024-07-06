@@ -136,21 +136,11 @@ const searchIcons = (
 );
 
 const type = [
-  {
-    name: "Game",
-  },
-  {
-    name: "Tournament",
-  },
-  {
-    name: "Free Play",
-  },
-  {
-    name: "3vs3",
-  },
-  {
-    name: "others",
-  },
+  { name: "Culture" },
+  { name: "Food" },
+  { name: "Music" },
+  { name: "Sport" },
+  { name: "Other" },
 ];
 const dateCategory = [
   {

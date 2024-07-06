@@ -4,16 +4,23 @@ import axios from "axios";
 import useAxios from "../../Hooks/useAxios";
 import { useNavigate } from "react-router-dom";
 import { UserRound } from "lucide-react";
+import { useSelector } from "react-redux";
 
 const MemberCard = ({ member }) => {
+  const { accessToken } = useSelector((state) => state?.auth);
+
   const navigate = useNavigate();
   const { Axios } = useAxios();
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    setLoading(true);
     const user = async () => {
-      await Axios.get(`/user/${member}`)
+      setLoading(true);
+      await Axios.get(`/user/${member}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
         .then((res) => {
           setUser(res.data?.data?.user);
           // console.log(res.data?.data?.user);
@@ -26,14 +33,16 @@ const MemberCard = ({ member }) => {
   }, [member]);
   return (
     <div
-      className="bg-white rounded-xl p-3 cursor-pointer"
-      onClick={() => navigate(`/profile/${user._id}`)}
+      className={`bg-white rounded-xl p-3 cursor-pointer ${
+        !user?._id && "hidden"
+      }`}
+      onClick={() => navigate(`/profile/${user?._id}`)}
     >
       {!loading ? (
         <div className="flex items-center gap-3">
           {user?.profile_images?.length ? (
             <img
-            src={user?.currentProfile || user?.profile_images[0]}
+              src={user?.currentProfile || user?.profile_images[0]}
               alt=""
               className="w-[40px] h-[40px] rounded-full object-cover"
             />

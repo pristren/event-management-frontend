@@ -7,7 +7,7 @@ import Loader from "@/components/Loader/Loader";
 import { Input } from "@/components/ui/input";
 
 const JoinedEvent = () => {
-  const { user } = useSelector((state) => state.auth);
+  const { user, accessToken } = useSelector((state) => state.auth);
   const [joinedEvents, setJoinedEvents] = useState([]);
   const [loading, setLoading] = useState(false);
   const { Axios } = useAxios();
@@ -38,7 +38,11 @@ const JoinedEvent = () => {
   useEffect(() => {
     setLoading(true);
     if (user?.email) {
-      Axios.get(`/my-joinedEvents/${user?.email}`)
+      Axios.get(`/my-joinedEvents/${user?.email}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
         .then((res) => {
           setJoinedEvents(res.data?.data);
         })
@@ -93,12 +97,12 @@ const JoinedEvent = () => {
                 onChange={handleSelectChange}
                 value={category}
               >
-                <option value="">All Categories</option>
-                <option value="Game">Game</option>
-                <option value="Tournament">Tournament</option>
-                <option value="Free Play">Free Play</option>
-                <option value="3vs3">3vs3</option>
-                <option value="others">Others</option>
+                <option value="">Choose a category</option>
+                <option value="Culture">Culture</option>
+                <option value="Food">Food</option>
+                <option value="Music">Music</option>
+                <option value="Sport">Sport</option>
+                <option value="Other">Other</option>
               </select>
             </div>
           </div>

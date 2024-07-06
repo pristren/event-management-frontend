@@ -20,7 +20,7 @@ const useMyEvent = () => {
   const { Axios } = useAxios();
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(true);
-  const { user } = useSelector((state) => state.auth);
+  const { user, accessToken } = useSelector((state) => state.auth);
   const [myEvent, setMyEvent] = useState([]);
   const [ownEvent, setOwnEvent] = useState({});
   const [invitedEvent, setInvitedEvent] = useState({});
@@ -60,7 +60,11 @@ const useMyEvent = () => {
   useEffect(() => {
     if (user?._id) {
       setIsLoading(true);
-      Axios.get(`/my-events/${user?._id}`)
+      Axios.get(`/my-events/${user?._id}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
         .then((res) => {
           setMyEvent(res.data);
         })

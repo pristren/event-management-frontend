@@ -65,7 +65,7 @@ const Home = ({ loading }) => {
   });
   const [selectedBtn, setSelectedBtn] = useState("Public");
 
-  const { user } = useSelector((state) => state.auth);
+  const { user, accessToken } = useSelector((state) => state.auth);
   // console.log(user);
 
   const [invitedEvent, setInvitedEvent] = useState([]);
@@ -73,7 +73,12 @@ const Home = ({ loading }) => {
   useEffect(() => {
     if (user?.onlyPhone) {
       Axios.get(
-        `/invited-event/phone=${user?.onlyPhone}&code=${user?.countryCode}`
+        `/invited-event/phone=${user?.onlyPhone}&code=${user?.countryCode}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
       )
         .then((res) => {
           setInvitedEvent(res.data?.data);

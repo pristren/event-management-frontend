@@ -2,6 +2,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import ImageUploader from "react-images-upload";
 import useAxios from "../../Hooks/useAxios";
+import { useSelector } from "react-redux";
 
 export default function AddImageModal({
   openImgModal,
@@ -11,6 +12,7 @@ export default function AddImageModal({
 }) {
   const [loading, setLoading] = useState(false);
   const [multipleImages, setMultipleImages] = useState([]);
+  const { accessToken } = useSelector((state) => state.auth);
 
   const { Axios } = useAxios();
   const API_KEY = "c8818fe821c0aee81ebf0b77344f0e2b";
@@ -42,18 +44,24 @@ export default function AddImageModal({
   };
 
   const handleImgAdd = async () => {
-    await Axios.put(`/addImages/${event._id}`, { images: multipleImages }).then(
-      (res) => {
-        if (res.status === 200) {
-          Axios.get(`/event-details/${event._id}`)
-            .then((res) => setEvents(res.data.data))
-            .catch((err) => console.log(err))
-            .finally(() => {
-              handleCloseModal2();
-            });
-        }
+    await Axios.put(
+      `/addImages/${event._id}`,
+      { images: multipleImages },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       }
-    );
+    ).then((res) => {
+      if (res.status === 200) {
+        Axios.get(`/event-details/${event._id}`)
+          .then((res) => setEvents(res.data.data))
+          .catch((err) => console.log(err))
+          .finally(() => {
+            handleCloseModal2();
+          });
+      }
+    });
   };
   return (
     <>
