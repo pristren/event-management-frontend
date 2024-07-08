@@ -136,11 +136,11 @@ const searchIcons = (
 );
 
 const type = [
-  { name: "Culture" },
-  { name: "Food" },
-  { name: "Music" },
-  { name: "Sport" },
-  { name: "Other" },
+  { name: "Basketball" },
+  { name: "Soccer" },
+  { name: "Volleyball" },
+  { name: "Skating" },
+  { name: "Others" },
 ];
 const dateCategory = [
   {

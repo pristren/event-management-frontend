@@ -104,6 +104,16 @@ const CreateEvent = () => {
       if (user?.blocked) {
         return toast.error("You are blocked from creating events");
       }
+      if (inputData.event_title?.length >= 50) {
+        return toast.error("Event title must be less than 50 characters");
+      }
+      if (inputData.event_clubName?.length >= 50) {
+        return toast.error("Event organizer must be less than 50 characters");
+      }
+      if (inputData.event_Details?.length >= 500) {
+        return toast.error("Event details must be less than 500 characters");
+      }
+
       const newData = {
         userId: user?._id,
         event_images: multipleImages,
@@ -167,7 +177,7 @@ const CreateEvent = () => {
           toast.error("creating error");
         });
     } else {
-      toast.error("Plase input all the feild!");
+      toast.error("Please input all the feild!");
     }
   };
   useEffect(() => {
@@ -346,11 +356,11 @@ const CreateEvent = () => {
                 value={inputData?.category}
               >
                 <option value="">Choose a category</option>
-                <option value="Culture">Culture</option>
-                <option value="Food">Food</option>
-                <option value="Music">Music</option>
-                <option value="Sport">Sport</option>
-                <option value="Other">Other</option>
+                <option value="Basketball">Basketball</option>
+                <option value="Soccer">Soccer</option>
+                <option value="Volleyball">Volleyball</option>
+                <option value="Skating">Skating</option>
+                <option value="Others">Others</option>
               </select>
             </div>
             <div className="flex w-full gap-5 mt-5">
@@ -449,7 +459,7 @@ const CreateEvent = () => {
                       if (date <= endTime) {
                         setStartTime(date);
                       } else {
-                        toast.error("start time must be less than end time!");
+                        toast.error("Start time must be less than end time!");
                       }
                     } else {
                       setStartTime(date);
@@ -531,7 +541,7 @@ const CreateEvent = () => {
 
               <input
                 type="text"
-                placeholder={"location name"}
+                placeholder={"Organizer of the event"}
                 name="event_clubName"
                 onChange={handleInputChange}
                 className="w-full px-2 py-2 outline-none border-none text-[15px] focus:outline-none font-normal placeholder:text-[#6c757d] placeholder:font-medium"

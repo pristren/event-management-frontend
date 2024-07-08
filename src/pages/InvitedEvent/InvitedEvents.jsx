@@ -120,11 +120,11 @@ const InvitedEvents = () => {
                 value={category}
               >
                 <option value="">Choose a category</option>
-                <option value="Culture">Culture</option>
-                <option value="Food">Food</option>
-                <option value="Music">Music</option>
-                <option value="Sport">Sport</option>
-                <option value="Other">Other</option>
+                <option value="Basketball">Basketball</option>
+                <option value="Soccer">Soccer</option>
+                <option value="Volleyball">Volleyball</option>
+                <option value="Skating">Skating</option>
+                <option value="Others">Others</option>
               </select>
             </div>
           </div>

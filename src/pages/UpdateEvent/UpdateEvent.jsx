@@ -120,6 +120,15 @@ export default function UpdateEvent() {
         (obj, index, array) =>
           array.findIndex((item) => item.image === obj.image) === index
       );
+      if (inputData.event_title?.length >= 50) {
+        return toast.error("Event title must be less than 50 characters");
+      }
+      if (inputData.event_clubName?.length >= 50) {
+        return toast.error("Event organizer must be less than 50 characters");
+      }
+      if (inputData.event_Details?.length >= 500) {
+        return toast.error("Event details must be less than 500 characters");
+      }
       const newData = {
         userId: user?._id,
         event_images: [...event_img],
@@ -161,7 +170,7 @@ export default function UpdateEvent() {
           toast.error("creating error");
         });
     } else {
-      toast.error("Plase input all the feild!");
+      toast.error("Please input all the feild!");
     }
   };
   useEffect(() => {
@@ -331,11 +340,11 @@ export default function UpdateEvent() {
                 value={inputData?.category}
               >
                 <option value="">Choose a category</option>
-                <option value="Culture">Culture</option>
-                <option value="Food">Food</option>
-                <option value="Music">Music</option>
-                <option value="Sport">Sport</option>
-                <option value="Other">Other</option>
+                <option value="Basketball">Basketball</option>
+                <option value="Soccer">Soccer</option>
+                <option value="Volleyball">Volleyball</option>
+                <option value="Skating">Skating</option>
+                <option value="Others">Others</option>
               </select>
             </div>
             <div className="flex w-full gap-5 mt-5">
@@ -454,7 +463,7 @@ export default function UpdateEvent() {
 
               <input
                 type="text"
-                placeholder={"location name"}
+                placeholder={"Organizer of the event"}
                 name="event_clubName"
                 onChange={handleInputChange}
                 className="w-full px-2 py-2 outline-none border-none text-[15px] focus:outline-none font-normal placeholder:text-[#6c757d] placeholder:font-medium"
