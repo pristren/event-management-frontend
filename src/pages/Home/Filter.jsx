@@ -161,11 +161,11 @@ const Filter = ({ selected2, setSelected2 }) => {
   const filterBtn = (
     <div className="block truncate text-gray-400">
       <div
-        className="bg-[black] text-white p-4 rounded-2xl flex items-center gap-2"
+        className="bg-[black] text-white p-4 rounded-2xl flex items-center gap-2 cursor-pointer"
         // className="bg-[#1BB6E-D--- ] text-white p-4 rounded-l-2xl flex items-center gap-2"
       >
         <span>{funnelIcons}</span>
-        <span>Basketball Category</span>
+        <span>Category</span>
       </div>
     </div>
   );

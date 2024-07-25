@@ -32,38 +32,45 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import PhoneInput from "react-phone-input-2";
+import { useNavigate } from "react-router-dom";
+import { set } from "date-fns";
 
 const ProfileSetting = () => {
-  const { Axios } = useAxios();
-  // const [number, setNumber] = useState();
-  const [selectedBtn, setSelectedBtn] = useState("");
-  const [upload, setUpload] = useState(false);
+  const API_KEY = "c8818fe821c0aee81ebf0b77344f0e2b";
   const state = useSelector((state) => state.auth);
   const { accessToken } = state;
-  // console.log(state);
-  const [inputData, setInputData] = useState({});
-
+  const { Axios } = useAxios();
   const dispatch = useDispatch();
-
-  const [password, setPassword] = useState("");
-
+  const navigate = useNavigate();
+  const fileInputRef = useRef(null);
   const { isExpand, setIsExpand } = useContext(MyProvider);
-
-  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [selectedBtn, setSelectedBtn] = useState("");
+  const [upload, setUpload] = useState(false);
+  const [inputData, setInputData] = useState({});
+  const [password, setPassword] = useState("");
+  // const [deleteLoading, setDeleteLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [openModalPassword, setOpenModalPassword] = useState(false);
   const [addPhone, setAddPhone] = useState(false);
+  const [uploadImages, setUploadImages] = useState([]);
+  // const [profile_images, setProfileImages] = useState("");
+  const [loading, setLoading] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState({
     onlyPhone: "",
     phoneWithCode: "",
     countryCode: "",
   });
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [passwordToChange, setPasswordToChange] = useState("");
+  const [confirmPasswordToChange, setConfirmPasswordToChange] = useState("");
+  const [changePasswordloading, setChangePasswordLoading] = useState(false);
 
   const handleDeleteAccount = async () => {
     if (password === "") {
       toast.error("Please enter your password.");
       return;
     }
-    setDeleteLoading(true);
+    // setDeleteLoading(true);
     await Axios.put(
       `/user/request/delete/${inputData?._id}`,
       {
@@ -93,7 +100,7 @@ const ProfileSetting = () => {
         }
       })
       .finally(() => {
-        setDeleteLoading(false);
+        // setDeleteLoading(false);
         setPassword("");
       });
   };
@@ -109,16 +116,9 @@ const ProfileSetting = () => {
     }
   }, [state.user, state?.user?.profile_images]);
 
-  const fileInputRef = useRef(null);
-
   const handleDivClick = () => {
     fileInputRef.current.click();
   };
-  const [uploadImages, setUploadImages] = useState([]);
-  const [profile_images, setProfileImages] = useState("");
-  const API_KEY = "c8818fe821c0aee81ebf0b77344f0e2b";
-
-  const [loading, setLoading] = useState(false);
 
   const handleInputChange = (event) => {
     // event.persist();
@@ -280,9 +280,74 @@ const ProfileSetting = () => {
     setLoading(false);
   };
   const handleImgChange = (img) => {
-    setProfileImages(img);
+    // setProfileImages(img);
     // localStorage.setItem("profile_image", JSON.stringify(img));
     setProfileInDb(img);
+  };
+
+  const handleChangePassword = () => {
+    if (accessToken) {
+      if (
+        currentPassword === "" ||
+        passwordToChange === "" ||
+        confirmPasswordToChange === ""
+      ) {
+        toast.error("Please fill all the fields");
+        return;
+      }
+      if (passwordToChange === confirmPasswordToChange) {
+        if (
+          !/[a-zA-Z]/.test(passwordToChange) ||
+          !/[0-9]/.test(passwordToChange) ||
+          !/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(passwordToChange) ||
+          passwordToChange.length < 8
+        ) {
+          toast.error(
+            "Password must contain a letter, a number, a special character and must be at least 8 characters"
+          );
+          return;
+        }
+        // change password
+        setChangePasswordLoading(true);
+
+        Axios.put(
+          `/user/change-password/${state?.user?._id}`,
+          {
+            oldPassword: currentPassword,
+            newPassword: passwordToChange,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        )
+          .then((res) => {
+            toast.success("Password changed successfully!");
+            setOpenModalPassword(false);
+          })
+          .catch((err) => {
+            toast.error(
+              "Error changing password. Please provide correct password."
+            );
+          })
+          .finally(() => {
+            // setLoading(false);
+            setChangePasswordLoading(false);
+            setCurrentPassword("");
+            setPasswordToChange("");
+            setConfirmPasswordToChange("");
+          });
+      } else {
+        // show error
+        toast.error("Password do not match!");
+        setChangePasswordLoading(false);
+        return;
+      }
+    } else {
+      toast.error("You are not logged in");
+      navigate("/login");
+    }
   };
 
   return (
@@ -524,10 +589,74 @@ const ProfileSetting = () => {
                 >
                   <span>Update Profile</span>
                 </button>
+                <Dialog
+                  open={openModalPassword}
+                  onOpenChange={setOpenModalPassword}
+                >
+                  <DialogTrigger asChild>
+                    <Button
+                      className="bg-blue-100 text-blue-500 hover:text-blue-600 hover:bg-blue-200 rounded-3xl mt-6 min-w-[14rem]"
+                      variant="outline"
+                    >
+                      Change Password
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader className={"space-y-2"}>
+                      <DialogTitle>Change Password</DialogTitle>
+                      <DialogDescription className=" text-gray-500">
+                        To change your password you have to enter your current
+                        password. Then type your new password and confirm it.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <DialogDescription className="space-y-3">
+                      <Input
+                        type="password"
+                        className="w-full border rounded-lg px-3"
+                        placeholder="Current Password"
+                        value={currentPassword}
+                        onChange={(e) => setCurrentPassword(e.target.value)}
+                      />
+                      <Input
+                        type="password"
+                        className="w-full border rounded-lg px-3"
+                        placeholder="New Password"
+                        value={passwordToChange}
+                        onChange={(e) => setPasswordToChange(e.target.value)}
+                      />
+                      <Input
+                        type="password"
+                        className="w-full border rounded-lg px-3"
+                        placeholder="Confirm New Password"
+                        value={confirmPasswordToChange}
+                        onChange={(e) =>
+                          setConfirmPasswordToChange(e.target.value)
+                        }
+                      />
+                    </DialogDescription>
+                    <DialogFooter>
+                      <Button
+                        onClick={() => setOpenModalPassword(false)}
+                        className=""
+                        variant="outline"
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        className=""
+                        variant=""
+                        onClick={handleChangePassword}
+                        disabled={changePasswordloading}
+                      >
+                        {changePasswordloading ? " Submitting..." : "Submit"}
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
                 <Dialog open={openModal} onOpenChange={setOpenModal}>
                   <DialogTrigger asChild>
                     <Button
-                      className="bg-red-100 text-red-500 hover:text-red-600 hover:bg-red-200 rounded-3xl mt-6"
+                      className="bg-red-100 text-red-500 hover:text-red-600 hover:bg-red-200 rounded-3xl mt-6 min-w-[14rem]"
                       variant="outline"
                     >
                       Delete Account
