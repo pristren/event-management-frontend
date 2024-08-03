@@ -1,43 +1,37 @@
-import React, { useContext, useState } from "react";
-import Profile from "../../components/Profile";
-import Image from "../../assets/members/1.png";
-import MyProvider from "../../Provider/Provider";
-import MembersModal from "./MembersModal";
-import useAxios from "../../Hooks/useAxios";
-import { useNavigate, useParams } from "react-router-dom";
-import { useEffect } from "react";
-import moment from "moment";
-import { useSelector } from "react-redux";
 import { APIProvider, AdvancedMarker, Map } from "@vis.gl/react-google-maps";
+import moment from "moment";
+import { useContext, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import Image from "../../assets/members/1.png";
+import Profile from "../../components/Profile";
+import useAxios from "../../Hooks/useAxios";
+import MyProvider from "../../Provider/Provider";
 import AddImageModal from "./AddImageModal";
-import like from "../../assets/like.svg";
+import MembersModal from "./MembersModal";
 
-import CreateEventModal from "../CreateEvent/CreateEventModal";
-import ShareModal from "./ShareModal";
-import { ThumbsUp, UserRound } from "lucide-react";
-import mapIcon from "../../assets/logo-white-bg-removebg-preview.png";
+import Loader from "@/components/Loader/Loader";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Card, CardContent } from "@/components/ui/card";
-import Autoplay from "embla-carousel-autoplay";
-import Loader from "@/components/Loader/Loader";
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
   DrawerDescription,
-  DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import Autoplay from "embla-carousel-autoplay";
+import { ThumbsUp, UserRound } from "lucide-react";
 import toast from "react-hot-toast";
+import mapIcon from "../../assets/logo-white-bg-removebg-preview.png";
+import ShareModal from "./ShareModal";
 
 const EventDetails = () => {
   const { user, accessToken } = useSelector((state) => state?.auth);
@@ -78,6 +72,8 @@ const EventDetails = () => {
       });
   }, []);
 
+  console.log(events);
+
   const defaultProps = {
     center: {
       lat:
@@ -91,27 +87,7 @@ const EventDetails = () => {
     },
     zoom: 15,
   };
-  // useEffect(() => {
-  //   if (navigator.geolocation) {
-  //     navigator.geolocation.getCurrentPosition(
-  //       function (position) {
-  //         setUserLocation({
-  //           center: {
-  //             lat: position.coords.latitude,
-  //             lng: position.coords.longitude,
-  //           },
-  //           zoom: 11,
-  //         });
-  //       },
-  //       function (error) {
-  //         console.error(error);
-  //       },
-  //       { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 }
-  //     );
-  //   } else {
-  //     console.error("Geolocation is not supported by this browser.");
-  //   }
-  // }, []);
+
   const [popover, setPopOver] = useState(false);
 
   const handleJoin = async (id) => {
@@ -164,21 +140,6 @@ const EventDetails = () => {
       navigate("/login");
     }
   }
-  // useEffect(() => {
-  //   if (events?.joinedPeople) {
-  //     setLoading(true);
-  //     const user = async () => {
-  //       await Axios.get(`/user/${events?.joinedPeople[0]}`)
-  //         .then((res) => {
-  //           setFirstUser(res.data?.data?.user);
-  //         })
-  //         .finally(() => {
-  //           setLoading(false);
-  //         });
-  //     };
-  //     user();
-  //   }
-  // }, [events?.joinedPeople?.length]);
 
   const [openModal3, setOpenModal3] = useState(false);
 
@@ -261,6 +222,37 @@ const EventDetails = () => {
       })
       .catch((err) => {
         toast.error("Something went wrong");
+      });
+  };
+
+  const [comment, setComment] = useState("");
+
+  const handleComment = async (id) => {
+    if (!user?._id) {
+      return navigate("/login");
+    }
+    await Axios.put(
+      `/addComment/${id}`,
+      { comment: comment },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    )
+      .then((res) => {
+        if (res.status === 200) {
+          Axios.get(`/event-details/${id}`)
+            .then((res) => setEvents(res.data.data))
+            .catch((err) => console.log(err));
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Something went wrong");
+      })
+      .finally(() => {
+        setComment("");
       });
   };
 
@@ -555,6 +547,7 @@ const EventDetails = () => {
                   </small>
                 </div>
               </div>
+              {/* maps */}
               <div className="mt-4 bg-white rounded-xl shadow-primary">
                 {defaultProps?.center.lat !== undefined &&
                   defaultProps?.center.lng !== undefined && (
@@ -627,7 +620,84 @@ const EventDetails = () => {
                     </div>
                   )}
               </div>
+              {/* comments */}
+              <div className="mt-8">
+                <h3 className="text-[22px] font-semibold">Comments</h3>
+                {/* existing comments lists */}
+                {events?.comments?.map((comment, i) => (
+                  <div
+                    key={comment?._id}
+                    className="flex items-center gap-x-3 mt-4"
+                  >
+                    <div className="w-12 h-10 md:h-12 rounded-full bg-[#F0F0F0] flex justify-center items-center">
+                      {comment?.userId?.profile_images?.length ? (
+                        <img
+                          src={
+                            comment?.userId?.currentProfile
+                              ? comment?.userId?.currentProfile
+                              : comment?.userId?.profile_images?.length
+                              ? comment?.userId?.profile_images[0]?.image
+                              : Image
+                          }
+                          alt=""
+                          className=" rounded-full object-cover"
+                        />
+                      ) : (
+                        <UserRound className="w-6 h-6 text-[#828282]" />
+                      )}
+                    </div>
+                    <div className="">
+                      <p className="text-[#828282] text-[14px] font-medium">
+                        {comment?.userId?.firstName +
+                          " " +
+                          comment?.userId?.lastName}
+                      </p>
+                      <p className="text-[#333333] text-[16px]">
+                        {comment?.comment}
+                      </p>
+                    </div>
+                  </div>
+                ))}
 
+                {/* create a new one */}
+                <div className="flex items-center gap-x-3 mt-8">
+                  <div className="w-[3.7rem] h-10 md:h-12 rounded-full bg-[#F0F0F0] flex justify-center items-center">
+                    {user?.profile_images?.length ? (
+                      <img
+                        src={
+                          user?.currentProfile
+                            ? user?.currentProfile
+                            : user?.profile_images?.length
+                            ? user?.profile_images[0]?.image
+                            : Image
+                        }
+                        alt=""
+                        className=" rounded-full object-cover"
+                      />
+                    ) : (
+                      <UserRound className="w-6 h-6 text-[#828282]" />
+                    )}
+                  </div>
+                  <div className="w-full">
+                    <Input
+                      type="text"
+                      placeholder="Write a comment"
+                      className=""
+                      onChange={(e) => setComment(e.target.value)}
+                      value={comment}
+                    />
+                  </div>
+                  <Button
+                    variant="secondary"
+                    className="hover:bg-[#E0F5FD] border text-[#333333] py-2 px-6 rounded-lg font-semibold"
+                    onClick={() => handleComment(events?._id)}
+                    disabled={comment.length === 0}
+                  >
+                    Comment
+                  </Button>
+                </div>
+              </div>
+              {/* reports */}
               <Drawer>
                 {localStorage.getItem("report")?.includes(events?._id) ||
                 events?.userId === user?._id ? (
@@ -663,8 +733,10 @@ const EventDetails = () => {
                   </div>
                 ) : (
                   <DrawerTrigger asChild>
-                    <div className="mt-5 flex justify-end gap-2 items-center cursor-pointer">
-                      <p className="underline">Report this event.</p>
+                    <div className="mt-5 flex justify-end gap-2 items-center cursor-pointer w-min ml-auto">
+                      <p className="underline whitespace-nowrap">
+                        Report this event.
+                      </p>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"

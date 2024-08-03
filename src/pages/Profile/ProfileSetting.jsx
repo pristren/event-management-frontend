@@ -1,8 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import VeryCard from "../../components/VeryCard";
-import Profile from "../../components/Profile";
-import MyProvider from "../../Provider/Provider";
 import { useDispatch, useSelector } from "react-redux";
+import Profile from "../../components/Profile";
 import {
   businessIcon,
   // lockIcon,
@@ -12,13 +10,14 @@ import {
   settingIcon,
   uploadIcons,
 } from "../../components/SVGIcons/Icons";
+import VeryCard from "../../components/VeryCard";
+import MyProvider from "../../Provider/Provider";
 // import axios from "axios";
-import useAxios from "../../Hooks/useAxios";
-import { userLoggedIn, userLoggedOut } from "../../features/auth/authSlice";
-import ImageUploader from "react-images-upload";
 import { toast } from "react-hot-toast";
+import ImageUploader from "react-images-upload";
+import { userLoggedIn, userLoggedOut } from "../../features/auth/authSlice";
+import useAxios from "../../Hooks/useAxios";
 // import useMyEvent from "../../Hooks/useMyEvent";
-import { ChevronDown, ChevronUp, UserRound } from "lucide-react";
 import Loader from "@/components/Loader/Loader";
 import { Button } from "@/components/ui/button";
 import {
@@ -31,12 +30,12 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { ChevronDown, ChevronUp, UserRound } from "lucide-react";
 import PhoneInput from "react-phone-input-2";
 import { useNavigate } from "react-router-dom";
-import { set } from "date-fns";
 
 const ProfileSetting = () => {
-  const API_KEY = "c8818fe821c0aee81ebf0b77344f0e2b";
+  const API_KEY = "36d1f9afd01a5a168255a86c4349f031";
   const state = useSelector((state) => state.auth);
   const { accessToken } = state;
   const { Axios } = useAxios();
@@ -456,7 +455,7 @@ const ProfileSetting = () => {
                         onChange={() => {}}
                         disabled
                         placeholder="Phone Number"
-                        className="py-1 px-4 text-base rounded-[5rem] shadow-md 
+                        className="py-1 px-4 text-base rounded-[5rem] shadow-md
                           disabled:opacity-50 disabled:bg-white
                           w-full"
                       />

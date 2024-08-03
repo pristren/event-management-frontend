@@ -1,27 +1,25 @@
-import React, { useContext, useEffect, useState } from "react";
-import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
-import useAxios from "../../Hooks/useAxios";
-import MyProvider from "../../Provider/Provider";
-import Profile from "../../components/Profile";
-import Calender from "./Calender";
-import DatePicker from "react-datepicker";
-import { useSelector } from "react-redux";
-import CreateEventModal from "./CreateEventModal";
-import ImageUploader from "react-images-upload";
-import CustomDatePicker from "@/components/DatePicker";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { isSameDay } from "date-fns";
+import { useContext, useEffect, useState } from "react";
+import DatePicker from "react-datepicker";
+import toast from "react-hot-toast";
+import ImageUploader from "react-images-upload";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import useAxios from "../../Hooks/useAxios";
+import MyProvider from "../../Provider/Provider";
+import Profile from "../../components/Profile";
+import CreateEventModal from "./CreateEventModal";
 
 import { Button } from "@/components/ui/button";
-import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
 
 const clubIcons = (
   <svg
@@ -90,7 +88,7 @@ const CreateEvent = () => {
 
   const [success, setSuccess] = useState(false);
   const [status, setStatus] = useState("public");
-  const API_KEY = "c8818fe821c0aee81ebf0b77344f0e2b";
+  const API_KEY = "36d1f9afd01a5a168255a86c4349f031";
 
   const [createdEvent, setCreatedEvent] = useState({});
   const createEvent = () => {

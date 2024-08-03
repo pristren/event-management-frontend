@@ -1,8 +1,8 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import ImageUploader from "react-images-upload";
-import useAxios from "../../Hooks/useAxios";
 import { useSelector } from "react-redux";
+import useAxios from "../../Hooks/useAxios";
 
 export default function AddImageModal({
   openImgModal,
@@ -15,7 +15,7 @@ export default function AddImageModal({
   const { accessToken } = useSelector((state) => state.auth);
 
   const { Axios } = useAxios();
-  const API_KEY = "c8818fe821c0aee81ebf0b77344f0e2b";
+  const API_KEY = "36d1f9afd01a5a168255a86c4349f031";
 
   const onDrop = async (pictureFiles) => {
     setLoading(true);

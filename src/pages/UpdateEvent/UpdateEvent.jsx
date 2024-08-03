@@ -1,17 +1,17 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import useAxios from "../../Hooks/useAxios";
 import MyProvider from "../../Provider/Provider";
 import Profile from "../../components/Profile";
 // import Calender from "./Calender";
-import DatePicker from "react-datepicker";
-import { useSelector } from "react-redux";
-import CreateEventModal from "../CreateEvent/CreateEventModal";
-import ImageUploader from "react-images-upload";
 import CustomDatePicker from "@/components/DatePicker";
 import VeryCard2 from "@/components/VeryCard2";
 import { isSameDay } from "date-fns";
+import DatePicker from "react-datepicker";
+import ImageUploader from "react-images-upload";
+import { useSelector } from "react-redux";
+import CreateEventModal from "../CreateEvent/CreateEventModal";
 
 const clubIcons = (
   <svg
@@ -201,7 +201,7 @@ export default function UpdateEvent() {
     setOpenModal(true);
   }
   // const [pictures, setPictures] = useState([]);
-  const API_KEY = "c8818fe821c0aee81ebf0b77344f0e2b";
+  const API_KEY = "36d1f9afd01a5a168255a86c4349f031";
 
   const onDrop = async (pictureFiles) => {
     setFileUploadLoading(true);
