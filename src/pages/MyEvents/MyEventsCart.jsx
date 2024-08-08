@@ -1,8 +1,9 @@
+import { Loader } from "lucide-react";
 import moment from "moment/moment";
 import { Link, useNavigate } from "react-router-dom";
 // import invitedCardImage from "../../assets/invite-card-banner.png";
 
-const MyEventsCart = ({ event, handleDelete }) => {
+const MyEventsCart = ({ event, handleDelete, loading }) => {
   const navigate = useNavigate();
   let eventTimeStart;
 
@@ -47,7 +48,7 @@ const MyEventsCart = ({ event, handleDelete }) => {
                     moment(event?.event_time?.time_start),
                     "hours"
                   )} hours `}
-              | 
+              |
               {moment(event?.event_date).format("MMMM D, YYYY")},{" "} */}
               {moment(event?.event_date?.date_start).format("MMMM D, YYYY")},{" "}
               {eventTimeStart}
@@ -68,9 +69,13 @@ const MyEventsCart = ({ event, handleDelete }) => {
               Edit
             </Link>
             <button
-              className="rounded-lg w-full text-white bg-[#f77979]  hover:text-white transition duration-200 block text-center py-2 mt-7"
+              disabled={loading}
+              className="rounded-lg w-full text-white bg-[#f77979]  hover:text-white transition duration-200  text-center py-2 mt-7 flex items-center justify-center"
               onClick={() => handleDelete(event?._id)}
             >
+              {loading ? (
+                <Loader className="mr-2 animate-spin" size={16} color="#fff" />
+              ) : null}
               Delete
             </button>
           </div>

@@ -1,27 +1,37 @@
-import { useContext, useEffect, useState } from "react";
+import Loader from "@/components/Loader/Loader";
+import { Input } from "@/components/ui/input";
+import { useContext, useState } from "react";
+import { useSelector } from "react-redux";
+import useAxios from "../../Hooks/useAxios";
 import useMyEvent from "../../Hooks/useMyEvent";
 import MyProvider from "../../Provider/Provider";
 import Profile from "../../components/Profile";
 import MyEventsCart from "./MyEventsCart";
-import useAxios from "../../Hooks/useAxios";
-import { useSelector } from "react-redux";
-import { Input } from "@/components/ui/input";
-import OthersCategoryModal from "./OthersCategoryModal";
-import Loader from "@/components/Loader/Loader";
 
 const MyEvents = () => {
   const { ownEvent, setMyEvent, isLoading } = useMyEvent();
   const { isExpand, setIsExpand } = useContext(MyProvider);
   const { user, accessToken } = useSelector((state) => state.auth);
   const { Axios } = useAxios();
+  const [loading, setLoading] = useState(false);
   const handleDelete = async (id) => {
-    const res = await Axios.delete(`/events/${id}`);
+    setLoading(true);
+    const res = await Axios.delete(`/events/${id}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
     if (res.data.message) {
       Axios.get(`/my-events/${user?._id}`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-      }).then((res) => setMyEvent(res.data));
+      })
+        .then((res) => setMyEvent(res.data))
+        .finally(() => setLoading(false));
+    } else {
+      console.log("error");
+      setLoading(false);
     }
   };
   const [category, setCategory] = useState("");
@@ -134,6 +144,7 @@ const MyEvents = () => {
                   key={idx}
                   event={event}
                   handleDelete={handleDelete}
+                  loading={loading}
                 />
               ))
           ) : ownEvent?.ownEvents?.length === 0 ? (
