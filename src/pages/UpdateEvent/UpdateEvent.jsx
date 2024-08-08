@@ -62,21 +62,58 @@ export default function UpdateEvent() {
     startDate: startDate || null,
     endDate: endDate || null,
   });
+  function combineDateAndTime(dateString, timeString) {
+    // Parse the date string into a Date object
+    const dateObj = new Date(dateString);
+
+    // Extract hours and minutes from the time string
+    const [hours, minutes] = timeString.split(":");
+
+    // Set the hours and minutes on the date object
+    dateObj.setHours(parseInt(hours, 10));
+    dateObj.setMinutes(parseInt(minutes, 10));
+
+    return dateObj;
+  }
+
   useEffect(() => {
     const getData = async () => {
       await Axios.get(`/event-details/${id}`).then((res) => {
         setInputData(res.data.data);
-        // console.log(new Date(res.data.data.event_date.date_start));
-        setStartDate(new Date(res.data.data.event_date.date_start));
-        setEndDate(new Date(res.data.data.event_date.date_end));
-        setStartTime(new Date(res.data.data.event_time.time_start));
-        setEndTime(new Date(res.data.data.event_time.time_end));
+        setStartDate(
+          new Date(res.data.data.event_date.date_start) === "Invalid Date"
+            ? res.data.data.event_date.date_start
+            : new Date(res.data.data.event_date.date_start)
+        );
+        setEndDate(
+          new Date(res.data.data.event_date.date_end) === "Invalid Date"
+            ? res.data.data.event_date.date_end
+            : new Date(res.data.data.event_date.date_end)
+        );
+        console.log(res.data.data);
+        setStartTime(
+          res.data.data.event_time.time_start.length < 6
+            ? combineDateAndTime(
+                res.data.data.event_date.date_start,
+                res.data.data.event_time.time_start
+              )
+            : new Date(res.data.data.event_time.time_start)
+        );
+
+        setEndTime(
+          res.data.data.event_time.time_end.length < 6
+            ? combineDateAndTime(
+                res.data.data.event_date.date_end,
+                res.data.data.event_time.time_end
+              )
+            : new Date(res.data.data.event_time.time_end)
+        );
+
         const input = document.getElementById("autocomplete");
         if (input) {
           updateEvent;
           input.value = res.data?.data?.location;
         }
-        setUploadImages(res.data.data?.event_images);
         setMultipleImages(res.data.data?.event_images);
         setSelectedPlace({
           address: res.data.data.location,
@@ -261,7 +298,7 @@ export default function UpdateEvent() {
             </svg>
           </span>
           <h1 className="text-[black] font-bold text-2xl">Event creation</h1>
-          <Profile profile_images={user.currentProfile} />
+          <Profile profile_images={user?.currentProfile} />
         </div>
 
         <div className="min-h-screen bg-[#F2F6FF] py-10 px-5 grid items-stretch grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-10">
